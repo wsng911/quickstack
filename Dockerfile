@@ -36,7 +36,7 @@ ENV PYTHON=/usr/bin/python3
 ENV QS_VERSION=$VERSION_ARG
 ENV DATABASE_URL="file:/app/storage/db/data.db"
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git openssh-client
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
