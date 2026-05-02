@@ -1,12 +1,12 @@
 FROM node:22-alpine AS base
 
 ARG VERSION_ARG
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl openssh-keygen
 
 FROM base AS deps
 
 # Install necessary packages for building
-RUN apk add --no-cache libc6-compat python3 make g++
+RUN apk add --no-cache libc6-compat python3 make g++ 
 
 WORKDIR /app
 
@@ -36,7 +36,7 @@ ENV PYTHON=/usr/bin/python3
 ENV QS_VERSION=$VERSION_ARG
 ENV DATABASE_URL="file:/app/storage/db/data.db"
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git openssh-client
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
