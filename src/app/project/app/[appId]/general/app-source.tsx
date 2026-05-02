@@ -26,6 +26,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Actions } from "@/frontend/utils/nextjs-actions.utils";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
     app: AppExtendedModel;
@@ -117,11 +118,15 @@ export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
                         <Tabs defaultValue="GIT" value={sourceTypeField.sourceType} onValueChange={(val) => {
                             form.setValue('sourceType', val as 'GIT' | 'GIT_SSH' | 'CONTAINER');
                         }} className="mt-2">
-                            <TabsList>
-                                {app.appType === 'APP' && <TabsTrigger value="GIT"><GitBranch className="mr-2 h-4 w-4" />Git HTTPS</TabsTrigger>}
-                                {app.appType === 'APP' && <TabsTrigger value="GIT_SSH"><KeyRound className="mr-2 h-4 w-4" />Git SSH</TabsTrigger>}
-                                <TabsTrigger value="CONTAINER"><Package className="mr-2 h-4 w-4" />Docker Container</TabsTrigger>
-                            </TabsList>
+
+                            <ScrollArea>
+                                <TabsList>
+                                    {app.appType === 'APP' && <TabsTrigger value="GIT"><GitBranch className="mr-2 h-4 w-4" />Git HTTPS</TabsTrigger>}
+                                    {app.appType === 'APP' && <TabsTrigger value="GIT_SSH"><KeyRound className="mr-2 h-4 w-4" />Git SSH</TabsTrigger>}
+                                    <TabsTrigger value="CONTAINER"><Package className="mr-2 h-4 w-4" />Docker Container</TabsTrigger>
+                                </TabsList>
+                                <ScrollBar orientation="horizontal" />
+                            </ScrollArea>
                             <TabsContent value="GIT" className="space-y-4 mt-4">
                                 <FormField
                                     control={form.control}
@@ -136,7 +141,7 @@ export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid md:grid-cols-2 gap-4">
 
 
                                     <FormField
@@ -248,7 +253,7 @@ export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid md:grid-cols-2 gap-4">
                                     <FormField
                                         control={form.control}
                                         name="gitBranch"
@@ -277,7 +282,7 @@ export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
                                             </Button>}
                                             <Button type="button" variant="secondary" onClick={generateKey}>
                                                 {publicKey ? <RefreshCw /> : <KeyRound />}
-                                                {publicKey ? 'Regenerate' : 'Generate SSH Keys'}
+                                                {publicKey ? <span className="hidden md:block">Regenerate</span> : 'Generate SSH Keys'}
                                             </Button>
                                         </div>
                                         {publicKey && <FormDescription>Add this public key as deploy key in your git provider.</FormDescription>}
