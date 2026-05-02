@@ -1,4 +1,5 @@
 import { AppPodsStatusModel } from "@/shared/model/app-pod-status.model";
+import { ReactNode } from "react";
 import { create } from "zustand"
 
 interface ZustandConfirmDialogProps {
@@ -161,4 +162,39 @@ export const usePodsStatus = create<ZustandPodsStatusProps>((set, get) => ({
             });
         };
     }
+}));
+
+
+/* Generic Dialog */
+interface ZustandGenericDialogProps {
+    isDialogOpen: boolean;
+    content: ReactNode | null;
+    width?: string;
+    height?: string;
+    resolvePromise: ((result?: any) => void) | null;
+    openDialog: (content: ReactNode, width?: string, height?: string) => Promise<any>;
+    closeDialog: (result?: any) => void;
+}
+
+export const useDialog = create<ZustandGenericDialogProps>((set) => ({
+    isDialogOpen: false,
+    content: null,
+    resolvePromise: null,
+    openDialog: (content, width, height) => {
+        return new Promise<any>((resolve) => {
+            set({
+                isDialogOpen: true,
+                content: content,
+                width: width ?? undefined,
+                height: height ?? undefined,
+                resolvePromise: resolve,
+            });
+        });
+    },
+    closeDialog: (result) => set((state) => {
+        if (state.resolvePromise) {
+            state.resolvePromise(result);
+        }
+        return { isDialogOpen: false, content: null, resolvePromise: null };
+    }),
 }));
