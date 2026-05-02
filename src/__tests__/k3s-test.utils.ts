@@ -145,5 +145,12 @@ export function createK3sTestContext(image = DEFAULT_IMAGE) {
         };
     }
 
-    return { getKubeConfig, getClients };
+    function getContainer(): StartedK3sContainer {
+        if (!container) {
+            throw new Error('K3s test context not initialised. Ensure createK3sTestContext() was called inside a describe block.');
+        }
+        return container;
+    }
+
+    return { getKubeConfig, getClients, getContainer };
 }
