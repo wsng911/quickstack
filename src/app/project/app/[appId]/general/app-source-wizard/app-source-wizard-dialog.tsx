@@ -180,6 +180,21 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
         }
     };
 
+    const selectGitBranch = (gitBranch: string) => {
+        updateFormData({ gitBranch });
+        goTo('build-method');
+    };
+
+    const selectBuildMethod = async (buildMethod: AppBuildMethod) => {
+        updateFormData({ buildMethod });
+        if (buildMethod === 'DOCKERFILE') {
+            goTo('dockerfile');
+            await runDockerfileDetection();
+            return;
+        }
+        goTo('summary');
+    };
+
     const next = async () => {
         if (step === 'source') {
             goTo(formData.sourceType === 'GIT' ? 'git-url' : formData.sourceType === 'GIT_SSH' ? 'ssh-url' : 'container-image');
@@ -195,19 +210,6 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
             if (await loadBranches()) {
                 goTo('branch');
             }
-            return;
-        }
-        if (step === 'branch') {
-            goTo('build-method');
-            return;
-        }
-        if (step === 'build-method') {
-            if (formData.buildMethod === 'DOCKERFILE') {
-                goTo('dockerfile');
-                await runDockerfileDetection();
-                return;
-            }
-            goTo('summary');
             return;
         }
         if (step === 'dockerfile' || step === 'container-image') {
@@ -278,13 +280,13 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
                     <GitBranchStep
                         branches={branches}
                         selectedBranch={formData.gitBranch ?? ''}
-                        onSelect={(gitBranch) => updateFormData({ gitBranch })}
+                        onSelect={selectGitBranch}
                     />
                 )}
                 {step === 'build-method' && (
                     <BuildMethodStep
                         value={(formData.buildMethod as AppBuildMethod | undefined) ?? 'RAILPACK'}
-                        onChange={(buildMethod) => updateFormData({ buildMethod })}
+                        onChange={selectBuildMethod}
                     />
                 )}
                 {step === 'dockerfile' && (
@@ -336,6 +338,8 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
                                 Save & Deploy
                             </Button>
                         </>
+                    ) : step === 'branch' || step === 'build-method' ? (
+                        null
                     ) : (
                         <Button type="button" onClick={next} disabled={nextDisabled}>
                             {isLoadingBranches || isDetectingDockerfile ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
