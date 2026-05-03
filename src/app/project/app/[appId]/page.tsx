@@ -7,7 +7,6 @@ import volumeBackupService from "@/server/services/volume-backup.service";
 import { UserGroupUtils } from "@/shared/utils/role.utils";
 import clusterService from "@/server/services/cluster.service";
 import appGitSshKeyService from "@/server/services/app-git-ssh-key.service";
-import { RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
 
 export default async function AppPage({
     searchParams,
@@ -28,7 +27,7 @@ export default async function AppPage({
         volumeBackupService.getForApp(appId),
         clusterService.getNodeInfo(),
         appService.getAllAppsByProjectID(app.projectId),
-        role === RolePermissionEnum.READWRITE ? appGitSshKeyService.getPublicKey(appId) : Promise.resolve(undefined),
+        appGitSshKeyService.getPublicKey(appId),
     ]);
 
     return (<>

@@ -28,6 +28,7 @@ import DbToolsCard from "./credentials/db-tools";
 import { RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
 import { NodeInfoModel } from "@/shared/model/node-info.model";
 import { Eye, Key, Settings, Zap, Globe, HardDrive, Cog } from "lucide-react";
+import { AppSourceUtils } from "@/frontend/utils/app-source.utils";
 
 export default function AppTabs({
     app,
@@ -48,8 +49,15 @@ export default function AppTabs({
 }) {
     const router = useRouter();
     const readonly = role !== RolePermissionEnum.READWRITE;
+    const appSourceIsConfigured = AppSourceUtils.isConfiguredSource(app);
     const openTab = (tabName: string) => {
         router.push(`/project/app/${app.id}?tabName=${tabName}`);
+    }
+
+    if (!appSourceIsConfigured) {
+        return (
+            <GeneralAppSource readonly={readonly} app={app} gitSshPublicKey={gitSshPublicKey} />
+        )
     }
 
     return (

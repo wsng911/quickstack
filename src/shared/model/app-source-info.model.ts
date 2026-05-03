@@ -51,6 +51,22 @@ export const appGitBranchesLookupZodModel = z.discriminatedUnion('sourceType', [
 ]);
 export type AppGitBranchesLookupModel = z.infer<typeof appGitBranchesLookupZodModel>;
 
+export const appDockerfileDetectionZodModel = z.discriminatedUnion('sourceType', [
+  z.object({
+    sourceType: z.literal('GIT'),
+    gitUrl: z.string().trim().refine(gitUrlValidation, gitUrlValidationMessage),
+    gitBranch: z.string().trim().min(1, gitBranchValidationMessage),
+    gitUsername: z.string().trim().nullish(),
+    gitToken: z.string().trim().nullish(),
+  }),
+  z.object({
+    sourceType: z.literal('GIT_SSH'),
+    gitUrl: z.string().trim().refine(gitSshUrlValidation, gitSshUrlValidationMessage),
+    gitBranch: z.string().trim().min(1, gitBranchValidationMessage),
+  }),
+]);
+export type AppDockerfileDetectionModel = z.infer<typeof appDockerfileDetectionZodModel>;
+
 export const appSourceInfoContainerZodModel = z.object({
   containerImageSource: z.string().trim(),
   containerRegistryUsername: z.string().trim().nullish(),

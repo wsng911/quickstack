@@ -29,6 +29,14 @@ class AppGitSshKeyService {
         return key?.publicKey;
     }
 
+    async ensurePublicKey(appId: string): Promise<string> {
+        const publicKey = await this.getPublicKey(appId);
+        if (publicKey) {
+            return publicKey;
+        }
+        return await this.generateOrRegenerate(appId);
+    }
+
     async generateOrRegenerate(appId: string): Promise<string> {
         const { publicKey, privateKey } = await this.generateEd25519KeyPair(appId);
         const encryptedPrivateKey = CryptoUtils.encrypt(privateKey);

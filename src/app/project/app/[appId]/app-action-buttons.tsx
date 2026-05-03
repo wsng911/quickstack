@@ -14,6 +14,7 @@ import PodStatusIndicator from "@/components/custom/pod-status-indicator";
 import { usePodsStatus } from "@/frontend/states/zustand.states";
 import { useEffect, useState } from "react";
 import { DeploymentStatus } from "@/shared/model/deployment-info.model";
+import { AppSourceUtils } from "@/frontend/utils/app-source.utils";
 
 export default function AppActionButtons({
     app,
@@ -24,6 +25,7 @@ export default function AppActionButtons({
 }) {
     const [deploymentStatus, setDeploaymentStatus] = useState<DeploymentStatus>('UNKNOWN');
     const hasWriteAccess = UserGroupUtils.sessionHasWriteAccessForApp(session, app.id);
+    const appSourceIsConfigured = AppSourceUtils.isConfiguredSource(app);
     const { subscribeToStatusChanges, getPodsForApp } = usePodsStatus();
 
     useEffect(() => {
@@ -44,10 +46,10 @@ export default function AppActionButtons({
             <ScrollArea>
                 <div className="flex gap-4">
                     <div className="self-center"><AppEventsDialog app={app}><PodStatusIndicator appId={app.id} /></AppEventsDialog></div>
-                    {hasWriteAccess && <><Button onClick={() => Toast.fromAction(() => deploy(app.id))}><Rocket /> Deploy</Button>
-                        {app.appType === 'APP' && (app.sourceType === 'GIT' || app.sourceType === 'GIT_SSH') && <Button onClick={() => Toast.fromAction(() => deploy(app.id, true))} variant="secondary"><Hammer /> Rebuild</Button>}
-                        <Button disabled={!['ERROR', 'UNKNOWN', 'SHUTDOWN', 'SHUTTING_DOWN'].includes(deploymentStatus)} onClick={() => Toast.fromAction(() => startApp(app.id))} variant="secondary"><Play />Start</Button>
-                        <Button disabled={!['BUILDING', 'DEPLOYED', 'ERROR', 'UNKNOWN', 'DEPLOYING'].includes(deploymentStatus)} onClick={() => Toast.fromAction(() => stopApp(app.id))} variant="secondary"><Square /> Stop</Button>
+                    {hasWriteAccess && <><Button disabled={!appSourceIsConfigured} onClick={() => Toast.fromAction(() => deploy(app.id))}><Rocket /> Deploy</Button>
+                        {app.appType === 'APP' && (app.sourceType === 'GIT' || app.sourceType === 'GIT_SSH') && <Button disabled={!appSourceIsConfigured} onClick={() => Toast.fromAction(() => deploy(app.id, true))} variant="secondary"><Hammer /> Rebuild</Button>}
+                        <Button disabled={!['ERROR', 'UNKNOWN', 'SHUTDOWN', 'SHUTTING_DOWN'].includes(deploymentStatus) || !appSourceIsConfigured} onClick={() => Toast.fromAction(() => startApp(app.id))} variant="secondary"><Play />Start</Button>
+                        <Button disabled={!['BUILDING', 'DEPLOYED', 'ERROR', 'UNKNOWN', 'DEPLOYING'].includes(deploymentStatus) || !appSourceIsConfigured} onClick={() => Toast.fromAction(() => stopApp(app.id))} variant="secondary"><Square /> Stop</Button>
                     </>}
                     {app.appDomains.length > 0 && <Button onClick={() => {
                         const domain = app.appDomains[0];

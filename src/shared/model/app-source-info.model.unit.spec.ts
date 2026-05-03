@@ -1,4 +1,4 @@
-import { appSourceInfoGitSshZodModel, appSourceInfoGitZodModel, appSourceInfoInputZodModel } from "./app-source-info.model";
+import { appDockerfileDetectionZodModel, appSourceInfoGitSshZodModel, appSourceInfoGitZodModel, appSourceInfoInputZodModel } from "./app-source-info.model";
 
 describe('appSourceInfoGitZodModel', () => {
     const baseInput = {
@@ -75,6 +75,18 @@ describe('appSourceInfoGitSshZodModel', () => {
             gitUrl: 'git@github.com:example/repo.git',
             gitBranch: '',
             buildMethod: 'RAILPACK',
+        });
+
+        expect(result.success).toBe(false);
+    });
+});
+
+describe('appDockerfileDetectionZodModel', () => {
+    it('requires a selected Git branch before Dockerfile detection', () => {
+        const result = appDockerfileDetectionZodModel.safeParse({
+            sourceType: 'GIT',
+            gitUrl: 'https://github.com/example/repo.git',
+            gitBranch: '',
         });
 
         expect(result.success).toBe(false);

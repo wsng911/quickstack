@@ -6,8 +6,10 @@ import { PathUtils } from "../utils/path.utils";
 import { FsUtils } from "../utils/fs.utils";
 import path from "path";
 import appGitSshKeyService from "./app-git-ssh-key.service";
+import fs from "fs";
 
 type GitConnectionInfo = AppGitBranchesLookupModel & Pick<AppExtendedModel, 'id'>;
+type GitDockerfileDetectionInfo = GitConnectionInfo & Pick<AppExtendedModel, 'gitBranch'>;
 
 class GitService {
 
@@ -50,6 +52,10 @@ class GitService {
                 await appGitSshKeyService.cleanupTempKeyFile(input.id);
             }
         }
+    }
+
+    async detectDockerfilePath(input: GitDockerfileDetectionInfo): Promise<string> {
+        return await this.openGitContext(input as AppExtendedModel, async (ctx) => ctx.detectDockerfilePath());
     }
 
     private async cleanupLocalGitDataForApp(app: AppExtendedModel) {
@@ -168,6 +174,43 @@ class InternalGitService {
         if (!await FsUtils.fileExists(absolutePath)) {
             throw new ServiceException(`Dockerfile does not exists at ${dockerFilePath}`);
         }
+    }
+
+    async detectDockerfilePath() {
+        const gitPath = PathUtils.gitRootPathForApp(this.app.id);
+        if (await FsUtils.fileExists(path.join(gitPath, 'Dockerfile'))) {
+            return './Dockerfile';
+        }
+        const dockerfiles = await this.findDockerfiles(gitPath);
+        const [preferredDockerfile] = dockerfiles.sort((a, b) => {
+            if (a.length !== b.length) {
+                return a.length - b.length;
+            }
+            return a.localeCompare(b);
+        });
+        return preferredDockerfile ? `./${preferredDockerfile}` : './Dockerfile';
+    }
+
+    private async findDockerfiles(rootPath: string, relativePath = ''): Promise<string[]> {
+        const ignoredDirectories = new Set(['.git', 'node_modules', '.next', 'dist', 'build', 'coverage']);
+        const currentPath = path.join(rootPath, relativePath);
+        const entries = await fs.promises.readdir(currentPath, { withFileTypes: true });
+        const dockerfiles: string[] = [];
+
+        for (const entry of entries) {
+            const entryRelativePath = path.join(relativePath, entry.name);
+            if (entry.isDirectory()) {
+                if (!ignoredDirectories.has(entry.name)) {
+                    dockerfiles.push(...await this.findDockerfiles(rootPath, entryRelativePath));
+                }
+                continue;
+            }
+            if (entry.isFile() && entry.name === 'Dockerfile') {
+                dockerfiles.push(entryRelativePath);
+            }
+        }
+
+        return dockerfiles;
     }
 
     async checkIfLocalRepoIsUpToDate() {

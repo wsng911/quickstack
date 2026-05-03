@@ -73,4 +73,12 @@ describe('AppGitSshKeyService', () => {
         expect(secondPublicKey).toMatch(/^ssh-ed25519 /);
         expect(secondPublicKey).not.toBe(firstPublicKey);
     });
+
+    it('reuses an existing public key when ensuring key material', async () => {
+        dbMock.findUnique.mockResolvedValue({ publicKey: 'ssh-ed25519 existing-key' });
+
+        await expect(appGitSshKeyService.ensurePublicKey('app-1')).resolves.toBe('ssh-ed25519 existing-key');
+
+        expect(dbMock.upsert).not.toHaveBeenCalled();
+    });
 });
