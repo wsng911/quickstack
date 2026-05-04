@@ -16,7 +16,7 @@ import { AuthFormInputSchema, authFormInputSchemaZod, TwoFaInputSchema, twoFaInp
 import { signIn } from "next-auth/react";
 import LoadingSpinner from "@/components/ui/loading-spinner"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function TwoFaAuthForm({
     authData
@@ -58,20 +58,20 @@ export default function TwoFaAuthForm({
     }
 
     return (
-        <Card className="w-[350px] mx-auto">
+        <Card class名称="w-[350px] mx-auto">
             <CardHeader>
                 <CardTitle>2FA Code</CardTitle>
-                <CardDescription>Enter your 2FA code to complete the login process.</CardDescription>
+                <Card描述>Enter your 2FA code to complete the login process.</Card描述>
             </CardHeader>
             <Form {...form}>
-                <form onSubmit={async (e) => {
+                <form on提交={async (e) => {
                     e.preventDefault();
-                    return form.handleSubmit(async (data) => {
+                    return form.handle提交(async (data) => {
                         await authWith2Fa(data);
                     })();
-                }} className="space-y-8">
+                }} class名称="space-y-8">
 
-                    <CardContent className="space-y-4">
+                    <CardContent class名称="space-y-4">
                         <FormField
                             control={form.control}
                             name="twoFactorCode"
@@ -88,8 +88,8 @@ export default function TwoFaAuthForm({
 
                     </CardContent>
                     <CardFooter>
-                        <p className="text-red-500">{errorMessages}</p>
-                        <Button type="submit" className="w-full" disabled={loading}>{loading ? <LoadingSpinner></LoadingSpinner> : 'Login'}</Button>
+                        <p class名称="text-red-500">{errorMessages}</p>
+                        <Button type="submit" class名称="w-full" disabled={loading}>{loading ? <LoadingSpinner></LoadingSpinner> : 'Login'}</Button>
                     </CardFooter>
                 </form>
             </Form>

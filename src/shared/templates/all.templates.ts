@@ -4,8 +4,8 @@ import { mariadbAppTemplate } from "./databases/mariadb.template";
 import { mongodbAppTemplate } from "./databases/mongodb.template";
 import { mysqlAppTemplate } from "./databases/mysql.template";
 import { postgreAppTemplate } from "./databases/postgres.template";
-import { postCreateRedisAppTemplate, redisAppTemplate } from "./databases/redis.template";
-import { n8nAppTemplate, postCreateN8NAppTemplate } from "./apps/n8n.template";
+import { post创建RedisAppTemplate, redisAppTemplate } from "./databases/redis.template";
+import { n8nAppTemplate, post创建N8NAppTemplate } from "./apps/n8n.template";
 import { noderedAppTemplate } from "./apps/nodered.template";
 import { huginnAppTemplate } from "./apps/huginn.template";
 import { nextcloudAppTemplate } from "./apps/nextcloud.template";
@@ -30,7 +30,7 @@ import { photoprismAppTemplate } from "./apps/photoprism.template";
 import { navidiomeAppTemplate } from "./apps/navidrome.template";
 import { wikijsAppTemplate } from "./apps/wikijs.template";
 import { outlineAppTemplate } from "./apps/outline.template";
-import { docmostAppTemplate, postCreateDocmostAppTemplate } from "./apps/docmost.template";
+import { docmostAppTemplate, post创建DocmostAppTemplate } from "./apps/docmost.template";
 import { hedgedocAppTemplate } from "./apps/hedgedoc.template";
 import { vaultwardenAppTemplate } from "./apps/vaultwarden.template";
 import { ghostAppTemplate } from "./apps/ghost.template";
@@ -39,12 +39,12 @@ import { adminerAppTemplate } from "./apps/adminer.template";
 import { drawioAppTemplate } from "./apps/drawio.template";
 import { dozzleAppTemplate } from "./apps/dozzle.template";
 import { homeassistantAppTemplate } from "./apps/homeassistant.template";
-import { duplicatiAppTemplate, postCreateDuplicatiAppTemplate } from "./apps/duplicati.template";
-import { openwebuiAppTemplate, postCreateOpenwebuiAppTemplate } from "./apps/openwebui.template";
+import { duplicatiAppTemplate, post创建DuplicatiAppTemplate } from "./apps/duplicati.template";
+import { openwebuiAppTemplate, post创建OpenwebuiAppTemplate } from "./apps/openwebui.template";
 import { AppExtendedModel } from "../model/app-extended.model";
 import { tikaAppTemplate } from "./apps/tika.template";
-import { libredeskAppTemplate, postCreateLibredeskAppTemplate } from "./apps/libredesk.template";
-import { chiselAppTemplate, postCreateChiselAppTemplate } from "./apps/chisel.template";
+import { libredeskAppTemplate, post创建LibredeskAppTemplate } from "./apps/libredesk.template";
+import { chiselAppTemplate, post创建ChiselAppTemplate } from "./apps/chisel.template";
 
 
 export const databaseTemplates: AppTemplateModel[] = [
@@ -100,14 +100,14 @@ export const appTemplates: AppTemplateModel[] = [
     chiselAppTemplate
 ];
 
-export const postCreateTemplateFunctions: Map<string, (createdApps: AppExtendedModel[]) => Promise<AppExtendedModel[]>> = new Map([
-    [openwebuiAppTemplate.name, postCreateOpenwebuiAppTemplate],
-    [libredeskAppTemplate.name, postCreateLibredeskAppTemplate],
-    [redisAppTemplate.name, postCreateRedisAppTemplate],
-    [docmostAppTemplate.name, postCreateDocmostAppTemplate],
-    [duplicatiAppTemplate.name, postCreateDuplicatiAppTemplate],
-    [n8nAppTemplate.name, postCreateN8NAppTemplate],
-    [chiselAppTemplate.name, postCreateChiselAppTemplate],
+export const post创建TemplateFunctions: Map<string, (createdApps: AppExtendedModel[]) => Promise<AppExtendedModel[]>> = new Map([
+    [openwebuiAppTemplate.name, post创建OpenwebuiAppTemplate],
+    [libredeskAppTemplate.name, post创建LibredeskAppTemplate],
+    [redisAppTemplate.name, post创建RedisAppTemplate],
+    [docmostAppTemplate.name, post创建DocmostAppTemplate],
+    [duplicatiAppTemplate.name, post创建DuplicatiAppTemplate],
+    [n8nAppTemplate.name, post创建N8NAppTemplate],
+    [chiselAppTemplate.name, post创建ChiselAppTemplate],
 ]);
 
 

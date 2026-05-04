@@ -1,7 +1,7 @@
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model";
 import { toast } from "sonner";
 
-export class Actions {
+export class 操作 {
     static async run<TReturnData>(action: () => Promise<ServerActionResult<unknown, TReturnData>>) {
         try {
             const retVal = await action();

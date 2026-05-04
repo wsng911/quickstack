@@ -1,10 +1,10 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
-  FormDescription,
+  Form描述,
   FormField,
   FormItem,
   FormLabel,
@@ -30,9 +30,9 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { AppVolume } from "@prisma/client"
-import { AppVolumeEditModel, appVolumeEditZodModel } from "@/shared/model/volume-edit.model"
+import { AppVolume编辑Model, appVolume编辑ZodModel } from "@/shared/model/volume-edit.model"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { saveVolume } from "./actions"
 import { toast } from "sonner"
@@ -52,7 +52,7 @@ const storageClasses = [
   { label: "Local Path", value: "local-path", description: "Node-local volumes, no replication. Data is stored on the master node. Only works in a single node setup." }
 ] as const
 
-export default function StorageEditDialog({ children, volume, app, nodesInfo }: {
+export default function Storage编辑Dialog({ children, volume, app, nodesInfo }: {
   children: React.ReactNode;
   volume?: AppVolume;
   app: AppExtendedModel;
@@ -61,13 +61,13 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const form = useForm<AppVolumeEditModel>({
-    resolver: zodResolver(appVolumeEditZodModel),
+  const form = useForm<AppVolume编辑Model>({
+    resolver: zodResolver(appVolume编辑ZodModel),
     defaultValues: {
       containerMountPath: volume?.containerMountPath ?? '',
       size: volume?.size ?? 0,
       accessMode: volume?.accessMode ?? (app.replicas > 1 ? "ReadWriteMany" : "ReadWriteOnce"),
-      storageClassName: (volume?.storageClassName ?? "longhorn") as 'longhorn' | 'local-path',
+      storageClass名称: (volume?.storageClass名称 ?? "longhorn") as 'longhorn' | 'local-path',
       shareWithOtherApps: volume?.shareWithOtherApps ?? false,
       sharedVolumeId: volume?.sharedVolumeId ?? undefined,
     }
@@ -75,17 +75,17 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
 
   // Watch accessMode to conditionally show shareWithOtherApps checkbox
   const watchedAccessMode = form.watch("accessMode");
-  const watchedStorageClassName = form.watch("storageClassName");
+  const watchedStorageClass名称 = form.watch("storageClass名称");
   const canBeShared = (!!volume ? volume.accessMode : watchedAccessMode === "ReadWriteMany") &&
-    watchedStorageClassName !== "local-path" &&
+    watchedStorageClass名称 !== "local-path" &&
     !volume?.sharedVolumeId;
 
-  const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppVolumeEditModel) =>
+  const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppVolume编辑Model) =>
     saveVolume(state, {
       ...payload,
       appId: app.id,
       id: volume?.id
-    }), FormUtils.getInitialFormState<typeof appVolumeEditZodModel>());
+    }), FormUtils.getInitialFormState<typeof appVolume编辑ZodModel>());
 
   useEffect(() => {
     if (state.status === 'success') {
@@ -95,14 +95,14 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
       });
       setIsOpen(false);
     }
-    FormUtils.mapValidationErrorsToForm<typeof appVolumeEditZodModel>(state, form);
+    FormUtils.mapValidationErrorsToForm<typeof appVolume编辑ZodModel>(state, form);
   }, [state]);
 
   useEffect(() => {
     form.reset({
       ...volume,
       accessMode: volume?.accessMode ?? (app.replicas > 1 ? "ReadWriteMany" : "ReadWriteOnce"),
-      storageClassName: (volume?.storageClassName ?? "longhorn") as 'longhorn' | 'local-path',
+      storageClass名称: (volume?.storageClass名称 ?? "longhorn") as 'longhorn' | 'local-path',
       shareWithOtherApps: volume?.shareWithOtherApps ?? false,
       sharedVolumeId: volume?.sharedVolumeId ?? undefined,
     });
@@ -116,18 +116,18 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
         {children}
       </div>
       <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent class名称="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit Volume</DialogTitle>
-            <DialogDescription>
+            <DialogTitle>编辑 Volume</DialogTitle>
+            <Dialog描述>
               Configure your custom volume for this container.
-            </DialogDescription>
+            </Dialog描述>
           </DialogHeader>
           <Form {...form}>
-            <form action={(e) => form.handleSubmit((data) => {
+            <form action={(e) => form.handle提交((data) => {
               return formAction(data);
             })()}>
-              <div className="space-y-4">
+              <div class名称="space-y-4">
                 <FormField
                   control={form.control}
                   name="containerMountPath"
@@ -157,7 +157,7 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                 />
 
                 {volume && volume.size !== values.size && volume.shareWithOtherApps && <>
-                  <p className="text-sm text-yellow-600">
+                  <p class名称="text-sm text-yellow-600">
                     When changing the size of a shared volume, ensure that all apps using this volume are shut down before deploying the changes.
                   </p>
                 </>}
@@ -167,15 +167,15 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                   name="accessMode"
                   disabled={!!volume}
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="flex gap-2">
+                    <FormItem class名称="flex flex-col">
+                      <FormLabel class名称="flex gap-2">
                         <div>Access Mode</div>
-                        <div className="self-center">
+                        <div class名称="self-center">
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild><QuestionMarkCircledIcon /></TooltipTrigger>
                               <TooltipContent>
-                                <p className="max-w-[350px]">
+                                <p class名称="max-w-[350px]">
                                   In most cases you will want to use ReadWriteOnce.
                                   This means that the volume can be mounted only by a single container instance.<br /><br />
                                   If you want to run multiple instances/replicas of the same container, you will need to use ReadWriteMany.
@@ -194,7 +194,7 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                               variant="outline"
                               role="combobox"
                               disabled={!!volume}
-                              className={cn(
+                              class名称={cn(
                                 "w-[200px] justify-between",
                                 !field.value && "text-muted-foreground"
                               )}
@@ -204,11 +204,11 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                                   (accessMode) => accessMode.value === field.value
                                 )?.label
                                 : "Select accessMode"}
-                              <ChevronsUpDown className="opacity-50" />
+                              <ChevronsUpDown class名称="opacity-50" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent class名称="w-[200px] p-0">
                           <Command>
                             <CommandList>
                               <CommandGroup>
@@ -222,7 +222,7 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                                   >
                                     {accessMode.label}
                                     <Check
-                                      className={cn(
+                                      class名称={cn(
                                         "ml-auto",
                                         accessMode.value === field.value
                                           ? "opacity-100"
@@ -236,9 +236,9 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                           </Command>
                         </PopoverContent>
                       </Popover>
-                      <FormDescription>
+                      <Form描述>
                         This cannot be changed after creation.
-                      </FormDescription>
+                      </Form描述>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -246,17 +246,17 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                 {nodesInfo.length === 1 &&
                   <FormField
                     control={form.control}
-                    name="storageClassName"
+                    name="storageClass名称"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <FormLabel className="flex gap-2">
+                      <FormItem class名称="flex flex-col">
+                        <FormLabel class名称="flex gap-2">
                           <div>Storage Class</div>
-                          <div className="self-center">
+                          <div class名称="self-center">
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild><QuestionMarkCircledIcon /></TooltipTrigger>
                                 <TooltipContent>
-                                  <p className="max-w-[350px]">
+                                  <p class名称="max-w-[350px]">
                                     Choose where the volume is provisioned.<br /><br />
                                     <b>Longhorn</b> keeps data replicated across nodes.<br />
                                     <b>Local Path</b> stores data on a the master node and works only in single-node clusters.
@@ -272,7 +272,7 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                               <Button
                                 variant="outline"
                                 role="combobox"
-                                className={cn(
+                                class名称={cn(
                                   "w-full justify-between",
                                   !field.value && "text-muted-foreground"
                                 )}
@@ -283,11 +283,11 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                                     (storageClass) => storageClass.value === field.value
                                   )?.label
                                   : "Select storage class"}
-                                <ChevronsUpDown className="opacity-50" />
+                                <ChevronsUpDown class名称="opacity-50" />
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
-                          <PopoverContent className="max-w-[280px] p-0">
+                          <PopoverContent class名称="max-w-[280px] p-0">
                             <Command>
                               <CommandList>
                                 <CommandGroup>
@@ -296,15 +296,15 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                                       value={storageClass.label}
                                       key={storageClass.value}
                                       onSelect={() => {
-                                        form.setValue("storageClassName", storageClass.value);
+                                        form.setValue("storageClass名称", storageClass.value);
                                       }}
                                     >
-                                      <div className="flex flex-col gap-1">
+                                      <div class名称="flex flex-col gap-1">
                                         <span>{storageClass.label}</span>
-                                        <span className="text-xs text-muted-foreground">{storageClass.description}</span>
+                                        <span class名称="text-xs text-muted-foreground">{storageClass.description}</span>
                                       </div>
                                       <Check
-                                        className={cn(
+                                        class名称={cn(
                                           "ml-auto",
                                           storageClass.value === field.value
                                             ? "opacity-100"
@@ -318,9 +318,9 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                             </Command>
                           </PopoverContent>
                         </Popover>
-                        <FormDescription>
+                        <Form描述>
                           This cannot be changed after creation.
-                        </FormDescription>
+                        </Form描述>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -332,8 +332,8 @@ export default function StorageEditDialog({ children, volume, app, nodesInfo }: 
                     label="Allow other apps to attach this volume"
                   />
                 )}
-                <p className="text-red-500">{state.message}</p>
-                <SubmitButton>Save</SubmitButton>
+                <p class名称="text-red-500">{state.message}</p>
+                <提交Button>保存</提交Button>
               </div>
             </form>
           </Form >

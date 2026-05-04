@@ -1,10 +1,10 @@
 import { AppTemplateUtils } from '@/server/utils/app-template.utils';
 import appTemplateService from '../../../server/services/app-template.service';
-import { AppTemplateContentModel, AppTemplateInputSettingsModel } from '@/shared/model/app-template.model';
+import { AppTemplateContentModel, AppTemplateInput设置Model } from '@/shared/model/app-template.model';
 import crypto from 'crypto';
 import { AppExtendedModel } from '@/shared/model/app-extended.model';
 import { DatabaseTemplateInfoModel } from '@/shared/model/database-template-info.model';
-import { KubeObjectNameUtils } from '@/server/utils/kube-object-name.utils';
+import { KubeObject名称Utils } from '@/server/utils/kube-object-name.utils';
 import { ServiceException } from '@/shared/model/service.exception.model';
 
 vi.mock('crypto', () => ({
@@ -18,7 +18,7 @@ vi.mock('crypto', () => ({
 describe('AppTemplateService', () => {
     describe('populateRandomValues', () => {
         it('should populate random values for inputs with randomGeneratedIfEmpty set to true and value is empty', () => {
-            const inputValues: AppTemplateInputSettingsModel[] = [
+            const inputValues: AppTemplateInput设置Model[] = [
                 { key: 'key1', value: '', randomGeneratedIfEmpty: true, isEnvVar: false, label: '' },
                 { key: 'key2', value: 'existingValue', randomGeneratedIfEmpty: true, isEnvVar: false, label: '' },
                 { key: 'key3', value: '', randomGeneratedIfEmpty: false, isEnvVar: false, label: '' }
@@ -32,7 +32,7 @@ describe('AppTemplateService', () => {
         });
 
         it('should not change values for inputs with randomGeneratedIfEmpty set to false', () => {
-            const inputValues: AppTemplateInputSettingsModel[] = [
+            const inputValues: AppTemplateInput设置Model[] = [
                 { key: 'key1', value: '', randomGeneratedIfEmpty: false, isEnvVar: false, label: '' }
             ];
 
@@ -42,7 +42,7 @@ describe('AppTemplateService', () => {
         });
 
         it('should not change values for inputs with randomGeneratedIfEmpty set to true but value is not empty', () => {
-            const inputValues: AppTemplateInputSettingsModel[] = [
+            const inputValues: AppTemplateInput设置Model[] = [
                 { key: 'key1', value: 'existingValue', randomGeneratedIfEmpty: true, isEnvVar: false, label: '' }
             ];
 
@@ -66,7 +66,7 @@ describe('AppTemplateService', () => {
                 const appTemplate: any = {
                     appModel: { envVars: '' }
                 };
-                const inputValues: AppTemplateInputSettingsModel[] = [
+                const inputValues: AppTemplateInput设置Model[] = [
                     { key: 'ENV_VAR1', value: 'value1', randomGeneratedIfEmpty: false, isEnvVar: true, label: '' },
                     { key: 'configKey', value: 'configValue', randomGeneratedIfEmpty: false, isEnvVar: false, label: '' }
                 ];
@@ -81,13 +81,13 @@ describe('AppTemplateService', () => {
         describe('replacePlaceholdersInEnvVariablesWithDatabaseInfo', () => {
             it('should replace placeholders in env variables with database info', () => {
                 const app: AppExtendedModel = {
-                    envVars: 'DB_NAME={databaseName} {username} {password} {port} {hostname}',
+                    envVars: 'DB_NAME={database名称} {username} {password} {port} {hostname}',
                     appType: 'MYSQL',
                     appPorts: [{ port: 3306 }],
                     id: 'app-id'
                 } as AppExtendedModel;
                 const databaseInfo: DatabaseTemplateInfoModel = {
-                    databaseName: 'testDB',
+                    database名称: 'testDB',
                     username: 'testUser',
                     password: 'testPass',
                     port: 3306,
@@ -112,11 +112,11 @@ describe('AppTemplateService', () => {
 
                 const databaseModel = AppTemplateUtils.getDatabaseModelFromApp(app);
 
-                expect(databaseModel.databaseName).toBe('testDB');
+                expect(databaseModel.database名称).toBe('testDB');
                 expect(databaseModel.username).toBe('testUser');
                 expect(databaseModel.password).toBe('testPass');
                 expect(databaseModel.port).toBe(27017);
-                expect(databaseModel.hostname).toBe(KubeObjectNameUtils.toServiceName('app-id'));
+                expect(databaseModel.hostname).toBe(KubeObject名称Utils.toService名称('app-id'));
             });
 
             it('should throw ServiceException for unknown app type', () => {

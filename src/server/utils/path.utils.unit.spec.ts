@@ -83,10 +83,10 @@ describe('PathUtils', () => {
         });
     });
 
-    describe('convertIdToFolderFriendlyName', () => {
+    describe('convertIdToFolderFriendly名称', () => {
         it('should convert id to folder friendly name', () => {
             const id = 'test@123!';
-            expect(PathUtils['convertIdToFolderFriendlyName'](id)).toBe('test_123_');
+            expect(PathUtils['convertIdToFolderFriendly名称'](id)).toBe('test_123_');
         });
 
 

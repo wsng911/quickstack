@@ -4,12 +4,12 @@ import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import crypto from "crypto";
 
 export function getChiselAppTemplate(config?: {
-    appName?: string,
+    app名称?: string,
     username?: string,
     password?: string
 }): AppTemplateContentModel {
     return {
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -19,21 +19,21 @@ export function getChiselAppTemplate(config?: {
             },
             {
                 key: "CHISEL_USER",
-                label: "Username",
+                label: "用户名",
                 value: config?.username || "chisel",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "CHISEL_PASSWORD",
-                label: "Password",
+                label: "密码",
                 value: config?.password || "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
             },
         ],
         appModel: {
-            name: config?.appName || "Chisel Tunnel",
+            name: config?.app名称 || "Chisel Tunnel",
             appType: 'APP',
             sourceType: 'CONTAINER',
             containerImageSource: "",
@@ -58,13 +58,13 @@ export function getChiselAppTemplate(config?: {
 
 export const chiselAppTemplate: AppTemplateModel = {
     name: "Chisel Tunnel",
-    iconName: 'chisel.svg',
+    icon名称: 'chisel.svg',
     templates: [
         getChiselAppTemplate()
     ],
 };
 
-export const postCreateChiselAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
+export const post创建ChiselAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
     const app = createdApps[0];
 
     const { privateKey } = crypto.generateKeyPairSync('ec', {

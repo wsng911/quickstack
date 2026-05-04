@@ -2,12 +2,12 @@ import { GitCommit } from "lucide-react";
 import { z } from "zod";
 import { appBuildMethodZodModel } from "./app-source-info.model";
 
-export const buildJobStatusEnumZod = z.union([z.literal('UNKNOWN'), z.literal('RUNNING'), z.literal('FAILED'), z.literal('SUCCEEDED'), z.literal('PENDING')]);
+export const buildJob状态EnumZod = z.union([z.literal('UNKNOWN'), z.literal('RUNNING'), z.literal('FAILED'), z.literal('SUCCEEDED'), z.literal('PENDING')]);
 
 export const buildJobSchemaZod = z.object({
     name: z.string(),
     startTime: z.date(),
-    status:  buildJobStatusEnumZod,
+    status:  buildJob状态EnumZod,
     gitCommit: z.string(),
     gitCommitMessage: z.string().optional(),
     deploymentId: z.string(),
@@ -15,5 +15,5 @@ export const buildJobSchemaZod = z.object({
 });
 
 export type BuildJobModel = z.infer<typeof buildJobSchemaZod>;
-export type BuildJobStatus = z.infer<typeof buildJobStatusEnumZod>;
+export type BuildJob状态 = z.infer<typeof buildJob状态EnumZod>;
 

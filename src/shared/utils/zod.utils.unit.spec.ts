@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ZodUtils, stringToNumber, stringToOptionalNumber, stringToOptionalDate, stringToDate, stringToOptionalBoolean, stringToBoolean } from "@/shared/utils/zod.utils";
 
 describe("ZodUtils", () => {
-    describe("getFieldNamesAndTypes", () => {
+    describe("getField名称sAndTypes", () => {
         it("should return field names and types from schema", () => {
             const schema = z.object({
                 name: z.string(),
@@ -10,7 +10,7 @@ describe("ZodUtils", () => {
                 isActive: z.boolean(),
             });
 
-            const result = ZodUtils.getFieldNamesAndTypes(schema);
+            const result = ZodUtils.getField名称sAndTypes(schema);
 
             expect(result.get("name")).toBe("ZodString");
             expect(result.get("age")).toBe("ZodNumber");

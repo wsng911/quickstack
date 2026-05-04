@@ -3,7 +3,7 @@
 import {
     Form,
     FormControl,
-    FormDescription,
+    Form描述,
     FormField,
     FormItem,
     FormLabel,
@@ -15,11 +15,11 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { AuthFormInputSchema, authFormInputSchemaZod, RegisterFormInputSchema, registgerFormInputSchemaZod } from "@/shared/model/auth-form"
 import { registerUser } from "./actions"
 import { signIn } from "next-auth/react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { redirect } from "next/navigation"
 import FormLabelWithQuestion from "@/components/custom/form-label-with-question"
 import { toast } from "sonner"
@@ -39,15 +39,15 @@ export default function UserRegistrationForm() {
     }, [state]);
 
     return (
-        <Card className="w-[350px] mx-auto">
+        <Card class名称="w-[350px] mx-auto">
             <CardHeader>
                 <CardTitle>Registration</CardTitle>
-                <CardDescription>Enter your credentials to register for QuickStack.</CardDescription>
+                <Card描述>Enter your credentials to register for QuickStack.</Card描述>
             </CardHeader>
             <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => formAction(data))()}
-                    className="space-y-8">
-                    <CardContent className="space-y-4">
+                <form action={(e) => form.handle提交((data) => formAction(data))()}
+                    class名称="space-y-8">
+                    <CardContent class名称="space-y-4">
                         <FormField
                             control={form.control}
                             name="email"
@@ -67,7 +67,7 @@ export default function UserRegistrationForm() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>密码</FormLabel>
                                     <FormControl>
                                         <Input type="password"  {...field} value={field.value as string | number | readonly string[] | undefined} />
                                     </FormControl>
@@ -91,10 +91,10 @@ export default function UserRegistrationForm() {
                                 </FormItem>
                             )}
                         />
-                        <p className="text-red-500">{state?.message}</p>
+                        <p class名称="text-red-500">{state?.message}</p>
                     </CardContent>
                     <CardFooter>
-                        <SubmitButton className="w-full">Register</SubmitButton>
+                        <提交Button class名称="w-full">Register</提交Button>
                     </CardFooter>
                 </form>
             </Form>

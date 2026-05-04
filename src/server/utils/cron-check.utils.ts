@@ -59,9 +59,9 @@ export class CronCheckUtils {
      * Returns false when backups are up to date.
      * Returns undefined when the schedule cannot be evaluated.
      */
-    static isBackupMissed(
+    static is返回upMissed(
         cron: string,
-        latestBackupDate: Date | undefined,
+        latest返回upDate: Date | undefined,
         toleranceMs: number = Constants.TOLERATION_FOR_EXECUTED_CRON_BACKUPS_MS,
         now: Date = new Date(),
     ): boolean | undefined {
@@ -70,11 +70,11 @@ export class CronCheckUtils {
             return undefined;
         }
 
-        if (!latestBackupDate) {
+        if (!latest返回upDate) {
             // No backup ever created
             return true;
         }
 
-        return latestBackupDate.getTime() < lastScheduledTime.getTime() - toleranceMs;
+        return latest返回upDate.getTime() < lastScheduledTime.getTime() - toleranceMs;
     }
 }

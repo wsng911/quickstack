@@ -6,17 +6,17 @@ describe('StreamUtils', () => {
         terminalSessionKey: 'testSessionKey'
     } as TerminalSetupInfoModel;
 
-    describe('getInputStreamName', () => {
+    describe('getInputStream名称', () => {
         it('should return the correct input stream name', () => {
-            const inputStreamName = StreamUtils.getInputStreamName(terminalInfo);
-            expect(inputStreamName).toBe('testSessionKey_input');
+            const inputStream名称 = StreamUtils.getInputStream名称(terminalInfo);
+            expect(inputStream名称).toBe('testSessionKey_input');
         });
     });
 
-    describe('getOutputStreamName', () => {
+    describe('getOutputStream名称', () => {
         it('should return the correct output stream name', () => {
-            const outputStreamName = StreamUtils.getOutputStreamName(terminalInfo);
-            expect(outputStreamName).toBe('testSessionKey_output');
+            const outputStream名称 = StreamUtils.getOutputStream名称(terminalInfo);
+            expect(outputStream名称).toBe('testSessionKey_output');
         });
     });
 });

@@ -37,7 +37,7 @@ class RailpackBuildJobBuilder implements BuildJobBuilder {
             apiVersion: "batch/v1",
             kind: "Job",
             metadata: {
-                name: ctx.buildName,
+                name: ctx.build名称,
                 namespace: BUILD_NAMESPACE,
                 annotations: {
                     [Constants.QS_ANNOTATION_APP_ID]: ctx.app.id,
@@ -47,7 +47,7 @@ class RailpackBuildJobBuilder implements BuildJobBuilder {
                     [Constants.QS_ANNOTATION_DEPLOYMENT_ID]: ctx.deploymentId,
                     [Constants.QS_ANNOTATION_BUILD_QUEUED_AT]: ctx.queuedAt,
                     [Constants.QS_ANNOTATION_BUILD_METHOD]: this.buildMethod,
-                    ...(ctx.gitSshPrivateKeySecretName ? { [Constants.QS_ANNOTATION_GIT_SSH_SECRET]: ctx.gitSshPrivateKeySecretName } : {}),
+                    ...(ctx.gitSshPrivateKeySecret名称 ? { [Constants.QS_ANNOTATION_GIT_SSH_SECRET]: ctx.gitSshPrivateKeySecret名称 } : {}),
                 }
             },
             spec: {
@@ -61,21 +61,21 @@ class RailpackBuildJobBuilder implements BuildJobBuilder {
                             [Constants.QS_ANNOTATION_GIT_COMMIT_MESSAGE]: ctx.latestRemoteGitCommitMessage.substring(0, 200),
                             [Constants.QS_ANNOTATION_DEPLOYMENT_ID]: ctx.deploymentId,
                             [Constants.QS_ANNOTATION_BUILD_METHOD]: this.buildMethod,
-                            ...(ctx.gitSshPrivateKeySecretName ? { [Constants.QS_ANNOTATION_GIT_SSH_SECRET]: ctx.gitSshPrivateKeySecretName } : {}),
+                            ...(ctx.gitSshPrivateKeySecret名称 ? { [Constants.QS_ANNOTATION_GIT_SSH_SECRET]: ctx.gitSshPrivateKeySecret名称 } : {}),
                         },
                     },
                     spec: {
                         hostUsers: false,
-                        serviceAccountName: 'qs-build-watcher',
-                        initContainers: [
-                            buildQueueInitContainer.getInitContainer(ctx.buildName, ctx.queuedAt),
+                        serviceAccount名称: 'qs-build-watcher',
+                        init容器: [
+                            buildQueueInitContainer.getInitContainer(ctx.build名称, ctx.queuedAt),
                             buildGitInitContainerService.getInitContainer(ctx),
                             this.getPreparedRailpackInitContainer(),
                         ],
                         ...(ctx.nodeSelector ? { nodeSelector: ctx.nodeSelector } : {}),
                         containers: [
                             {
-                                name: ctx.buildName,
+                                name: ctx.build名称,
                                 image: buildkitImage,
                                 command: ["buildctl-daemonless.sh"],
                                 args: buildkitArgs,
@@ -92,10 +92,10 @@ class RailpackBuildJobBuilder implements BuildJobBuilder {
                                 name: BUILD_WORKSPACE_VOLUME_NAME,
                                 emptyDir: {},
                             },
-                            ...(ctx.gitSshPrivateKeySecretName ? [{
+                            ...(ctx.gitSshPrivateKeySecret名称 ? [{
                                 name: BUILD_GIT_SSH_KEY_VOLUME_NAME,
                                 secret: {
-                                    secretName: ctx.gitSshPrivateKeySecretName,
+                                    secret名称: ctx.gitSshPrivateKeySecret名称,
                                     defaultMode: 0o400,
                                 },
                             }] : []),

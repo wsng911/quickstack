@@ -6,18 +6,18 @@ import dataAccess from "../../../server/adapter/db.client";
 
 class SetupPodService {
 
-    async waitUntilPodIsRunningFailedOrSucceded(projectId: string, podName: string) {
+    async waitUntilPodIsRunningFailedOrSucceded(projectId: string, pod名称: string) {
         const timeout = 120000;
         const interval = 1000;
         const maxTries = timeout / interval;
         let tries = 0;
 
         while (tries < maxTries) {
-            const pod = await this.getPodOrUndefined(projectId, podName);
+            const pod = await this.getPodOrUndefined(projectId, pod名称);
             if (pod && ['Running', 'Failed', 'Succeeded'].includes(pod.status?.phase!)) {
                 // check if running and ready (when passing readiness probe)
                 if (pod.status?.phase === 'Running') {
-                    if (pod.status?.containerStatuses?.[0].ready) {
+                    if (pod.status?.container状态es?.[0].ready) {
                         return true;
                     }
                 } else {
@@ -32,14 +32,14 @@ class SetupPodService {
         return false;
     }
 
-    async waitUntilPodIsTerminated(projectId: string, podName: string) {
+    async waitUntilPodIsTerminated(projectId: string, pod名称: string) {
         const timeout = 120000;
         const interval = 1000;
         const maxTries = timeout / interval;
         let tries = 0;
 
         while (tries < maxTries) {
-            const pod = await this.getPodOrUndefined(projectId, podName);
+            const pod = await this.getPodOrUndefined(projectId, pod名称);
             if (!pod) {
                 return true;
             }
@@ -51,30 +51,30 @@ class SetupPodService {
         return false;
     }
 
-    async getPodOrUndefined(projectId: string, podName: string) {
-        const res = await k3s.core.listNamespacedPod(projectId);
-        return res.body.items.find((item) => item.metadata?.name === podName);
+    async getPodOrUndefined(projectId: string, pod名称: string) {
+        const res = await k3s.core.list名称spacedPod(projectId);
+        return res.body.items.find((item) => item.metadata?.name === pod名称);
     }
 
     async getPodsForApp(projectId: string, appId: string): Promise<{
-        podName: string;
-        containerName: string;
+        pod名称: string;
+        container名称: string;
         uid?: string;
         status?: string;
     }[]> {
-        const res = await k3s.core.listNamespacedPod(projectId, undefined, undefined, undefined, undefined, `app=${appId}`);
+        const res = await k3s.core.list名称spacedPod(projectId, undefined, undefined, undefined, undefined, `app=${appId}`);
         return res.body.items.map((item) => ({
-            podName: item.metadata?.name!,
-            containerName: item.spec?.containers?.[0].name!,
+            pod名称: item.metadata?.name!,
+            container名称: item.spec?.containers?.[0].name!,
             uid: item.metadata?.uid,
             status: item.status?.phase,
-        })).filter((item) => !!item.podName && !!item.containerName);
+        })).filter((item) => !!item.pod名称 && !!item.container名称);
     }
 
     public async runCommandInPod(
         namespace: string,
-        podName: string,
-        containerName: string,
+        pod名称: string,
+        container名称: string,
         command: string[],
     ): Promise<void> {
         const writerStream = new stream.PassThrough();
@@ -85,8 +85,8 @@ class SetupPodService {
             exec
                 .exec(
                     namespace,
-                    podName,
-                    containerName,
+                    pod名称,
+                    container名称,
                     command,
                     writerStream,
                     stderrStream,
@@ -120,16 +120,16 @@ class SetupPodService {
      *
      *
      * @param {string} namespace - The namespace of the pod to exec the command inside.
-     * @param {string} podName - The name of the pod to exec the command inside.
-     * @param {string} containerName - The name of the container in the pod to exec the command inside.
+     * @param {string} pod名称 - The name of the pod to exec the command inside.
+     * @param {string} container名称 - The name of the container in the pod to exec the command inside.
      * @param {string} srcPath - The source path in the pod
      * @param {string} zipOutputPath - The target path in local
      * @param {string} [cwd] - The directory that is used as the parent in the pod when downloading
      */
     public async cpFromPod(
         namespace: string,
-        podName: string,
-        containerName: string,
+        pod名称: string,
+        container名称: string,
         srcPath: string,
         zipOutputPath: string,
         cwd?: string,
@@ -146,8 +146,8 @@ class SetupPodService {
             const exec = new k8s.Exec(k3s.getKubeConfig());
             exec.exec(
                 namespace,
-                podName,
-                containerName,
+                pod名称,
+                container名称,
                 command,
                 writerStream,
                 stderrStream,
@@ -175,15 +175,15 @@ class SetupPodService {
     /**
     * Source: https://github.com/kubernetes-client/javascript/blob/master/src/cp.ts
     * @param {string} namespace - The namespace of the pod to exec the command inside.
-    * @param {string} podName - The name of the pod to exec the command inside.
-    * @param {string} containerName - The name of the container in the pod to exec the command inside.
+    * @param {string} pod名称 - The name of the pod to exec the command inside.
+    * @param {string} container名称 - The name of the container in the pod to exec the command inside.
     * @param {string} srcTarPath - The source path in local (tar file)
     * @param {string} tgtPath - The target path in the pod
     */
     public async cpTarToPod(
         namespace: string,
-        podName: string,
-        containerName: string,
+        pod名称: string,
+        container名称: string,
         srcTarPath: string,
         tgtPath: string,
     ): Promise<void> {
@@ -197,8 +197,8 @@ class SetupPodService {
         await new Promise<void>((resolve, reject) => {
             exec.exec(
                 namespace,
-                podName,
-                containerName,
+                pod名称,
+                container名称,
                 command,
                 outStream,
                 errStream,
@@ -240,10 +240,10 @@ class SetupPodService {
         const projects = await dataAccess.client.project.findMany();
 
         for (const project of projects) {
-            const podsOfNamespace = await k3s.core.listNamespacedPod(project.id);
-            const failedPods = podsOfNamespace.body.items.filter((pod) => ['Failed', 'Succeeded'].includes(pod.status?.phase!));
+            const podsOf名称space = await k3s.core.list名称spacedPod(project.id);
+            const failedPods = podsOf名称space.body.items.filter((pod) => ['Failed', 'Succeeded'].includes(pod.status?.phase!));
             for (const pod of failedPods) {
-                await k3s.core.deleteNamespacedPod(pod.metadata?.name!, project.id);
+                await k3s.core.delete名称spacedPod(pod.metadata?.name!, project.id);
             }
         }
     }

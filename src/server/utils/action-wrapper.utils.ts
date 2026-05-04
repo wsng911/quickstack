@@ -48,9 +48,9 @@ export async function getAdminUserSession(): Promise<UserSession> {
     return session;
 }
 
-export async function isAuthorizedForBackups() {
+export async function isAuthorizedFor返回ups() {
     const session = await getAuthUserSession();
-    if (!UserGroupUtils.sessionHasAccessToBackups(session)) {
+    if (!UserGroupUtils.sessionHasAccessTo返回ups(session)) {
         console.error('User is not authorized for backups.');
         throw new ServiceException('User is not authorized for this action.');
     }
@@ -180,12 +180,12 @@ export async function simpleAction<ReturnType, ValidationCallbackType = unknown>
  */
 export async function fileUploadAction<ReturnType>(
     formData: FormData,
-    fileFieldName: string,
+    fileField名称: string,
     func: (file: File) => Promise<ReturnType>,
     redirectOnSuccessPath?: string) {
     let funcResult: ReturnType;
     try {
-        const file = formData.get(fileFieldName) as File;
+        const file = formData.get(fileField名称) as File;
         if (!file || !file.size) {
             throw new ServiceException('No file uploaded or file is empty.');
         }

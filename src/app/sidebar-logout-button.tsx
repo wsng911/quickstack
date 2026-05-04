@@ -17,16 +17,16 @@ import {
     SidebarMenuSub,
     SidebarMenuSubItem
 } from "@/components/ui/sidebar"
-import { AppleIcon, Calendar, ChartNoAxesCombined, ChevronDown, ChevronUp, FolderClosed, Home, Inbox, LogOut, Plus, Search, Server, Settings, Settings2, User, User2 } from "lucide-react"
+import { AppleIcon, Calendar, ChartNoAxesCombined, ChevronDown, ChevronUp, Folder关闭d, Home, Inbox, LogOut, Plus, 搜索, Server, 设置, 设置2, User, User2 } from "lucide-react"
 import Link from "next/link"
-import { EditProjectDialog } from "./projects/edit-project-dialog"
+import { 编辑ProjectDialog } from "./projects/edit-project-dialog"
 import projectService from "@/server/services/project.service"
 import { getAuthUserSession } from "@/server/utils/action-wrapper.utils"
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 
 export function SidebarLogoutButton() {
 
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
 
     const signOutAsync = async () => {
         if (!await openDialog({

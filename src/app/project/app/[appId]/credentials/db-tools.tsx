@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import DbGateDbTool from "./db-gate-db-tool";
 import DbToolSwitch from "./phpmyadmin-db-tool";
@@ -17,13 +17,13 @@ export default function DbToolsCard({
         <Card>
             <CardHeader>
                 <CardTitle>Database Access</CardTitle>
-                <CardDescription>Activate one of the following tools to access the database through your browser.</CardDescription>
+                <Card描述>Activate one of the following tools to access the database through your browser.</Card描述>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent class名称="space-y-4">
                 <DbGateDbTool app={app} />
                 {['MYSQL', 'MARIADB'].includes(app.appType) && <DbToolSwitch app={app} toolId="phpmyadmin"
-                    toolNameString="PHP My Admin" />}
-                {app.appType === 'POSTGRES' && <DbToolSwitch app={app} toolId="pgadmin" toolNameString="pgAdmin" />}
+                    tool名称String="PHP My Admin" />}
+                {app.appType === 'POSTGRES' && <DbToolSwitch app={app} toolId="pgadmin" tool名称String="pgAdmin" />}
             </CardContent>
         </Card >
     </>;

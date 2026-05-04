@@ -1,13 +1,13 @@
 vi.mock('@/server/adapter/kubernetes-api.adapter', () => ({
     default: {
         batch: {
-            createNamespacedJob: vi.fn(),
-            listNamespacedJob: vi.fn().mockResolvedValue({ body: { items: [] } }),
-            readNamespacedJobStatus: vi.fn(),
+            create名称spacedJob: vi.fn(),
+            list名称spacedJob: vi.fn().mockResolvedValue({ body: { items: [] } }),
+            read名称spacedJob状态: vi.fn(),
         },
         core: {
-            listNamespacedPod: vi.fn(),
-            readNamespacedPod: vi.fn(),
+            list名称spacedPod: vi.fn(),
+            read名称spacedPod: vi.fn(),
         },
         log: {
             log: vi.fn(),
@@ -15,7 +15,7 @@ vi.mock('@/server/adapter/kubernetes-api.adapter', () => ({
     },
 }));
 vi.mock('@/server/adapter/db.client', () => ({ default: { client: { app: { findMany: vi.fn() } } } }));
-vi.mock('@/server/services/namespace.service', () => ({ default: { createNamespaceIfNotExists: vi.fn() } }));
+vi.mock('@/server/services/namespace.service', () => ({ default: { create名称spaceIfNotExists: vi.fn() } }));
 vi.mock('@/server/services/registry.service', () => ({
     __esModule: true,
     BUILD_NAMESPACE: 'qs-build',
@@ -125,7 +125,7 @@ describe('BuildService.buildApp builder selection', () => {
 
         expect(appGitSshKeyService.createTemporaryBuildSecret).toHaveBeenCalledWith('app-1', expect.stringMatching(/^build-app-1-/));
         expect(railpackBuildJobBuilder.buildJobDefinition).toHaveBeenCalledWith(expect.objectContaining({
-            gitSshPrivateKeySecretName: 'git-ssh-build-secret',
+            gitSshPrivateKeySecret名称: 'git-ssh-build-secret',
         }));
     });
 });

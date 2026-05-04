@@ -4,14 +4,14 @@ import { AppBuildMethod } from "@/shared/model/app-source-info.model";
 
 export type BuildJobBuilderContext = {
     app: AppExtendedModel;
-    buildName: string;
+    build名称: string;
     deploymentId: string;
     latestRemoteGitHash: string;
     latestRemoteGitCommitMessage: string;
     queuedAt: string;
     nodeSelector?: Record<string, string>;
     resources?: V1ResourceRequirements;
-    gitSshPrivateKeySecretName?: string;
+    gitSshPrivateKeySecret名称?: string;
 };
 
 export interface BuildJobBuilder {

@@ -3,11 +3,11 @@
 
 import { getAuthUserSession } from "@/server/utils/action-wrapper.utils";
 import projectService from "@/server/services/project.service";
-import ProjectOverview from "./project-overview";
+import Project概览 from "./project-overview";
 import appService from "@/server/services/app.service";
 import PageTitle from "@/components/custom/page-title";
 import ProjectBreadcrumbs from "./project-breadcrumbs";
-import CreateProjectActions from "./create-project-actions";
+import 创建Project操作 from "./create-project-actions";
 import { UserGroupUtils } from "@/shared/utils/role.utils";
 
 export default async function AppsPage({
@@ -29,14 +29,14 @@ export default async function AppsPage({
         UserGroupUtils.sessionHasReadAccessForApp(session, app.id));
 
     return (
-        <div className="flex-1 space-y-4 pt-6">
+        <div class名称="flex-1 space-y-4 pt-6">
             <PageTitle
                 title="Apps"
                 subtitle={`All Apps for Project "${project.name}"`}>
-                {UserGroupUtils.sessionCanCreateNewAppsForProject(session, params.projectId) &&
-                    <CreateProjectActions projectId={projectId} />}
+                {UserGroupUtils.sessionCan创建NewAppsForProject(session, params.projectId) &&
+                    <创建Project操作 projectId={projectId} />}
             </PageTitle>
-            <ProjectOverview session={session} apps={relevantApps} projectId={project.id} />
+            <Project概览 session={session} apps={relevantApps} projectId={project.id} />
             <ProjectBreadcrumbs project={project} />
         </div>
     )

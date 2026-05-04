@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { S3TargetModel, VolumeBackupModel } from "./generated-zod";
+import { S3TargetModel, Volume返回upModel } from "./generated-zod";
 
-export const volumeBackupExtendedZodModel = z.lazy(() => VolumeBackupModel.extend({
+export const volume返回upExtendedZodModel = z.lazy(() => Volume返回upModel.extend({
   target: S3TargetModel
 }))
 
-export type VolumeBackupExtendedModel = z.infer<typeof volumeBackupExtendedZodModel>;
+export type Volume返回upExtendedModel = z.infer<typeof volume返回upExtendedZodModel>;

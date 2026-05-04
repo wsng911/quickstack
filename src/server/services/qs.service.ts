@@ -1,7 +1,7 @@
 import k3s from "../adapter/kubernetes-api.adapter";
 import { V1Deployment, V1Ingress, V1Service } from "@kubernetes/client-node";
 import namespaceService from "./namespace.service";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import crypto from "crypto";
 import { FancyConsoleUtils } from "../../shared/utils/fancy-console.utils";
 import standalonePodService from "./standalone-services/standalone-pod.service";
@@ -25,7 +25,7 @@ class QuickStackService {
     }
 
     async initializeQuickStack() {
-        await namespaceService.createNamespaceIfNotExists(this.QUICKSTACK_NAMESPACE)
+        await namespaceService.create名称spaceIfNotExists(this.QUICKSTACK_NAMESPACE)
         const nextAuthSecret = await this.deleteExistingDeployment();
         await this.createOrUpdatePvc();
         await this.createOrUpdateDeployment(nextAuthSecret, process.env.QS_VERSION?.includes('canary') ? 'canary' : 'latest');
@@ -53,7 +53,7 @@ class QuickStackService {
             console.error('[ERROR] QuickStack pod was not found');
             return;
         }
-        await standalonePodService.waitUntilPodIsRunningFailedOrSucceded(this.QUICKSTACK_NAMESPACE, quickStackPod.podName);
+        await standalonePodService.waitUntilPodIsRunningFailedOrSucceded(this.QUICKSTACK_NAMESPACE, quickStackPod.pod名称);
         if (standalonePodService) {
             console.log('QuickStack is now running');
         } else {
@@ -65,15 +65,15 @@ class QuickStackService {
 
         await ingressSetupService.createTraefikRedirectMiddlewareIfNotExist();
 
-        const ingressName = KubeObjectNameUtils.getIngressName(this.QUICKSTACK_NAMESPACE);
-        const existingIngresses = await k3s.network.listNamespacedIngress(this.QUICKSTACK_NAMESPACE);
-        const existingIngress = existingIngresses.body.items.find((item) => item.metadata?.name === ingressName);
+        const ingress名称 = KubeObject名称Utils.getIngress名称(this.QUICKSTACK_NAMESPACE);
+        const existingIngresses = await k3s.network.list名称spacedIngress(this.QUICKSTACK_NAMESPACE);
+        const existingIngress = existingIngresses.body.items.find((item) => item.metadata?.name === ingress名称);
 
         const ingressDefinition: V1Ingress = {
             apiVersion: 'networking.k8s.io/v1',
             kind: 'Ingress',
             metadata: {
-                name: ingressName,
+                name: ingress名称,
                 namespace: this.QUICKSTACK_NAMESPACE,
                 annotations: {
                     'cert-manager.io/cluster-issuer': this.CLUSTER_ISSUER_NAME,
@@ -81,7 +81,7 @@ class QuickStackService {
                 },
             },
             spec: {
-                ingressClassName: 'traefik',
+                ingressClass名称: 'traefik',
                 rules: [
                     {
                         host: hostname,
@@ -92,7 +92,7 @@ class QuickStackService {
                                     pathType: 'Prefix',
                                     backend: {
                                         service: {
-                                            name: KubeObjectNameUtils.toServiceName(this.QUICKSTACK_DEPLOYMENT_NAME),
+                                            name: KubeObject名称Utils.toService名称(this.QUICKSTACK_DEPLOYMENT_NAME),
                                             port: {
                                                 number: this.QUICKSTACK_PORT_NUMBER,
                                             },
@@ -106,17 +106,17 @@ class QuickStackService {
                 tls: [
                     {
                         hosts: [hostname],
-                        secretName: `secret-tls-${hostname}`,
+                        secret名称: `secret-tls-${hostname}`,
                     },
                 ],
             },
         };
 
         if (existingIngress) {
-            await k3s.network.replaceNamespacedIngress(ingressName, this.QUICKSTACK_NAMESPACE, ingressDefinition);
+            await k3s.network.replace名称spacedIngress(ingress名称, this.QUICKSTACK_NAMESPACE, ingressDefinition);
             console.log(`Ingress QuickStack for domain ${hostname} successfully updated.`);
         } else {
-            await k3s.network.createNamespacedIngress(this.QUICKSTACK_NAMESPACE, ingressDefinition);
+            await k3s.network.create名称spacedIngress(this.QUICKSTACK_NAMESPACE, ingressDefinition);
             console.log(`Ingress QuickStack for domain ${hostname} successfully created.`);
         }
     }
@@ -193,12 +193,12 @@ class QuickStackService {
     }
 
     async createOrUpdateService(openNodePort = false) {
-        const serviceName = KubeObjectNameUtils.toServiceName(this.QUICKSTACK_DEPLOYMENT_NAME);
+        const service名称 = KubeObject名称Utils.toService名称(this.QUICKSTACK_DEPLOYMENT_NAME);
         const body: V1Service = {
             apiVersion: 'v1',
             kind: 'Service',
             metadata: {
-                name: serviceName,
+                name: service名称,
                 namespace: this.QUICKSTACK_NAMESPACE,
             },
             spec: {
@@ -217,36 +217,36 @@ class QuickStackService {
             }
         };
 
-        const allServices = await k3s.core.listNamespacedService(this.QUICKSTACK_NAMESPACE);
-        const existingService = allServices.body.items.find(s => s.metadata!.name === serviceName);
+        const all服务 = await k3s.core.list名称spacedService(this.QUICKSTACK_NAMESPACE);
+        const existingService = all服务.body.items.find(s => s.metadata!.name === service名称);
         if (existingService) {
             console.warn('Service already exists, deleting and recreating it');
-            await k3s.core.deleteNamespacedService(serviceName, this.QUICKSTACK_NAMESPACE);
+            await k3s.core.delete名称spacedService(service名称, this.QUICKSTACK_NAMESPACE);
             console.log('Existing service deleted');
         } else {
             console.warn('Service does not exist, creating');
         }
-        await k3s.core.createNamespacedService(this.QUICKSTACK_NAMESPACE, body);
+        await k3s.core.create名称spacedService(this.QUICKSTACK_NAMESPACE, body);
         console.log('Service created');
     }
 
     private async createOrUpdatePvc() {
-        const pvcName = KubeObjectNameUtils.toPvcName(this.QUICKSTACK_DEPLOYMENT_NAME);
-        const allPvcs = await k3s.core.listNamespacedPersistentVolumeClaim(this.QUICKSTACK_NAMESPACE);
-        const existingPvc = allPvcs.body.items.find(p => p.metadata!.name === pvcName);
+        const pvc名称 = KubeObject名称Utils.toPvc名称(this.QUICKSTACK_DEPLOYMENT_NAME);
+        const allPvcs = await k3s.core.list名称spacedPersistentVolumeClaim(this.QUICKSTACK_NAMESPACE);
+        const existingPvc = allPvcs.body.items.find(p => p.metadata!.name === pvc名称);
 
-        const storageClassName = existingPvc?.spec?.storageClassName || 'longhorn';
+        const storageClass名称 = existingPvc?.spec?.storageClass名称 || 'longhorn';
 
         const pvc = {
             apiVersion: 'v1',
             kind: 'PersistentVolumeClaim',
             metadata: {
-                name: pvcName,
+                name: pvc名称,
                 namespace: this.QUICKSTACK_NAMESPACE
             },
             spec: {
                 accessModes: ['ReadWriteOnce'],
-                storageClassName,
+                storageClass名称,
                 resources: {
                     requests: {
                         storage: '1Gi'
@@ -263,11 +263,11 @@ class QuickStackService {
             // Only the Size of PVC can be updated, so we need to delete and recreate the PVC
             // update PVC size
             existingPvc.spec!.resources!.requests!.storage = pvc.spec!.resources!.requests!.storage;
-            await k3s.core.replaceNamespacedPersistentVolumeClaim(pvcName, this.QUICKSTACK_NAMESPACE, existingPvc);
+            await k3s.core.replace名称spacedPersistentVolumeClaim(pvc名称, this.QUICKSTACK_NAMESPACE, existingPvc);
             console.log('PVC updated');
         } else {
             console.warn('PVC does not exist, creating');
-            await k3s.core.createNamespacedPersistentVolumeClaim(this.QUICKSTACK_NAMESPACE, pvc);
+            await k3s.core.create名称spacedPersistentVolumeClaim(this.QUICKSTACK_NAMESPACE, pvc);
             console.log('PVC created');
         }
     }
@@ -299,7 +299,7 @@ class QuickStackService {
                         }
                     },
                     spec: {
-                        serviceAccountName: this.QUICKSTACK_SERVICEACCOUNT_NAME,
+                        serviceAccount名称: this.QUICKSTACK_SERVICEACCOUNT_NAME,
                         securityContext: {
                             runAsUser: 1001,
                             runAsGroup: 1001,
@@ -329,7 +329,7 @@ class QuickStackService {
                         volumes: [{
                             name: 'quickstack-volume',
                             persistentVolumeClaim: {
-                                claimName: KubeObjectNameUtils.toPvcName(this.QUICKSTACK_DEPLOYMENT_NAME)
+                                claim名称: KubeObject名称Utils.toPvc名称(this.QUICKSTACK_DEPLOYMENT_NAME)
                             }
                         }]
                     }
@@ -337,10 +337,10 @@ class QuickStackService {
             }
         };
         if (existingDeployment.existingDeployments) {
-            await k3s.apps.replaceNamespacedDeployment(this.QUICKSTACK_DEPLOYMENT_NAME, this.QUICKSTACK_NAMESPACE, body);
+            await k3s.apps.replace名称spacedDeployment(this.QUICKSTACK_DEPLOYMENT_NAME, this.QUICKSTACK_NAMESPACE, body);
             console.log('Deployment updated');
         } else {
-            await k3s.apps.createNamespacedDeployment(this.QUICKSTACK_NAMESPACE, body);
+            await k3s.apps.create名称spacedDeployment(this.QUICKSTACK_NAMESPACE, body);
             console.log('Deployment created');
         }
     }
@@ -353,14 +353,14 @@ class QuickStackService {
         const quickStackAlreadyDeployed = !!existingDeployments;
         if (quickStackAlreadyDeployed) {
             console.warn('QuickStack already deployed, deleting existing deployment (data wont be lost)');
-            await k3s.apps.deleteNamespacedDeployment(this.QUICKSTACK_DEPLOYMENT_NAME, this.QUICKSTACK_NAMESPACE);
+            await k3s.apps.delete名称spacedDeployment(this.QUICKSTACK_DEPLOYMENT_NAME, this.QUICKSTACK_NAMESPACE);
             console.log('Existing deployment deleted');
         }
         return nextAuthSecret;
     }
 
     async getExistingDeployment() {
-        const allDeployments = await k3s.apps.listNamespacedDeployment(this.QUICKSTACK_NAMESPACE);
+        const allDeployments = await k3s.apps.list名称spacedDeployment(this.QUICKSTACK_NAMESPACE);
         const existingDeployments = allDeployments.body.items.find(d => d.metadata!.name === this.QUICKSTACK_DEPLOYMENT_NAME);
         const nextAuthSecret = existingDeployments?.spec?.template?.spec?.containers?.[0].env?.find(e => e.name === 'NEXTAUTH_SECRET')?.value;
         const nextAuthHostname = existingDeployments?.spec?.template?.spec?.containers?.[0].env?.find(e => e.name === 'NEXTAUTH_URL')?.value;

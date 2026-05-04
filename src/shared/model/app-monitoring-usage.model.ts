@@ -1,7 +1,7 @@
-export interface AppMonitoringUsageModel {
+export interface App监控ingUsageModel {
     projectId: string,
-    projectName: string,
-    appName: string,
+    project名称: string,
+    app名称: string,
     appId: string,
     cpuUsage: number,
     cpuUsagePercent: number,

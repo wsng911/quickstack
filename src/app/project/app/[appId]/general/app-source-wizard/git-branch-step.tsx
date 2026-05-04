@@ -8,8 +8,8 @@ export function GitBranchStep({ branches, selectedBranch, onSelect }: {
 }) {
     return (
         <div>
-            <Command className="rounded-md border">
-                <CommandInput placeholder="Search branches..." />
+            <Command class名称="rounded-md border">
+                <CommandInput placeholder="搜索 branches..." />
                 <CommandList>
                     <CommandEmpty>No branches found.</CommandEmpty>
                     <CommandGroup>
@@ -17,12 +17,12 @@ export function GitBranchStep({ branches, selectedBranch, onSelect }: {
                             <CommandItem
                                 key={branch}
                                 value={branch}
-                                className="cursor-pointer"
+                                class名称="cursor-pointer"
                                 onSelect={() => onSelect(branch)}
                             >
-                                <GitBranch className="mr-2 h-4 w-4" />
-                                <span className="truncate">{branch}</span>
-                                <Check className={branch === selectedBranch ? 'ml-auto h-4 w-4' : 'ml-auto h-4 w-4 opacity-0'} />
+                                <GitBranch class名称="mr-2 h-4 w-4" />
+                                <span class名称="truncate">{branch}</span>
+                                <Check class名称={branch === selectedBranch ? 'ml-auto h-4 w-4' : 'ml-auto h-4 w-4 opacity-0'} />
                             </CommandItem>
                         ))}
                     </CommandGroup>

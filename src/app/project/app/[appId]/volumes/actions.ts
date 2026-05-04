@@ -1,24 +1,24 @@
 'use server'
 
-import { appVolumeEditZodModel } from "@/shared/model/volume-edit.model";
+import { appVolume编辑ZodModel } from "@/shared/model/volume-edit.model";
 import { ServerActionResult, SuccessActionResult } from "@/shared/model/server-action-error-return.model";
 import appService from "@/server/services/app.service";
 import { getAuthUserSession, isAuthorizedReadForApp, isAuthorizedWriteForApp, saveFormAction, simpleAction } from "@/server/utils/action-wrapper.utils";
 import { z } from "zod";
 import { ServiceException } from "@/shared/model/service.exception.model";
 import pvcService from "@/server/services/pvc.service";
-import { fileMountEditZodModel } from "@/shared/model/file-mount-edit.model";
-import { VolumeBackupEditModel, volumeBackupEditZodModel } from "@/shared/model/backup-volume-edit.model";
-import volumeBackupService from "@/server/services/volume-backup.service";
+import { fileMount编辑ZodModel } from "@/shared/model/file-mount-edit.model";
+import { Volume返回up编辑Model, volume返回up编辑ZodModel } from "@/shared/model/backup-volume-edit.model";
+import volume返回upService from "@/server/services/volume-backup.service";
 import backupService from "@/server/services/standalone-services/backup.service";
-import databaseBackupService from "@/server/services/standalone-services/database-backup.service";
+import database返回upService from "@/server/services/standalone-services/database-backup.service";
 import { volumeUploadZodModel } from "@/shared/model/volume-upload.model";
 import restoreService from "@/server/services/restore.service";
 import fileBrowserService from "@/server/services/file-browser-service";
 import monitoringService from "@/server/services/monitoring.service";
 import dataAccess from "@/server/adapter/db.client";
 
-const actionAppVolumeEditZodModel = appVolumeEditZodModel.merge(z.object({
+const actionAppVolume编辑ZodModel = appVolume编辑ZodModel.merge(z.object({
     appId: z.string(),
     id: z.string().nullish()
 }));
@@ -39,8 +39,8 @@ export const restoreVolumeFromZip = async (prevState: any, inputData: FormData, 
         return new SuccessActionResult();
     });
 
-export const saveVolume = async (prevState: any, inputData: z.infer<typeof actionAppVolumeEditZodModel>) =>
-    saveFormAction(inputData, actionAppVolumeEditZodModel, async (validatedData) => {
+export const saveVolume = async (prevState: any, inputData: z.infer<typeof actionAppVolume编辑ZodModel>) =>
+    saveFormAction(inputData, actionAppVolume编辑ZodModel, async (validatedData) => {
         await isAuthorizedWriteForApp(validatedData.appId);
         const existingApp = await appService.getExtendedById(validatedData.appId);
         const existingVolume = validatedData.id ? await appService.getVolumeById(validatedData.id) : undefined;
@@ -70,7 +70,7 @@ export const saveVolume = async (prevState: any, inputData: z.infer<typeof actio
                 containerMountPath: validatedData.containerMountPath,
                 size: sharedVolume.size,
                 accessMode: sharedVolume.accessMode,
-                storageClassName: sharedVolume.storageClassName,
+                storageClass名称: sharedVolume.storageClass名称,
                 shareWithOtherApps: false,
                 sharedVolumeId: sharedVolume.id
             });
@@ -80,13 +80,13 @@ export const saveVolume = async (prevState: any, inputData: z.infer<typeof actio
         if (existingVolume && existingVolume.size > validatedData.size) {
             throw new ServiceException('Volume size cannot be decreased');
         }
-        if (existingVolume && existingVolume.storageClassName !== validatedData.storageClassName) {
+        if (existingVolume && existingVolume.storageClass名称 !== validatedData.storageClass名称) {
             throw new ServiceException('Storage class cannot be changed for existing volumes');
         }
         if (existingApp.replicas > 1 && validatedData.accessMode === 'ReadWriteOnce') {
             throw new ServiceException('Volume access mode must be ReadWriteMany because your app has more than one replica configured.');
         }
-        if (validatedData.accessMode === 'ReadWriteMany' && validatedData.storageClassName === 'local-path') {
+        if (validatedData.accessMode === 'ReadWriteMany' && validatedData.storageClass名称 === 'local-path') {
             throw new ServiceException('The Local Path storage class does not support ReadWriteMany access mode. Please choose another storage class / access mode.');
         }
         if (validatedData.shareWithOtherApps && (existingVolume?.accessMode ?? validatedData.accessMode) !== 'ReadWriteMany') {
@@ -96,7 +96,7 @@ export const saveVolume = async (prevState: any, inputData: z.infer<typeof actio
             ...validatedData,
             id: validatedData.id ?? undefined,
             accessMode: existingVolume?.accessMode ?? validatedData.accessMode as string,
-            storageClassName: existingVolume?.storageClassName ?? validatedData.storageClassName,
+            storageClass名称: existingVolume?.storageClass名称 ?? validatedData.storageClass名称,
             shareWithOtherApps: validatedData.shareWithOtherApps ?? false,
             sharedVolumeId: null
         });
@@ -113,7 +113,7 @@ export const getPvcUsage = async (appId: string, projectId: string) =>
     simpleAction(async () => {
         await isAuthorizedReadForApp(appId);
         return monitoringService.getPvcUsageFromApp(appId, projectId);
-    }) as Promise<ServerActionResult<any, { pvcName: string, usedBytes: number }[]>>;
+    }) as Promise<ServerActionResult<any, { pvc名称: string, usedBytes: number }[]>>;
 
 export const getShareableVolumes = async (appId: string) =>
     simpleAction(async () => {
@@ -121,22 +121,22 @@ export const getShareableVolumes = async (appId: string) =>
         const app = await appService.getExtendedById(appId);
         const volumes = await appService.getShareableVolumesByProjectId(app.projectId, appId);
         return new SuccessActionResult(volumes);
-    }) as Promise<ServerActionResult<any, { id: string; containerMountPath: string; size: number; storageClassName: string; accessMode: string; app: { name: string } }[]>>;
+    }) as Promise<ServerActionResult<any, { id: string; containerMountPath: string; size: number; storageClass名称: string; accessMode: string; app: { name: string } }[]>>;
 
 export const downloadPvcData = async (volumeId: string) =>
     simpleAction(async () => {
         await validateVolumeReadAuthorization(volumeId);
-        const fileNameOfDownloadedFile = await pvcService.downloadPvcData(volumeId);
-        return new SuccessActionResult(fileNameOfDownloadedFile, 'Successfully zipped volume data'); // returns the download path on the server
+        const file名称OfDownloadedFile = await pvcService.downloadPvcData(volumeId);
+        return new SuccessActionResult(file名称OfDownloadedFile, 'Successfully zipped volume data'); // returns the download path on the server
     }) as Promise<ServerActionResult<any, string>>;
 
-const actionAppFileMountEditZodModel = fileMountEditZodModel.merge(z.object({
+const actionAppFileMount编辑ZodModel = fileMount编辑ZodModel.merge(z.object({
     appId: z.string(),
     id: z.string().nullish()
 }));
 
-export const saveFileMount = async (prevState: any, inputData: z.infer<typeof actionAppFileMountEditZodModel>) =>
-    saveFormAction(inputData, actionAppFileMountEditZodModel, async (validatedData) => {
+export const saveFileMount = async (prevState: any, inputData: z.infer<typeof actionAppFileMount编辑ZodModel>) =>
+    saveFormAction(inputData, actionAppFileMount编辑ZodModel, async (validatedData) => {
         await isAuthorizedWriteForApp(validatedData.appId);
         await appService.saveFileMount({
             ...validatedData,
@@ -151,34 +151,34 @@ export const deleteFileMount = async (fileMountId: string) =>
         return new SuccessActionResult(undefined, 'Successfully deleted volume');
     });
 
-export const saveBackupVolume = async (prevState: any, inputData: VolumeBackupEditModel) =>
-    saveFormAction(inputData, volumeBackupEditZodModel, async (validatedData) => {
+export const save返回upVolume = async (prevState: any, inputData: Volume返回up编辑Model) =>
+    saveFormAction(inputData, volume返回up编辑ZodModel, async (validatedData) => {
         await validateVolumeWriteAuthorization(validatedData.volumeId);
         if (validatedData.retention < 1) {
             throw new ServiceException('Retention must be at least 1');
         }
-        const savedVolumeBackup = await volumeBackupService.save({
+        const savedVolume返回up = await volume返回upService.save({
             ...validatedData,
             id: validatedData.id ?? undefined,
         });
-        await backupService.registerAllBackups();
+        await backupService.registerAll返回ups();
         return new SuccessActionResult();
     });
 
-export const deleteBackupVolume = async (backupVolumeId: string) =>
+export const delete返回upVolume = async (backupVolumeId: string) =>
     simpleAction(async () => {
-        await validateBackupVolumeWriteAuthorization(backupVolumeId);
-        await volumeBackupService.deleteById(backupVolumeId);
-        await backupService.registerAllBackups();
+        await validate返回upVolumeWriteAuthorization(backupVolumeId);
+        await volume返回upService.deleteById(backupVolumeId);
+        await backupService.registerAll返回ups();
         return new SuccessActionResult(undefined, 'Successfully deleted backup schedule');
     });
 
-export const runBackupVolumeSchedule = async (backupVolumeId: string) =>
+export const run返回upVolumeSchedule = async (backupVolumeId: string) =>
     simpleAction(async () => {
-        await validateBackupVolumeWriteAuthorization(backupVolumeId);
+        await validate返回upVolumeWriteAuthorization(backupVolumeId);
 
         // Get the backup volume with app info to determine backup method
-        const backupVolume = await dataAccess.client.volumeBackup.findFirstOrThrow({
+        const backupVolume = await dataAccess.client.volume返回up.findFirstOrThrow({
             where: {
                 id: backupVolumeId
             },
@@ -191,14 +191,14 @@ export const runBackupVolumeSchedule = async (backupVolumeId: string) =>
             }
         });
 
-        // Use database-specific backup if it's a database app AND useDatabaseBackup is true
-        if (backupVolume.volume.app.appType !== 'APP' && backupVolume.useDatabaseBackup) {
-            await databaseBackupService.backupDatabase(backupVolumeId);
+        // Use database-specific backup if it's a database app AND useDatabase返回up is true
+        if (backupVolume.volume.app.appType !== 'APP' && backupVolume.useDatabase返回up) {
+            await database返回upService.backupDatabase(backupVolumeId);
         } else {
-            await backupService.runBackupForVolume(backupVolumeId);
+            await backupService.run返回upForVolume(backupVolumeId);
         }
 
-        return new SuccessActionResult(undefined, 'Backup created and uploaded successfully');
+        return new SuccessActionResult(undefined, '返回up created and uploaded successfully');
     });
 
 export const openFileBrowserForVolume = async (volumeId: string) =>
@@ -247,8 +247,8 @@ async function validateFileMountWriteAuthorization(fileMountId: string) {
     await isAuthorizedWriteForApp(fileMountAppId?.appId);
 }
 
-async function validateBackupVolumeWriteAuthorization(backupVolumeId: string) {
-    const volumeAppId = await dataAccess.client.volumeBackup.findFirstOrThrow({
+async function validate返回upVolumeWriteAuthorization(backupVolumeId: string) {
+    const volumeAppId = await dataAccess.client.volume返回up.findFirstOrThrow({
         where: {
             id: backupVolumeId,
         },

@@ -1,5 +1,5 @@
 import { ServiceException } from "@/shared/model/service.exception.model";
-import { KubeObjectNameUtils } from "../../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../../utils/kube-object-name.utils";
 import { randomBytes } from "crypto";
 import { V1Deployment, V1EnvVar } from "@kubernetes/client-node";
 import { Constants } from "@/shared/utils/constants";
@@ -14,7 +14,7 @@ import { BaseDbToolService } from "./base-db-tool.service";
 class PhpMyAdminService extends BaseDbToolService {
 
     constructor() {
-        super((app) => KubeObjectNameUtils.toPhpMyAdminId(app));
+        super((app) => KubeObject名称Utils.toPhpMyAdminId(app));
     }
 
     async getLoginCredentialsForRunningDbGate(appId: string) {
@@ -26,26 +26,26 @@ class PhpMyAdminService extends BaseDbToolService {
 
     async deploy(appId: string) {
         await this.deployToolForDatabase(appId, 80, (app) => {
-            const appName = this.appIdToToolNameConverter(app.id);
+            const app名称 = this.appIdToTool名称Converter(app.id);
             const projectId = app.projectId;
 
             const dbCredentials = AppTemplateUtils.getDatabaseModelFromApp(app);
 
             const body: V1Deployment = {
                 metadata: {
-                    name: appName
+                    name: app名称
                 },
                 spec: {
                     replicas: 1,
                     selector: {
                         matchLabels: {
-                            app: appName
+                            app: app名称
                         }
                     },
                     template: {
                         metadata: {
                             labels: {
-                                app: appName,
+                                app: app名称,
                                 [Constants.QS_ANNOTATION_CONTAINER_TYPE]: Constants.QS_ANNOTATION_CONTAINER_TYPE_DB_TOOL
                             },
                             annotations: {
@@ -58,7 +58,7 @@ class PhpMyAdminService extends BaseDbToolService {
                         spec: {
                             containers: [
                                 {
-                                    name: appName,
+                                    name: app名称,
                                     image: 'phpmyadmin/phpmyadmin:latest',
                                     imagePullPolicy: 'Always',
                                     env: [

@@ -1,19 +1,19 @@
-export interface BackupInfoModel {
+export interface 返回upInfoModel {
     projectId: string;
-    projectName: string;
-    appName: string;
+    project名称: string;
+    app名称: string;
     appId: string;
     backupVolumeId: string;
     s3TargetId: string;
     volumeId: string;
     mountPath: string;
     backupRetention: number;
-    backups: BackupEntry[];
+    backups: 返回upEntry[];
     cron?: string;
-    missedBackup?: boolean;
+    missed返回up?: boolean;
 }
 
-export interface BackupEntry {
+export interface 返回upEntry {
     key: string;
     backupDate: Date;
     sizeBytes?: number;

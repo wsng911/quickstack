@@ -1,7 +1,7 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  Dialog描述,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
@@ -50,23 +50,23 @@ export function AppEventsDialog({
   }, [isOpen]);
 
   return (<>
-    <div onClick={() => setIsOpen(true)} className="cursor-pointer"> {children}</div>
+    <div onClick={() => setIsOpen(true)} class名称="cursor-pointer"> {children}</div>
     <Dialog open={isOpen} onOpenChange={(isO) => {
       setIsOpen(isO);
     }}>
-      <DialogContent className="sm:max-w-[1000px]">
+      <DialogContent class名称="sm:max-w-[1000px]">
         <DialogHeader>
           <DialogTitle>App Events</DialogTitle>
-          <DialogDescription>
+          <Dialog描述>
             App events occur when changes are made to the deployment. For example, when a deployment is created, updated, or restarted.
             Advanced users can read these events to understand what is happening in the background. Events are only available for a short period of time.
-          </DialogDescription>
+          </Dialog描述>
         </DialogHeader>
-        <div className="space-y-4">
+        <div class名称="space-y-4">
           {!events && <FullLoadingSpinner />}
           {events && <>
             <Table>
-              <ScrollArea className="max-h-[70vh]">
+              <ScrollArea class名称="max-h-[70vh]">
                 <TableCaption>{events.length} recent Events</TableCaption>
                 <TableHeader>
                   <TableRow>
@@ -74,7 +74,7 @@ export function AppEventsDialog({
                     <TableHead>Type</TableHead>
                     <TableHead>Action</TableHead>
                     <TableHead>Note</TableHead>
-                    <TableHead>Pod Name</TableHead>
+                    <TableHead>Pod 名称</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -82,11 +82,11 @@ export function AppEventsDialog({
                     <TableRow key={(event.eventTime + '') || index}>
                       <TableCell>{formatDateTime(event.eventTime, true)}</TableCell>
                       <TableCell >{event.action}</TableCell>
-                      <TableCell className={cn("font-medium", event.type !== 'Normal' ? 'text-orange-500' : '')}>
+                      <TableCell class名称={cn("font-medium", event.type !== 'Normal' ? 'text-orange-500' : '')}>
                         {event.reason}
                       </TableCell>
                       <TableCell >{event.note}</TableCell>
-                      <TableCell >{event.podName}</TableCell>
+                      <TableCell >{event.pod名称}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

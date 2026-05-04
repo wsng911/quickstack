@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  Dialog描述,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -11,7 +11,7 @@ import React, { useEffect } from "react";
 import { formatDate } from "@/frontend/utils/format.utils";
 import { DownloadableAppLogsModel } from "@/shared/model/downloadable-app-logs.model";
 import { toast } from "sonner";
-import { Actions } from "@/frontend/utils/nextjs-actions.utils";
+import { 操作 } from "@/frontend/utils/nextjs-actions.utils";
 import { exportLogsToFileForToday, getDownloadableLogs } from "./actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -23,11 +23,11 @@ import { DateUtils } from "@/shared/utils/date.utils";
 export function LogsDownloadOverlay({
   children,
   appId,
-  onClose
+  on关闭
 }: {
   children: React.ReactNode;
   appId: string;
-  onClose?: () => void;
+  on关闭?: () => void;
 }) {
 
   const [logs, setLogs] = React.useState<DownloadableAppLogsModel[] | undefined>(undefined);
@@ -36,7 +36,7 @@ export function LogsDownloadOverlay({
   const getLogsListAsync = async () => {
     setIsLoading(true);
     try {
-      let logs = await Actions.run(() => getDownloadableLogs(appId));
+      let logs = await 操作.run(() => getDownloadableLogs(appId));
       const today = new Date();
       logs = logs.filter(log => !DateUtils.isSameDay(today, log.date));
       logs.unshift({
@@ -76,20 +76,20 @@ export function LogsDownloadOverlay({
   return (
     <Dialog onOpenChange={(isO) => {
       if (!isO) {
-        onClose?.();
+        on关闭?.();
       }
     }}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent class名称="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Logs Download</DialogTitle>
-          <DialogDescription>
+          <Dialog描述>
             Every day a new export of the logs is created. You can download the logs of the running pod(s) or the logs from the past.
-          </DialogDescription>
+          </Dialog描述>
         </DialogHeader>
-        <ScrollArea className="max-h-[70vh]">
+        <ScrollArea class名称="max-h-[70vh]">
           {logs ? <Table>
             <TableCaption>{logs.length} logs</TableCaption>
             <TableHeader>
@@ -102,7 +102,7 @@ export function LogsDownloadOverlay({
               {logs.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell>{formatDate(item.date)}</TableCell>
-                  <TableCell className="flex justify-end gap-2">
+                  <TableCell class名称="flex justify-end gap-2">
                     <Button variant="ghost" size="sm" onClick={() => downloadLogFile(item)} disabled={isLoading}>
                       <Download />
                     </Button>

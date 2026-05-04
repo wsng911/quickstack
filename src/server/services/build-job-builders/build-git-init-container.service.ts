@@ -51,14 +51,14 @@ class BuildGitInitContainerService {
                     name: 'SOURCE_PATH',
                     value: BUILD_SOURCE_PATH,
                 },
-                ...(ctx.gitSshPrivateKeySecretName ? [{
+                ...(ctx.gitSshPrivateKeySecret名称 ? [{
                     name: 'GIT_SSH_COMMAND',
                     value: `ssh -i ${BUILD_GIT_SSH_KEY_PATH} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null`,
                 }] : []),
             ],
             volumeMounts: [
                 { name: BUILD_WORKSPACE_VOLUME_NAME, mountPath: BUILD_WORKSPACE_MOUNT_PATH },
-                ...(ctx.gitSshPrivateKeySecretName ? [{
+                ...(ctx.gitSshPrivateKeySecret名称 ? [{
                     name: BUILD_GIT_SSH_KEY_VOLUME_NAME,
                     mountPath: BUILD_GIT_SSH_KEY_MOUNT_PATH,
                     readOnly: true,
@@ -68,8 +68,8 @@ class BuildGitInitContainerService {
     }
 
     private getAuthenticatedGitUrl(ctx: BuildJobBuilderContext) {
-        if (ctx.app.sourceType !== 'GIT_SSH' && ctx.app.gitUsername && ctx.app.gitToken) {
-            return ctx.app.gitUrl!.replace('https://', `https://${ctx.app.gitUsername}:${ctx.app.gitToken}@`);
+        if (ctx.app.sourceType !== 'GIT_SSH' && ctx.app.git用户名 && ctx.app.gitToken) {
+            return ctx.app.gitUrl!.replace('https://', `https://${ctx.app.git用户名}:${ctx.app.gitToken}@`);
         }
         return ctx.app.gitUrl!;
     }

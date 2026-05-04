@@ -85,7 +85,7 @@ class K3sApiAdapter {
         namespace = spec.metadata.namespace || namespace;
 
         if (!namespace) {
-            throw new ServiceException('Namespace is required in resource metadata in method applyResource');
+            throw new ServiceException('名称space is required in resource metadata in method applyResource');
         }
 
         const name = spec.metadata?.name;
@@ -102,7 +102,7 @@ class K3sApiAdapter {
                 console.log(`Updated ${spec.kind}/${name}`);
             } catch (error) {
                 await client.create(spec);
-                console.log(`Created ${spec.kind}/${name}`);
+                console.log(`创建d ${spec.kind}/${name}`);
             }
         } catch (error) {
             console.error(`Failed to apply ${spec.kind}/${name}:`, error);

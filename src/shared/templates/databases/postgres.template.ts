@@ -2,13 +2,13 @@ import { Constants } from "@/shared/utils/constants";
 import { AppTemplateContentModel, AppTemplateModel } from "../../model/app-template.model";
 
 export function getPostgresAppTemplate(config?: {
-    appName?: string,
-    dbName?: string,
-    dbUsername?: string,
-    dbPassword?: string
+    app名称?: string,
+    db名称?: string,
+    db用户名?: string,
+    db密码?: string
 }): AppTemplateContentModel {
     return {
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -18,28 +18,28 @@ export function getPostgresAppTemplate(config?: {
             },
             {
                 key: "POSTGRES_DB",
-                label: "Database Name",
-                value: config?.dbName || "postgresdb",
+                label: "Database 名称",
+                value: config?.db名称 || "postgresdb",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "POSTGRES_USER",
                 label: "Database User",
-                value: config?.dbUsername || "postgresuser",
+                value: config?.db用户名 || "postgresuser",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "POSTGRES_PASSWORD",
-                label: "Database Password",
-                value: config?.dbPassword || "",
+                label: "Database 密码",
+                value: config?.db密码 || "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
             },
         ],
         appModel: {
-            name: config?.appName || "PostgreSQL",
+            name: config?.app名称 || "PostgreSQL",
             appType: 'POSTGRES',
             sourceType: 'CONTAINER',
             containerImageSource: "",
@@ -58,7 +58,7 @@ export function getPostgresAppTemplate(config?: {
             size: 300,
             containerMountPath: '/var/lib/qs-postgres',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -70,7 +70,7 @@ export function getPostgresAppTemplate(config?: {
 
 export const postgreAppTemplate: AppTemplateModel = {
     name: "PostgreSQL",
-    iconName: 'postgres.svg',
+    icon名称: 'postgres.svg',
     templates: [
         getPostgresAppTemplate()
     ]

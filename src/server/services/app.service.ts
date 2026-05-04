@@ -4,7 +4,7 @@ import { Tags } from "../utils/cache-tag-generator.utils";
 import { App, AppBasicAuth, AppDomain, AppFileMount, AppNodePort, AppPort, AppVolume, Prisma } from "@prisma/client";
 import { AppExtendedModel, AppWithProjectModel } from "@/shared/model/app-extended.model";
 import { ServiceException } from "@/shared/model/service.exception.model";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import deploymentService from "./deployment.service";
 import buildService from "./build.service";
 import ingressService from "./ingress.service";
@@ -32,13 +32,13 @@ class AppService {
 
             if (app.sourceType === 'GIT' || app.sourceType === 'GIT_SSH') {
                 // first make build
-                const [buildJobName, gitCommitHash, gitCommitMessage, shouldDeployImmediately] = await buildService.buildApp(deploymentId, app, forceBuild);
+                const [buildJob名称, gitCommitHash, gitCommitMessage, shouldDeployImmediately] = await buildService.buildApp(deploymentId, app, forceBuild);
                 if (shouldDeployImmediately) {
-                    dlog(deploymentId, `Starting deployment with output from build "${buildJobName}"`);
+                    dlog(deploymentId, `Starting deployment with output from build "${buildJob名称}"`);
                     await deploymentService.createDeployment(
                         deploymentId,
                         app,
-                        buildJobName,
+                        buildJob名称,
                         gitCommitHash,
                         gitCommitMessage,
                         app.buildMethod === 'DOCKERFILE' ? 'DOCKERFILE' : 'RAILPACK',
@@ -146,7 +146,7 @@ class AppService {
         });
     }
 
-    async save(item: Prisma.AppUncheckedCreateInput | Prisma.AppUncheckedUpdateInput, createDefaultPort = true, tx?: Prisma.TransactionClient) {
+    async save(item: Prisma.AppUnchecked创建Input | Prisma.AppUncheckedUpdateInput, createDefaultPort = true, tx?: Prisma.TransactionClient) {
         let savedItem: App;
         const client = tx || dataAccess.client;
         try {
@@ -158,9 +158,9 @@ class AppService {
                     data: item
                 });
             } else {
-                item.id = KubeObjectNameUtils.toAppId(item.name as string);
+                item.id = KubeObject名称Utils.toAppId(item.name as string);
                 savedItem = await client.app.create({
-                    data: item as Prisma.AppUncheckedCreateInput
+                    data: item as Prisma.AppUnchecked创建Input
                 });
                 if (createDefaultPort) {
                     // add default port 80
@@ -257,34 +257,34 @@ class AppService {
         });
     }
 
-    async saveDomain(domainToBeSaved: Prisma.AppDomainUncheckedCreateInput | Prisma.AppDomainUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
+    async saveDomain(domainToBe保存d: Prisma.AppDomainUnchecked创建Input | Prisma.AppDomainUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
         let savedItem: AppDomain;
         const client = tx || dataAccess.client;
-        const existingApp = await this.getExtendedById(domainToBeSaved.appId as string);
+        const existingApp = await this.getExtendedById(domainToBe保存d.appId as string);
         const existingDomainWithSameHostname = await client.appDomain.findFirst({
             where: {
-                hostname: domainToBeSaved.hostname as string,
+                hostname: domainToBe保存d.hostname as string,
             }
         });
         try {
-            if (domainToBeSaved.id) {
-                if (domainToBeSaved.hostname === existingDomainWithSameHostname?.hostname &&
-                    domainToBeSaved.id &&
-                    domainToBeSaved.id !== existingDomainWithSameHostname?.id) {
+            if (domainToBe保存d.id) {
+                if (domainToBe保存d.hostname === existingDomainWithSameHostname?.hostname &&
+                    domainToBe保存d.id &&
+                    domainToBe保存d.id !== existingDomainWithSameHostname?.id) {
                     throw new ServiceException("Hostname is already in use by this or another app.");
                 }
                 savedItem = await client.appDomain.update({
                     where: {
-                        id: domainToBeSaved.id as string
+                        id: domainToBe保存d.id as string
                     },
-                    data: domainToBeSaved
+                    data: domainToBe保存d
                 });
             } else {
                 if (existingDomainWithSameHostname) {
                     throw new ServiceException("Hostname is already in use by this or another app.");
                 }
                 savedItem = await client.appDomain.create({
-                    data: domainToBeSaved as Prisma.AppDomainUncheckedCreateInput
+                    data: domainToBe保存d as Prisma.AppDomainUnchecked创建Input
                 });
             }
 
@@ -367,33 +367,33 @@ class AppService {
         });
     }
 
-    async saveVolume(volumeToBeSaved: Prisma.AppVolumeUncheckedCreateInput | Prisma.AppVolumeUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
+    async saveVolume(volumeToBe保存d: Prisma.AppVolumeUnchecked创建Input | Prisma.AppVolumeUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
         let savedItem: AppVolume;
         const client = tx || dataAccess.client;
-        const existingApp = await this.getExtendedById(volumeToBeSaved.appId as string, false, client);
+        const existingApp = await this.getExtendedById(volumeToBe保存d.appId as string, false, client);
         const existingAppWithSameVolumeMountPath = await client.appVolume.findMany({
             where: {
-                appId: volumeToBeSaved.appId as string,
+                appId: volumeToBe保存d.appId as string,
             }
         });
 
         if (existingAppWithSameVolumeMountPath
-            .filter(x => x.id !== volumeToBeSaved.id)
-            .some(x => x.containerMountPath === volumeToBeSaved.containerMountPath)) {
+            .filter(x => x.id !== volumeToBe保存d.id)
+            .some(x => x.containerMountPath === volumeToBe保存d.containerMountPath)) {
             throw new ServiceException("Mount Path is already configured within the same app.");
         }
 
         try {
-            if (volumeToBeSaved.id) {
+            if (volumeToBe保存d.id) {
                 savedItem = await client.appVolume.update({
                     where: {
-                        id: volumeToBeSaved.id as string
+                        id: volumeToBe保存d.id as string
                     },
-                    data: volumeToBeSaved
+                    data: volumeToBe保存d
                 });
             } else {
                 savedItem = await client.appVolume.create({
-                    data: volumeToBeSaved as Prisma.AppVolumeUncheckedCreateInput
+                    data: volumeToBe保存d as Prisma.AppVolumeUnchecked创建Input
                 });
             }
 
@@ -434,32 +434,32 @@ class AppService {
         }
     }
 
-    async saveFileMount(fileMountToBeSaved: Prisma.AppFileMountUncheckedCreateInput | Prisma.AppFileMountUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
+    async saveFileMount(fileMountToBe保存d: Prisma.AppFileMountUnchecked创建Input | Prisma.AppFileMountUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
         let savedItem: AppFileMount;
         const client = tx || dataAccess.client;
-        const existingApp = await this.getExtendedById(fileMountToBeSaved.appId as string, false, client);
+        const existingApp = await this.getExtendedById(fileMountToBe保存d.appId as string, false, client);
         const existingAppWithSameVolumeMountPath = await client.appFileMount.findMany({
             where: {
-                appId: fileMountToBeSaved.appId as string,
+                appId: fileMountToBe保存d.appId as string,
             }
         });
 
-        if (existingAppWithSameVolumeMountPath.filter(x => x.id !== fileMountToBeSaved.id)
-            .some(x => x.containerMountPath === fileMountToBeSaved.containerMountPath)) {
+        if (existingAppWithSameVolumeMountPath.filter(x => x.id !== fileMountToBe保存d.id)
+            .some(x => x.containerMountPath === fileMountToBe保存d.containerMountPath)) {
             throw new ServiceException("Mount Path is already configured within the same app.");
         }
 
         try {
-            if (fileMountToBeSaved.id) {
+            if (fileMountToBe保存d.id) {
                 savedItem = await client.appFileMount.update({
                     where: {
-                        id: fileMountToBeSaved.id as string
+                        id: fileMountToBe保存d.id as string
                     },
-                    data: fileMountToBeSaved
+                    data: fileMountToBe保存d
                 });
             } else {
                 savedItem = await client.appFileMount.create({
-                    data: fileMountToBeSaved as Prisma.AppFileMountUncheckedCreateInput
+                    data: fileMountToBe保存d as Prisma.AppFileMountUnchecked创建Input
                 });
             }
 
@@ -493,30 +493,30 @@ class AppService {
         }
     }
 
-    async savePort(portToBeSaved: Prisma.AppPortUncheckedCreateInput | Prisma.AppPortUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
+    async savePort(portToBe保存d: Prisma.AppPortUnchecked创建Input | Prisma.AppPortUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
         let savedItem: AppPort;
         const client = tx || dataAccess.client;
-        const existingApp = await this.getExtendedById(portToBeSaved.appId as string, false, client);
+        const existingApp = await this.getExtendedById(portToBe保存d.appId as string, false, client);
         const allPortsOfApp = await client.appPort.findMany({
             where: {
-                appId: portToBeSaved.appId as string,
+                appId: portToBe保存d.appId as string,
             }
         });
-        if (allPortsOfApp.filter(x => x.id !== portToBeSaved.id)
-            .some(x => x.port === portToBeSaved.port)) {
+        if (allPortsOfApp.filter(x => x.id !== portToBe保存d.id)
+            .some(x => x.port === portToBe保存d.port)) {
             throw new ServiceException("Port is already configured within the same app.");
         }
         try {
-            if (portToBeSaved.id) {
+            if (portToBe保存d.id) {
                 savedItem = await client.appPort.update({
                     where: {
-                        id: portToBeSaved.id as string
+                        id: portToBe保存d.id as string
                     },
-                    data: portToBeSaved
+                    data: portToBe保存d
                 });
             } else {
                 savedItem = await client.appPort.create({
-                    data: portToBeSaved as Prisma.AppPortUncheckedCreateInput
+                    data: portToBe保存d as Prisma.AppPortUnchecked创建Input
                 });
             }
 
@@ -558,21 +558,21 @@ class AppService {
         }
     }
 
-    async saveBasicAuth(itemToBeSaved: Prisma.AppBasicAuthUncheckedCreateInput | Prisma.AppBasicAuthUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
+    async saveBasicAuth(itemToBe保存d: Prisma.AppBasicAuthUnchecked创建Input | Prisma.AppBasicAuthUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
         let savedItem: AppBasicAuth;
         const client = tx || dataAccess.client;
-        const existingApp = await this.getExtendedById(itemToBeSaved.appId as string, false, tx);
+        const existingApp = await this.getExtendedById(itemToBe保存d.appId as string, false, tx);
         try {
-            if (itemToBeSaved.id) {
+            if (itemToBe保存d.id) {
                 savedItem = await client.appBasicAuth.update({
                     where: {
-                        id: itemToBeSaved.id as string
+                        id: itemToBe保存d.id as string
                     },
-                    data: itemToBeSaved
+                    data: itemToBe保存d
                 });
             } else {
                 savedItem = await client.appBasicAuth.create({
-                    data: itemToBeSaved as Prisma.AppBasicAuthUncheckedCreateInput
+                    data: itemToBe保存d as Prisma.AppBasicAuthUnchecked创建Input
                 });
             }
 
@@ -642,15 +642,15 @@ class AppService {
         return apps;
     }
 
-    async saveNodePort(nodePortToBeSaved: Prisma.AppNodePortUncheckedCreateInput | Prisma.AppNodePortUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
+    async saveNodePort(nodePortToBe保存d: Prisma.AppNodePortUnchecked创建Input | Prisma.AppNodePortUncheckedUpdateInput, tx?: Prisma.TransactionClient) {
         const client = tx || dataAccess.client;
-        const existingApp = await this.getExtendedById(nodePortToBeSaved.appId as string, false, client);
+        const existingApp = await this.getExtendedById(nodePortToBe保存d.appId as string, false, client);
 
-        const nodePortValue = nodePortToBeSaved.nodePort as number;
+        const nodePortValue = nodePortToBe保存d.nodePort as number;
         const existingWithSameNodePort = await client.appNodePort.findFirst({
             where: {
                 nodePort: nodePortValue,
-                NOT: { id: nodePortToBeSaved.id as string | undefined },
+                NOT: { id: nodePortToBe保存d.id as string | undefined },
             }
         });
         if (existingWithSameNodePort) {
@@ -659,14 +659,14 @@ class AppService {
 
         let savedItem: AppNodePort;
         try {
-            if (nodePortToBeSaved.id) {
+            if (nodePortToBe保存d.id) {
                 savedItem = await client.appNodePort.update({
-                    where: { id: nodePortToBeSaved.id as string },
-                    data: nodePortToBeSaved,
+                    where: { id: nodePortToBe保存d.id as string },
+                    data: nodePortToBe保存d,
                 });
             } else {
                 savedItem = await client.appNodePort.create({
-                    data: nodePortToBeSaved as Prisma.AppNodePortUncheckedCreateInput,
+                    data: nodePortToBe保存d as Prisma.AppNodePortUnchecked创建Input,
                 });
             }
         } finally {

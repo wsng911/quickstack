@@ -1,59 +1,43 @@
-FROM node:22-alpine AS base
-
-ARG VERSION_ARG
-RUN apk add --no-cache openssl openssh-keygen
-
-FROM base AS deps
-
-# Install necessary packages for building
-RUN apk add --no-cache libc6-compat python3 make g++ 
+FROM node:22-alpine AS deps
 
 WORKDIR /app
 
-# Install dependencies
-COPY yarn.lock package.json ./
-RUN yarn install
+RUN apk add --no-cache git libc6-compat && \
+    git config --global user.email "dev@example.com" && \
+    git config --global user.name "dev"
 
-# Rebuild the source code only when needed
-FROM base AS builder
+COPY package*.json ./
+RUN npm ci
+
+FROM node:22-alpine AS builder
+
 WORKDIR /app
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Dummy Database URL for Prisma generation
-ENV DATABASE_URL="file:./dev.db"
+RUN git init && git add -A && git commit -m "init" || true
 
-RUN yarn run prisma-generate-build
-RUN yarn run build
-RUN rm -rf ./next/standalone
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Production image, copy all the files and run next
-FROM base AS runner
+RUN npm run build
+
+FROM node:22-alpine
+
 WORKDIR /app
 
+RUN apk add --no-cache docker-cli
+
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+RUN mkdir -p /app/data
+
 ENV NODE_ENV=production
-ENV PYTHON=/usr/bin/python3
-ENV QS_VERSION=$VERSION_ARG
-ENV DATABASE_URL="file:/app/storage/db/data.db"
-
-RUN apk add --no-cache git openssh-client
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-RUN mkdir storage tmp-storage
-RUN chown nextjs:nodejs storage tmp-storage
-
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.js
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-
-USER nextjs
-
 ENV PORT=3000
+ENV NEXT_TELEMETRY_DISABLED=1
 
-CMD HOSTNAME="0.0.0.0" npm run start-prod
+EXPOSE 3000
+
+CMD ["node", "server.js"]

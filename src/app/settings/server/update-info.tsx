@@ -18,7 +18,7 @@ export default async function UpdateInfoPage() {
         useCanaryChannel,
         currentVersion,
         newVersionInfo,
-        k3sControllerStatus,
+        k3sController状态,
         longhornInstalled,
     ] = await Promise.all([
         paramService.getBoolean(ParamService.USE_CANARY_CHANNEL, false),
@@ -73,12 +73,12 @@ export default async function UpdateInfoPage() {
     }
 
 
-    return <div className="grid gap-6">
+    return <div class名称="grid gap-6">
         <QuickStackVersionInfo newVersionInfo={newVersionInfo} currentVersion={currentVersion} useCanaryChannel={useCanaryChannel!} />
         <K3sUpdateInfo k3sCurrentVersionInfo={k3sCurrentVersionInfo}
             k3sNextVersionInfo={k3sNextVersionInfo}
             k3sUpgradeIsInProgress={k3sUpgradeIsInProgress}
-            initialControllerStatus={k3sControllerStatus} />
+            initialController状态={k3sController状态} />
         <LonghornUpdateInfo
             longhornInstalled={longhornInstalled}
             longhornCurrentVersionInfo={longhornCurrentVersionInfo}

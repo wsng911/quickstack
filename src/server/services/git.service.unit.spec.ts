@@ -48,7 +48,7 @@ describe('GitService', () => {
             id: 'app-1',
             sourceType: 'GIT',
             gitUrl: 'https://github.com/biersoeckli/dummy-node-app.git',
-            gitUsername: 'user',
+            git用户名: 'user',
             gitToken: 'token',
             gitBranch: 'main',
         } as any, async () => undefined);
@@ -64,7 +64,7 @@ describe('GitService', () => {
             id: 'app-1',
             sourceType: 'GIT_SSH',
             gitUrl: 'git@github.com:biersoeckli/dummy-node-app.git',
-            gitUsername: 'user',
+            git用户名: 'user',
             gitToken: 'token',
             gitBranch: 'main',
         } as any, async () => undefined);
@@ -115,7 +115,7 @@ describe('GitService', () => {
             id: 'app-1',
             sourceType: 'GIT',
             gitUrl: 'https://github.com/biersoeckli/dummy-node-app.git',
-            gitUsername: 'user',
+            git用户名: 'user',
             gitToken: 'token',
         });
 

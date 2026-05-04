@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 
-export class KubeObjectNameUtils {
+export class KubeObject名称Utils {
 
     private static readonly MAX_OBJECT_NAME_LENGTH = 30; // in Kubernetes, the maximum length of an object name is 63 characters
 
@@ -11,31 +11,31 @@ export class KubeObjectNameUtils {
         return str
             .replace(/([a-z])([A-Z])/g, '$1_$2')   // Insert underscore between camel case boundaries
             .replace(/\s+/g, '_')                   // Replace spaces with underscores
-            .replace(/[^\w_]+/g, '')                // Remove any non-alphanumeric characters except underscores
+            .replace(/[^\w_]+/g, '')                // 移除 any non-alphanumeric characters except underscores
             .toLowerCase();                         // Convert to lowercase
     }
 
     static toObjectId(str: string): string {
-        let snakeCase = KubeObjectNameUtils.toSnakeCase(str);
+        let snakeCase = KubeObject名称Utils.toSnakeCase(str);
         const randomString = crypto.randomBytes(4).toString('hex');
         snakeCase = `${snakeCase}-${randomString}`;
         return snakeCase
             .replace(/_/g, '-')                     // Replace underscores with hyphens
-            .replace(/[^a-zA-Z0-9-]+/g, '')         // Remove any non-alphanumeric characters except hyphens
+            .replace(/[^a-zA-Z0-9-]+/g, '')         // 移除 any non-alphanumeric characters except hyphens
             .toLowerCase();                         // Convert to lowercase
     }
 
     static toProjectId(str: string): `proj-${string}` {
-        str = str.substring(0, KubeObjectNameUtils.MAX_OBJECT_NAME_LENGTH).trim();
-        return `proj-${KubeObjectNameUtils.toObjectId(str)}`;
+        str = str.substring(0, KubeObject名称Utils.MAX_OBJECT_NAME_LENGTH).trim();
+        return `proj-${KubeObject名称Utils.toObjectId(str)}`;
     }
 
     static toAppId(str: string): `app-${string}` {
-        str = str.substring(0, KubeObjectNameUtils.MAX_OBJECT_NAME_LENGTH).trim();
-        return `app-${KubeObjectNameUtils.toObjectId(str)}`;
+        str = str.substring(0, KubeObject名称Utils.MAX_OBJECT_NAME_LENGTH).trim();
+        return `app-${KubeObject名称Utils.toObjectId(str)}`;
     }
 
-    static toJobName(appId: string): `build-${string}` {
+    static toJob名称(appId: string): `build-${string}` {
         return `build-${appId}`;
     }
 
@@ -45,27 +45,27 @@ export class KubeObjectNameUtils {
         return `${str}-${randomString}`;
     }
 
-    static toServiceName(appId: string): `svc-${string}` {
+    static toService名称(appId: string): `svc-${string}` {
         return `svc-${appId}`;
     }
 
-    static toNodePortServiceName(appId: string): `np-${string}` {
+    static toNodePortService名称(appId: string): `np-${string}` {
         return `np-${appId}`;
     }
 
-    static toPvcName(volumeId: string): `pvc-${string}` {
+    static toPvc名称(volumeId: string): `pvc-${string}` {
         return `pvc-${volumeId}`;
     }
 
-    static toRestorePodName(volumeId: string): `restore-${string}` {
+    static toRestorePod名称(volumeId: string): `restore-${string}` {
         return `restore-${volumeId}`;
     }
 
-    static getIngressName(domainId: string): `ingress-${string}` {
+    static getIngress名称(domainId: string): `ingress-${string}` {
         return `ingress-${domainId}`;
     }
 
-    static getConfigMapName(id: string): `cm-${string}` {
+    static getConfigMap名称(id: string): `cm-${string}` {
         return `cm-${id}`;
     }
 
@@ -85,7 +85,7 @@ export class KubeObjectNameUtils {
         return `pga-${appId}`;
     }
 
-    static toNetworkPolicyName(appId: string): string {
+    static toNetworkPolicy名称(appId: string): string {
         return `np-${appId}`.substring(0, 63); // not more than 63 characters
     }
 }

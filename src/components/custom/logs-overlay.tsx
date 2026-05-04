@@ -11,13 +11,13 @@ import LogsStreamed from "@/components/custom/logs-streamed";
 
 export function LogsDialog({
   namespace,
-  podName,
-  onClose,
+  pod名称,
+  on关闭,
   children
 }: {
   namespace: string;
-  podName: string;
-  onClose?: () => void;
+  pod名称: string;
+  on关闭?: () => void;
   children: React.ReactNode;
 }) {
 
@@ -31,15 +31,15 @@ export function LogsDialog({
     </div>
     <Dialog open={isOpen} onOpenChange={(isO) => {
       setIsOpen(isO);
-      if (onClose && !isO) {
-        onClose();
+      if (on关闭 && !isO) {
+        on关闭();
       }
     }}>
-      <DialogContent className="sm:max-w-[1300px]">
+      <DialogContent class名称="sm:max-w-[1300px]">
         <DialogHeader>
           <DialogTitle>Logs</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
+        <div class名称="space-y-4">
           <Input placeholder="Lines showed (default 100)" value={linesCountInput} onChange={(e) => setLinesCountInput(parseInt(e.target.value || '0'))}
             onBlur={(e) => {
               const value = parseInt(e.target.value || '0');
@@ -47,7 +47,7 @@ export function LogsDialog({
                 setLinesCount(value);
               }
             }} />
-          {(namespace && podName) ? <LogsStreamed namespace={namespace} podName={podName} linesCount={linesCount} fullHeight={true} /> : 'Currently there are no Logs available'}
+          {(namespace && pod名称) ? <LogsStreamed namespace={namespace} pod名称={pod名称} linesCount={linesCount} fullHeight={true} /> : 'Currently there are no Logs available'}
         </div>
       </DialogContent>
     </Dialog>

@@ -1,14 +1,14 @@
 import { Constants } from "@/shared/utils/constants";
 import { AppTemplateModel } from "../../model/app-template.model";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
-import { KubeObjectNameUtils } from "@/server/utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "@/server/utils/kube-object-name.utils";
 
 export const openwebuiAppTemplate: AppTemplateModel = {
     name: "Open WebUI",
-    iconName: 'https://avatars.githubusercontent.com/u/158137808',
+    icon名称: 'https://avatars.githubusercontent.com/u/158137808',
     templates: [{
-        // Ollama Backend
-        inputSettings: [
+        // Ollama 返回end
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -38,7 +38,7 @@ OLLAMA_ORIGINS=*
             size: 10000,
             containerMountPath: '/root/.ollama',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -48,7 +48,7 @@ OLLAMA_ORIGINS=*
     },
     // Open WebUI Frontend
     {
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -83,7 +83,7 @@ OLLAMA_ORIGINS=*
             size: 2000,
             containerMountPath: '/app/backend/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -94,17 +94,17 @@ OLLAMA_ORIGINS=*
 }
 
 
-export const postCreateOpenwebuiAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
+export const post创建OpenwebuiAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
 
     const createdOllamaApp = createdApps[0];
     const createdWebuiApp = createdApps[1];
 
     if (!createdOllamaApp || !createdWebuiApp) {
-        throw new Error('Created templates for Ollama or Open WebUI not found.');
+        throw new Error('创建d templates for Ollama or Open WebUI not found.');
     }
 
-    const ollamaAppInternalHostname = KubeObjectNameUtils.toServiceName(createdOllamaApp.id);
-    const webUiInternalHostname = KubeObjectNameUtils.toServiceName(createdWebuiApp.id);
+    const ollamaAppInternalHostname = KubeObject名称Utils.toService名称(createdOllamaApp.id);
+    const webUiInternalHostname = KubeObject名称Utils.toService名称(createdWebuiApp.id);
 
     createdWebuiApp.envVars += `OLLAMA_BASE_URLS=http://${ollamaAppInternalHostname}:11434`;
 

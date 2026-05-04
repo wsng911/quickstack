@@ -6,7 +6,7 @@ export const UserGroupModel = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().nullish(),
-  canAccessBackups: z.boolean(),
+  canAccess返回ups: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

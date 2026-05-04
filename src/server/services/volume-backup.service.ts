@@ -1,13 +1,13 @@
 import { revalidateTag, unstable_cache } from "next/cache";
 import dataAccess from "../adapter/db.client";
 import { Tags } from "../utils/cache-tag-generator.utils";
-import { Prisma, VolumeBackup } from "@prisma/client";
-import { VolumeBackupExtendedModel } from "@/shared/model/volume-backup-extended.model";
+import { Prisma, Volume返回up } from "@prisma/client";
+import { Volume返回upExtendedModel } from "@/shared/model/volume-backup-extended.model";
 
-class VolumeBackupService {
+class Volume返回upService {
 
-    async getAll(): Promise<VolumeBackupExtendedModel[]> {
-        return await unstable_cache(() => dataAccess.client.volumeBackup.findMany({
+    async getAll(): Promise<Volume返回upExtendedModel[]> {
+        return await unstable_cache(() => dataAccess.client.volume返回up.findMany({
             orderBy: {
                 cron: 'asc'
             },
@@ -15,13 +15,13 @@ class VolumeBackupService {
                 target: true
             }
         }),
-            [Tags.volumeBackups()], {
-            tags: [Tags.volumeBackups()]
+            [Tags.volume返回ups()], {
+            tags: [Tags.volume返回ups()]
         })();
     }
 
-    async getForApp(appId: string): Promise<VolumeBackupExtendedModel[]> {
-        return await unstable_cache((appId: string) => dataAccess.client.volumeBackup.findMany({
+    async getForApp(appId: string): Promise<Volume返回upExtendedModel[]> {
+        return await unstable_cache((appId: string) => dataAccess.client.volume返回up.findMany({
             where: {
                 volume: {
                     appId
@@ -34,36 +34,36 @@ class VolumeBackupService {
                 cron: 'asc'
             }
         }),
-            [Tags.volumeBackups()], {
-            tags: [Tags.volumeBackups()]
+            [Tags.volume返回ups()], {
+            tags: [Tags.volume返回ups()]
         })(appId);
     }
 
     async getById(id: string) {
-        return dataAccess.client.volumeBackup.findFirstOrThrow({
+        return dataAccess.client.volume返回up.findFirstOrThrow({
             where: {
                 id
             }
         });
     }
 
-    async save(item: Prisma.VolumeBackupUncheckedCreateInput | Prisma.VolumeBackupUncheckedUpdateInput) {
-        let savedItem: VolumeBackup;
+    async save(item: Prisma.Volume返回upUnchecked创建Input | Prisma.Volume返回upUncheckedUpdateInput) {
+        let savedItem: Volume返回up;
         try {
             if (item.id) {
-                savedItem = await dataAccess.client.volumeBackup.update({
+                savedItem = await dataAccess.client.volume返回up.update({
                     where: {
                         id: item.id as string
                     },
                     data: item,
                 });
             } else {
-                savedItem = await dataAccess.client.volumeBackup.create({
-                    data: item as Prisma.VolumeBackupUncheckedCreateInput,
+                savedItem = await dataAccess.client.volume返回up.create({
+                    data: item as Prisma.Volume返回upUnchecked创建Input,
                 });
             }
         } finally {
-            revalidateTag(Tags.volumeBackups());
+            revalidateTag(Tags.volume返回ups());
         }
         return savedItem;
     }
@@ -74,16 +74,16 @@ class VolumeBackupService {
             return;
         }
         try {
-            await dataAccess.client.volumeBackup.delete({
+            await dataAccess.client.volume返回up.delete({
                 where: {
                     id
                 }
             });
         } finally {
-            revalidateTag(Tags.volumeBackups());
+            revalidateTag(Tags.volume返回ups());
         }
     }
 }
 
-const volumeBackupService = new VolumeBackupService();
-export default volumeBackupService;
+const volume返回upService = new Volume返回upService();
+export default volume返回upService;

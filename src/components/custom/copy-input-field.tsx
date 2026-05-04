@@ -20,12 +20,12 @@ export default function CopyInputField({
     }
 
     return (<>
-        <div className="">
+        <div class名称="">
             <Label>{label}</Label>
-            <div className="flex items-center space-x-2 pt-2">
+            <div class名称="flex items-center space-x-2 pt-2">
                 <Input
                     value={secret ? '***************' : value}
-                    className="bg-slate-100 cursor-pointer"
+                    class名称="bg-slate-100 cursor-pointer"
                     readOnly
                     onClick={() => copyValue(value)} />
 

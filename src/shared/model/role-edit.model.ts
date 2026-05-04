@@ -17,12 +17,12 @@ const RoleProjectPermissionSchema = z.object({
 });
 
 // Schema for UserRole.
-export const roleEditZodModel = z.object({
+export const role编辑ZodModel = z.object({
   id: z.string().trim().optional(),
   name: z.string().trim().min(1),
-  canAccessBackups: z.boolean().optional().default(false),
+  canAccess返回ups: z.boolean().optional().default(false),
   roleProjectPermissions: z.array(RoleProjectPermissionSchema).optional().default([]),
 });
 
 
-export type RoleEditModel = z.infer<typeof roleEditZodModel>;
+export type Role编辑Model = z.infer<typeof role编辑ZodModel>;

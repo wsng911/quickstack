@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import {
   Form,
   FormControl,
-  FormDescription,
+  Form描述,
   FormField,
   FormItem,
   FormLabel,
@@ -16,19 +16,19 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { S3Target, User } from "@prisma/client"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { toast } from "sonner"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { UserEditModel, userEditZodModel } from "@/shared/model/user-edit.model"
+import { User编辑Model, user编辑ZodModel } from "@/shared/model/user-edit.model"
 import { UserExtended } from "@/shared/model/user-extended.model"
 import { saveUser } from "./actions"
 import SelectFormField from "@/components/custom/select-form-field"
 import { UserGroupExtended } from "@/shared/model/sim-session.model"
 
 
-export default function UserEditOverlay({ children, user, userGroups }: {
+export default function User编辑Overlay({ children, user, userGroups }: {
   children: React.ReactNode;
   userGroups: UserGroupExtended[];
   user?: UserExtended;
@@ -37,17 +37,17 @@ export default function UserEditOverlay({ children, user, userGroups }: {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
 
-  const form = useForm<UserEditModel>({
-    resolver: zodResolver(userEditZodModel),
+  const form = useForm<User编辑Model>({
+    resolver: zodResolver(user编辑ZodModel),
     defaultValues: user
   });
 
   const [state, formAction] = useFormState((state: ServerActionResult<any, any>,
-    payload: UserEditModel) =>
+    payload: User编辑Model) =>
     saveUser(state, {
       ...payload,
       id: user?.id
-    }), FormUtils.getInitialFormState<typeof userEditZodModel>());
+    }), FormUtils.getInitialFormState<typeof user编辑ZodModel>());
 
   useEffect(() => {
     if (state.status === 'success') {
@@ -55,7 +55,7 @@ export default function UserEditOverlay({ children, user, userGroups }: {
       toast.success('User saved successfully');
       setIsOpen(false);
     }
-    FormUtils.mapValidationErrorsToForm<typeof userEditZodModel>(state, form);
+    FormUtils.mapValidationErrorsToForm<typeof user编辑ZodModel>(state, form);
   }, [state]);
 
   useEffect(() => {
@@ -70,17 +70,17 @@ export default function UserEditOverlay({ children, user, userGroups }: {
         {children}
       </div>
       <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent class名称="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{user?.id ? 'Edit' : 'Create'} User</DialogTitle>
+            <DialogTitle>{user?.id ? '编辑' : '创建'} User</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="max-h-[70vh]">
-            <div className="px-2">
+          <ScrollArea class名称="max-h-[70vh]">
+            <div class名称="px-2">
               <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                   return formAction(data);
                 })()}>
-                  <div className="space-y-4">
+                  <div class名称="space-y-4">
                     <FormField
                       control={form.control}
                       name="email"
@@ -99,7 +99,7 @@ export default function UserEditOverlay({ children, user, userGroups }: {
                       form={form}
                       name="userGroupId"
                       label="Group"
-                      formDescription={<>
+                      form描述={<>
                         Choose a preconfigured group or create your own in the settings.
                       </>}
                       values={userGroups.map((group) =>
@@ -108,23 +108,23 @@ export default function UserEditOverlay({ children, user, userGroups }: {
 
                     <FormField
                       control={form.control}
-                      name="newPassword"
+                      name="new密码"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>New Password {user?.id && <>(optional)</>}</FormLabel>
+                          <FormLabel>New 密码 {user?.id && <>(optional)</>}</FormLabel>
                           <FormControl>
                             <Input type="password" {...field} />
                           </FormControl>
-                          <FormDescription>
+                          <Form描述>
                             {user?.id && <>Leave empty to keep the old password.</>}
-                          </FormDescription>
+                          </Form描述>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    <p className="text-red-500">{state.message}</p>
-                    <SubmitButton>Save</SubmitButton>
+                    <p class名称="text-red-500">{state.message}</p>
+                    <提交Button>保存</提交Button>
                   </div>
                 </form>
               </Form >

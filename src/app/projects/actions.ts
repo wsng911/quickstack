@@ -8,16 +8,16 @@ import { UserGroupUtils } from "@/shared/utils/role.utils";
 import { ServiceException } from "@/shared/model/service.exception.model";
 
 const createProjectSchema = z.object({
-    projectName: z.string().min(1),
+    project名称: z.string().min(1),
     projectId: z.string().optional()
 });
 
-export const createProject = async (projectName: string, projectId?: string) =>
-    saveFormAction({ projectName, projectId }, createProjectSchema, async (validatedData) => {
+export const createProject = async (project名称: string, projectId?: string) =>
+    saveFormAction({ project名称, projectId }, createProjectSchema, async (validatedData) => {
         const session = await getAdminUserSession();
         await projectService.save({
             id: validatedData.projectId ?? undefined,
-            name: validatedData.projectName
+            name: validatedData.project名称
         });
         return new SuccessActionResult(undefined, "Project created successfully.");
     });

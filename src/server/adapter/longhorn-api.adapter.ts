@@ -4,8 +4,8 @@ class LonghornApiAdapter {
         return process.env.NODE_ENV === 'production' ? 'http://longhorn-frontend.longhorn-system.svc.cluster.local' : 'http://localhost:8000';
     }
 
-    async getLonghornVolume(pvcName: String) {
-        const response = await fetch(`${this.longhornBaseUrl}/v1/volumes/${pvcName}`, {
+    async getLonghornVolume(pvc名称: String) {
+        const response = await fetch(`${this.longhornBaseUrl}/v1/volumes/${pvc名称}`, {
             cache: 'no-cache',
             method: 'GET',
             headers: {
@@ -70,8 +70,8 @@ class LonghornApiAdapter {
     }
 
 
-    async getNodeStorageInfo(nodeName: String) {
-        const response = await fetch(`${this.longhornBaseUrl}/v1/nodes/${nodeName}`, {
+    async getNodeStorageInfo(node名称: String) {
+        const response = await fetch(`${this.longhornBaseUrl}/v1/nodes/${node名称}`, {
             cache: 'no-cache',
             method: 'GET',
             headers: {
@@ -124,13 +124,13 @@ class LonghornApiAdapter {
     }
 
 
-    async backupPvc(pvcName: string) {
-        const snapshot = await this.createSnapshot(pvcName);
-        await this.createBackup(pvcName, snapshot.id);
+    async backupPvc(pvc名称: string) {
+        const snapshot = await this.createSnapshot(pvc名称);
+        await this.create返回up(pvc名称, snapshot.id);
     }
 
-    private async createBackup(pvcName: string, snapshotId: string) {
-        const response = await fetch(`${this.longhornBaseUrl}/v1/volumes/${pvcName}?action=snapshotBackup`, {
+    private async create返回up(pvc名称: string, snapshotId: string) {
+        const response = await fetch(`${this.longhornBaseUrl}/v1/volumes/${pvc名称}?action=snapshot返回up`, {
             cache: 'no-cache',
             method: 'POST',
             headers: {
@@ -149,8 +149,8 @@ class LonghornApiAdapter {
         return await response.json();
     }
 
-    private async createSnapshot(pvcName: string) {
-        const response = await fetch(`${this.longhornBaseUrl}/v1/volumes/${pvcName}?action=snapshotCreate`, {
+    private async createSnapshot(pvc名称: string) {
+        const response = await fetch(`${this.longhornBaseUrl}/v1/volumes/${pvc名称}?action=snapshot创建`, {
             cache: 'no-cache',
             method: 'POST',
             headers: {

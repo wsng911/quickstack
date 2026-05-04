@@ -3,7 +3,7 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import {
     FormControl,
-    FormDescription,
+    Form描述,
     FormField,
     FormItem,
     FormLabel,
@@ -20,7 +20,7 @@ export default function SelectFormField<TFormType extends FieldValues>(
         name,
         values,
         placeholder,
-        formDescription,
+        form描述,
         onValueChange
     }: {
         form: UseFormReturn<TFormType, any, undefined>;
@@ -28,13 +28,13 @@ export default function SelectFormField<TFormType extends FieldValues>(
         name: keyof TFormType;
         values: [string, string][];
         placeholder?: string;
-        formDescription?: string | React.ReactNode;
+        form描述?: string | React.ReactNode;
         onValueChange?: (value: string) => void;
     }
 ) {
 
     return (<>
-        <div className="hidden">
+        <div class名称="hidden">
             <FormField
                 control={form.control}
                 name={name as any}
@@ -75,9 +75,9 @@ export default function SelectFormField<TFormType extends FieldValues>(
                             ))}
                         </SelectContent>
                     </Select>
-                    {formDescription && <FormDescription>
-                        {formDescription}
-                    </FormDescription>}
+                    {form描述 && <Form描述>
+                        {form描述}
+                    </Form描述>}
                     <FormMessage />
                 </FormItem>
             )}

@@ -1,7 +1,7 @@
 import { ServiceException } from "@/shared/model/service.exception.model";
 import dataAccess from "../../adapter/db.client";
 import hostnameDnsProviderService from "../hostname-dns-provider.service";
-import { KubeObjectNameUtils } from "../../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../../utils/kube-object-name.utils";
 import deploymentService from "../deployment.service";
 import { V1Deployment, V1Ingress } from "@kubernetes/client-node";
 import { Constants } from "@/shared/utils/constants";
@@ -15,28 +15,28 @@ import networkPolicyService from "../network-policy.service";
 
 export class BaseDbToolService {
 
-    appIdToToolNameConverter: (appId: string) => string;
+    appIdToTool名称Converter: (appId: string) => string;
 
-    constructor(appIdToToolNameConverter: (appId: string) => string) {
-        this.appIdToToolNameConverter = appIdToToolNameConverter;
+    constructor(appIdToTool名称Converter: (appId: string) => string) {
+        this.appIdToTool名称Converter = appIdToTool名称Converter;
     }
 
     async isDbToolRunning(appId: string) {
-        const toolAppName = this.appIdToToolNameConverter(appId);
+        const toolApp名称 = this.appIdToTool名称Converter(appId);
         const app = await appService.getExtendedById(appId);
         const projectId = app.projectId;
 
-        const existingDeployment = await deploymentService.getDeployment(projectId, toolAppName);
+        const existingDeployment = await deploymentService.getDeployment(projectId, toolApp名称);
         if (!existingDeployment) {
             return false;
         }
 
-        const existingService = await svcService.getService(projectId, toolAppName);
+        const existingService = await svcService.getService(projectId, toolApp名称);
         if (!existingService) {
             return false;
         }
 
-        const existingIngress = await ingressService.getIngressByName(projectId, toolAppName);
+        const existingIngress = await ingressService.getIngressBy名称(projectId, toolApp名称);
         if (!existingIngress) {
             return false;
         }
@@ -47,7 +47,7 @@ export class BaseDbToolService {
     async getLoginCredentialsForRunningTool(appId: string,
         searchFunc: (existingDeployment: V1Deployment, app: AppExtendedModel) => { username: string, password: string }) {
         const app = await appService.getExtendedById(appId);
-        const toolAppName = this.appIdToToolNameConverter(appId);
+        const toolApp名称 = this.appIdToTool名称Converter(appId);
         const projectId = app.projectId;
 
         const isDbGateRunning = await this.isDbToolRunning(appId);
@@ -55,56 +55,56 @@ export class BaseDbToolService {
             throw new ServiceException('DB Gate is not running for this database');
         }
 
-        const existingDeployment = await deploymentService.getDeployment(projectId, toolAppName);
+        const existingDeployment = await deploymentService.getDeployment(projectId, toolApp名称);
         if (!existingDeployment) {
             throw new ServiceException('DB Gate is not running for this database');
         }
 
         const { username, password } = searchFunc(existingDeployment, app);
-        const traefikHostname = await hostnameDnsProviderService.getDomainForApp(toolAppName);
+        const traefikHostname = await hostnameDnsProviderService.getDomainForApp(toolApp名称);
         return { url: `https://${traefikHostname}`, username, password };
     }
 
     async deployToolForDatabase(appId: string, appPort: number, deplyomentBuilder: (app: AppExtendedModel) => V1Deployment | Promise<V1Deployment>) {
         const app = await appService.getExtendedById(appId);
-        const toolAppName = this.appIdToToolNameConverter(appId);
+        const toolApp名称 = this.appIdToTool名称Converter(appId);
 
         if (app.appType === 'APP') {
-            throw new ServiceException(`The DB Tool ${toolAppName} can only be deployed for databases, not for apps`);
+            throw new ServiceException(`The DB Tool ${toolApp名称} can only be deployed for databases, not for apps`);
         }
 
         const namespace = app.projectId;
 
-        console.log(`Deploying DB Tool ${toolAppName} for app ${appId}`);
-        const hostnameDnsProviderHostname = await hostnameDnsProviderService.getDomainForApp(toolAppName);
+        console.log(`Deploying DB Tool ${toolApp名称} for app ${appId}`);
+        const hostnameDnsProviderHostname = await hostnameDnsProviderService.getDomainForApp(toolApp名称);
 
-        console.log(`Creating DB Tool ${toolAppName} deployment for app ${appId}`);
+        console.log(`Creating DB Tool ${toolApp名称} deployment for app ${appId}`);
         await this.createOrUpdateDbToolDeplyoment(app, deplyomentBuilder);
 
-        console.log(`Creating service for DB Tool ${toolAppName} for app ${appId}`);
-        await svcService.createOrUpdateService(namespace, toolAppName, [{
+        console.log(`Creating service for DB Tool ${toolApp名称} for app ${appId}`);
+        await svcService.createOrUpdateService(namespace, toolApp名称, [{
             name: 'http',
             port: 80,
             targetPort: appPort,
         }]);
 
-        console.log(`Creating ingress for DB Tool ${toolAppName} for app ${appId}`);
-        await this.createOrUpdateIngress(toolAppName, namespace, hostnameDnsProviderHostname);
+        console.log(`Creating ingress for DB Tool ${toolApp名称} for app ${appId}`);
+        await this.createOrUpdateIngress(toolApp名称, namespace, hostnameDnsProviderHostname);
 
-        console.log(`Creating network policy for DB Tool ${toolAppName} for app ${appId}`);
-        await networkPolicyService.reconcileDbToolNetworkPolicy(toolAppName, appId, namespace);
+        console.log(`Creating network policy for DB Tool ${toolApp名称} for app ${appId}`);
+        await networkPolicyService.reconcileDbToolNetworkPolicy(toolApp名称, appId, namespace);
 
-        const fileBrowserPods = await podService.getPodsForApp(namespace, toolAppName);
+        const fileBrowserPods = await podService.getPodsForApp(namespace, toolApp名称);
         for (const pod of fileBrowserPods) {
-            await podService.waitUntilPodIsRunningFailedOrSucceded(namespace, pod.podName);
+            await podService.waitUntilPodIsRunningFailedOrSucceded(namespace, pod.pod名称);
         }
     }
 
 
     private async createOrUpdateDbToolDeplyoment(app: AppExtendedModel, deplyomentBuilder: (app: AppExtendedModel) => V1Deployment | Promise<V1Deployment>) {
         const body = await deplyomentBuilder(app);
-        const toolAppName = this.appIdToToolNameConverter(app.id);
-        await deploymentService.applyDeployment(app.projectId, toolAppName, body);
+        const toolApp名称 = this.appIdToTool名称Converter(app.id);
+        await deploymentService.applyDeployment(app.projectId, toolApp名称, body);
     }
 
     async deleteToolForAppIfExists(appId: string) {
@@ -118,30 +118,30 @@ export class BaseDbToolService {
             return;
         }
 
-        const toolAppName = this.appIdToToolNameConverter(appId);
+        const toolApp名称 = this.appIdToTool名称Converter(appId);
         const projectId = app.projectId;
 
-        const existingDeployment = await deploymentService.getDeployment(projectId, toolAppName);
-        if (existingDeployment) { await k3s.apps.deleteNamespacedDeployment(toolAppName, projectId); }
+        const existingDeployment = await deploymentService.getDeployment(projectId, toolApp名称);
+        if (existingDeployment) { await k3s.apps.delete名称spacedDeployment(toolApp名称, projectId); }
 
-        const existingService = await svcService.getService(projectId, toolAppName);
-        if (existingService) { await svcService.deleteService(projectId, toolAppName); }
+        const existingService = await svcService.getService(projectId, toolApp名称);
+        if (existingService) { await svcService.deleteService(projectId, toolApp名称); }
 
-        const existingIngress = await ingressService.getIngressByName(projectId, toolAppName);
+        const existingIngress = await ingressService.getIngressBy名称(projectId, toolApp名称);
         if (existingIngress) {
             // do not delete ingress to reduce cert-manager issues --> todo; add cleanup function in maintenance section
-            //await k3s.network.deleteNamespacedIngress(KubeObjectNameUtils.getIngressName(toolAppName), projectId);
+            //await k3s.network.delete名称spacedIngress(KubeObject名称Utils.getIngress名称(toolApp名称), projectId);
         }
 
-        await networkPolicyService.deleteDbToolNetworkPolicy(toolAppName, projectId);
+        await networkPolicyService.deleteDbToolNetworkPolicy(toolApp名称, projectId);
     }
 
-    private async createOrUpdateIngress(dbGateAppName: string, namespace: string, hostname: string) {
+    private async createOrUpdateIngress(dbGateApp名称: string, namespace: string, hostname: string) {
         const ingressDefinition: V1Ingress = {
             apiVersion: 'networking.k8s.io/v1',
             kind: 'Ingress',
             metadata: {
-                name: KubeObjectNameUtils.getIngressName(dbGateAppName),
+                name: KubeObject名称Utils.getIngress名称(dbGateApp名称),
                 namespace: namespace,
                 annotations: {
                     // dont annotate, because ingress will be deleted after redeployment of app
@@ -151,7 +151,7 @@ export class BaseDbToolService {
                 }
             },
             spec: {
-                ingressClassName: 'traefik',
+                ingressClass名称: 'traefik',
                 rules: [
                     {
                         host: hostname,
@@ -162,7 +162,7 @@ export class BaseDbToolService {
                                     pathType: 'Prefix',
                                     backend: {
                                         service: {
-                                            name: KubeObjectNameUtils.toServiceName(dbGateAppName),
+                                            name: KubeObject名称Utils.toService名称(dbGateApp名称),
                                             port: {
                                                 number: 80,
                                             },
@@ -175,16 +175,16 @@ export class BaseDbToolService {
                 ],
                 tls: [{
                     hosts: [hostname],
-                    secretName: `sec-tls-${hostname}`
+                    secret名称: `sec-tls-${hostname}`
                 }],
             },
         };
 
-        const existingIngress = await ingressService.getIngressByName(namespace, dbGateAppName);
+        const existingIngress = await ingressService.getIngressBy名称(namespace, dbGateApp名称);
         if (existingIngress) {
-            await k3s.network.replaceNamespacedIngress(KubeObjectNameUtils.getIngressName(dbGateAppName), namespace, ingressDefinition);
+            await k3s.network.replace名称spacedIngress(KubeObject名称Utils.getIngress名称(dbGateApp名称), namespace, ingressDefinition);
         } else {
-            await k3s.network.createNamespacedIngress(namespace, ingressDefinition);
+            await k3s.network.create名称spacedIngress(namespace, ingressDefinition);
         }
     }
 }

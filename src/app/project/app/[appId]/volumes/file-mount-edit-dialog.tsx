@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -15,33 +15,33 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { AppFileMount } from "@prisma/client"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { saveFileMount } from "./actions"
 import { toast } from "sonner"
 import { AppExtendedModel } from "@/shared/model/app-extended.model"
-import { FileMountEditModel, fileMountEditZodModel } from "@/shared/model/file-mount-edit.model"
+import { FileMount编辑Model, fileMount编辑ZodModel } from "@/shared/model/file-mount-edit.model"
 import { Textarea } from "@/components/ui/textarea"
 
-export default function FileMountEditDialog({ children, fileMount, app }: { children: React.ReactNode; fileMount?: AppFileMount; app: AppExtendedModel; }) {
+export default function FileMount编辑Dialog({ children, fileMount, app }: { children: React.ReactNode; fileMount?: AppFileMount; app: AppExtendedModel; }) {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
 
-  const form = useForm<FileMountEditModel>({
-    resolver: zodResolver(fileMountEditZodModel),
+  const form = useForm<FileMount编辑Model>({
+    resolver: zodResolver(fileMount编辑ZodModel),
     defaultValues: {
       ...fileMount,
     }
   });
 
-  const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: FileMountEditModel) =>
+  const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: FileMount编辑Model) =>
     saveFileMount(state, {
       ...payload,
       appId: app.id,
       id: fileMount?.id
-    }), FormUtils.getInitialFormState<typeof fileMountEditZodModel>());
+    }), FormUtils.getInitialFormState<typeof fileMount编辑ZodModel>());
 
   useEffect(() => {
     if (state.status === 'success') {
@@ -51,7 +51,7 @@ export default function FileMountEditDialog({ children, fileMount, app }: { chil
       });
       setIsOpen(false);
     }
-    FormUtils.mapValidationErrorsToForm<typeof fileMountEditZodModel>(state, form);
+    FormUtils.mapValidationErrorsToForm<typeof fileMount编辑ZodModel>(state, form);
   }, [state]);
 
   useEffect(() => {
@@ -64,18 +64,18 @@ export default function FileMountEditDialog({ children, fileMount, app }: { chil
         {children}
       </div>
       <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent class名称="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit File Mount</DialogTitle>
-            <DialogDescription>
+            <DialogTitle>编辑 File Mount</DialogTitle>
+            <Dialog描述>
               Configure your custom file mount. The content of the file mount will be available in the container at the specified mount path.
-            </DialogDescription>
+            </Dialog描述>
           </DialogHeader>
           <Form {...form}>
-            <form action={(e) => form.handleSubmit((data) => {
+            <form action={(e) => form.handle提交((data) => {
               return formAction(data);
             })()}>
-              <div className="space-y-4">
+              <div class名称="space-y-4">
                 <FormField
                   control={form.control}
                   name="containerMountPath"
@@ -104,8 +104,8 @@ export default function FileMountEditDialog({ children, fileMount, app }: { chil
                   )}
                 />
 
-                <p className="text-red-500">{state.message}</p>
-                <SubmitButton>Save</SubmitButton>
+                <p class名称="text-red-500">{state.message}</p>
+                <提交Button>保存</提交Button>
               </div>
             </form>
           </Form >

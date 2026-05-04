@@ -23,11 +23,11 @@ export class PathUtils {
         return path.join(this.tempDataRoot, 'volume-downloads');
     }
 
-    static get tempBackupDataFolder() {
+    static get temp返回upDataFolder() {
         return path.join(this.tempDataRoot, 'backup-data');
     }
 
-    static get tempBackupResotreFolder() {
+    static get temp返回upResotreFolder() {
         return path.join(this.tempDataRoot, 'backup-restore');
     }
 
@@ -45,7 +45,7 @@ export class PathUtils {
     }
 
     static gitRootPathForApp(appId: string): string {
-        return path.join(PathUtils.gitRootPath, this.convertIdToFolderFriendlyName(appId));
+        return path.join(PathUtils.gitRootPath, this.convertIdToFolderFriendly名称(appId));
     }
 
     static get deploymentLogsPath() {
@@ -65,11 +65,11 @@ export class PathUtils {
     }
 
     static backupVolumeDownloadZipPath(backupVolumeId: string): string {
-        return path.join(this.tempBackupDataFolder, `${backupVolumeId}.tar.gz`);
+        return path.join(this.temp返回upDataFolder, `${backupVolumeId}.tar.gz`);
     }
 
     static backupRestoreFolder(volumeId: string): string {
-        return path.join(this.tempBackupResotreFolder, `${volumeId}.tar.gz`);
+        return path.join(this.temp返回upResotreFolder, `${volumeId}.tar.gz`);
     }
 
     static splitPath(relativePath: string): { folderPath: string | undefined; filePath: string } {
@@ -88,7 +88,7 @@ export class PathUtils {
         return { folderPath, filePath };
     }
 
-    private static convertIdToFolderFriendlyName(id: string): string {
+    private static convertIdToFolderFriendly名称(id: string): string {
         // remove all special characters
         return id.replace(/[^a-zA-Z0-9]/g, '_');
     }

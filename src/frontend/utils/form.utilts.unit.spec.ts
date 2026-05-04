@@ -17,16 +17,16 @@ describe('FormUtils', () => {
                 message: undefined,
                 status: 'error',
                 errors: {
-                    name: ['Name is required'],
-                    email: ['Email is invalid']
+                    name: ['名称 is required'],
+                    email: ['邮箱 is invalid']
                 }
             } as ServerActionResult<any, any>;
 
             FormUtils.mapValidationErrorsToForm(state, mockForm);
 
             expect(mockForm.clearErrors).toHaveBeenCalled();
-            expect(mockForm.setError).toHaveBeenCalledWith('name', { type: 'manual', message: 'Name is required' });
-            expect(mockForm.setError).toHaveBeenCalledWith('email', { type: 'manual', message: 'Email is invalid' });
+            expect(mockForm.setError).toHaveBeenCalledWith('name', { type: 'manual', message: '名称 is required' });
+            expect(mockForm.setError).toHaveBeenCalledWith('email', { type: 'manual', message: '邮箱 is invalid' });
         });
 
         it('should not set errors if state has no errors', () => {

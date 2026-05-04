@@ -15,31 +15,31 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { S3Target } from "@prisma/client"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { toast } from "sonner"
-import { S3TargetEditModel, s3TargetEditZodModel } from "@/shared/model/s3-target-edit.model"
+import { S3Target编辑Model, s3Target编辑ZodModel } from "@/shared/model/s3-target-edit.model"
 import { saveS3Target } from "./actions"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 
-export default function S3TargetEditOverlay({ children, target }: { children: React.ReactNode; target?: S3Target; }) {
+export default function S3Target编辑Overlay({ children, target }: { children: React.ReactNode; target?: S3Target; }) {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
 
-  const form = useForm<S3TargetEditModel>({
-    resolver: zodResolver(s3TargetEditZodModel),
+  const form = useForm<S3Target编辑Model>({
+    resolver: zodResolver(s3Target编辑ZodModel),
     defaultValues: target
   });
 
   const [state, formAction] = useFormState((state: ServerActionResult<any, any>,
-    payload: S3TargetEditModel) =>
+    payload: S3Target编辑Model) =>
     saveS3Target(state, {
       ...payload,
       id: target?.id
-    }), FormUtils.getInitialFormState<typeof s3TargetEditZodModel>());
+    }), FormUtils.getInitialFormState<typeof s3Target编辑ZodModel>());
 
   useEffect(() => {
     if (state.status === 'success') {
@@ -47,7 +47,7 @@ export default function S3TargetEditOverlay({ children, target }: { children: Re
       toast.success('S3 Target saved successfully');
       setIsOpen(false);
     }
-    FormUtils.mapValidationErrorsToForm<typeof s3TargetEditZodModel>(state, form);
+    FormUtils.mapValidationErrorsToForm<typeof s3Target编辑ZodModel>(state, form);
   }, [state]);
 
   useEffect(() => {
@@ -60,23 +60,23 @@ export default function S3TargetEditOverlay({ children, target }: { children: Re
         {children}
       </div>
       <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent class名称="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit S3 Target</DialogTitle>
+            <DialogTitle>编辑 S3 Target</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="max-h-[70vh]">
-            <div className="px-2">
+          <ScrollArea class名称="max-h-[70vh]">
+            <div class名称="px-2">
               <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                   return formAction(data);
                 })()}>
-                  <div className="space-y-4">
+                  <div class名称="space-y-4">
                     <FormField
                       control={form.control}
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>名称</FormLabel>
                           <FormControl>
                             <Input placeholder="" {...field} />
                           </FormControl>
@@ -116,10 +116,10 @@ export default function S3TargetEditOverlay({ children, target }: { children: Re
 
                     <FormField
                       control={form.control}
-                      name="bucketName"
+                      name="bucket名称"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>S3 Bucket Name</FormLabel>
+                          <FormLabel>S3 Bucket 名称</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -156,8 +156,8 @@ export default function S3TargetEditOverlay({ children, target }: { children: Re
                       )}
                     />
 
-                    <p className="text-red-500">{state.message}</p>
-                    <SubmitButton>Save</SubmitButton>
+                    <p class名称="text-red-500">{state.message}</p>
+                    <提交Button>保存</提交Button>
                   </div>
                 </form>
               </Form >

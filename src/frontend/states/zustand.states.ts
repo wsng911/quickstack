@@ -1,12 +1,12 @@
-import { AppPodsStatusModel } from "@/shared/model/app-pod-status.model";
+import { AppPods状态Model } from "@/shared/model/app-pod-status.model";
 import { ReactNode } from "react";
 import { create } from "zustand"
 
-interface ZustandConfirmDialogProps {
+interface Zustand确认DialogProps {
     isDialogOpen: boolean;
     data: DialogProps | null;
     resolvePromise: ((result: boolean) => void) | null;
-    openConfirmDialog: (data: DialogProps) => Promise<boolean>;
+    open确认Dialog: (data: DialogProps) => Promise<boolean>;
     closeDialog: (result: boolean) => void;
 }
 
@@ -21,11 +21,11 @@ export interface InternDialogProps extends DialogProps {
     returnFunc: (dialogResult: boolean) => boolean;
 }
 
-export const useConfirmDialog = create<ZustandConfirmDialogProps>((set) => ({
+export const use确认Dialog = create<Zustand确认DialogProps>((set) => ({
     isDialogOpen: false,
     data: null,
     resolvePromise: null,
-    openConfirmDialog: (data) => {
+    open确认Dialog: (data) => {
         return new Promise((resolve) => {
             set({
                 isDialogOpen: true,
@@ -81,7 +81,7 @@ export interface InputDialogProps extends DialogProps {
     inputValue?: string;
     inputType?: 'text' | 'number';
     placeholder?: string;
-    fieldName?: string;
+    field名称?: string;
 }
 
 export const useInputDialog = create<ZustandInputDialogProps>((set) => ({
@@ -105,38 +105,38 @@ export const useInputDialog = create<ZustandInputDialogProps>((set) => ({
     }),
 }));
 
-/* Pod Status Store */
-interface ZustandPodsStatusProps {
-    podsStatus: Map<string, AppPodsStatusModel>;
+/* Pod 状态 Store */
+interface ZustandPods状态Props {
+    pods状态: Map<string, AppPods状态Model>;
     lastUpdate: Date | null;
     isLoading: boolean;
     listeners: Set<(changedAppIds: string[]) => void>;
-    setPodsStatus: (data: AppPodsStatusModel[]) => void;
-    updatePodStatus: (data: AppPodsStatusModel) => void;
+    setPods状态: (data: AppPods状态Model[]) => void;
+    updatePod状态: (data: AppPods状态Model) => void;
     setLoading: (loading: boolean) => void;
-    getPodsForApp: (appId: string) => AppPodsStatusModel | undefined;
-    subscribeToStatusChanges: (callback: (changedAppIds: string[]) => void) => () => void;
+    getPodsForApp: (appId: string) => AppPods状态Model | undefined;
+    subscribeTo状态Changes: (callback: (changedAppIds: string[]) => void) => () => void;
 }
 
-export const usePodsStatus = create<ZustandPodsStatusProps>((set, get) => ({
-    podsStatus: new Map(),
+export const usePods状态 = create<ZustandPods状态Props>((set, get) => ({
+    pods状态: new Map(),
     lastUpdate: null,
     isLoading: true,
     listeners: new Set(),
-    setPodsStatus: (data) => {
+    setPods状态: (data) => {
         set({
-            podsStatus: new Map(data.map(app => [app.appId, app])),
+            pods状态: new Map(data.map(app => [app.appId, app])),
             lastUpdate: new Date(),
             isLoading: false,
         });
         get().listeners.forEach(listener => listener(data.map(d => d.appId)));
     },
-    updatePodStatus: (data) => {
+    updatePod状态: (data) => {
         set((state) => {
-            const newMap = new Map(state.podsStatus);
+            const newMap = new Map(state.pods状态);
             newMap.set(data.appId, data);
             return {
-                podsStatus: newMap,
+                pods状态: newMap,
                 lastUpdate: new Date(),
             };
         });
@@ -146,9 +146,9 @@ export const usePodsStatus = create<ZustandPodsStatusProps>((set, get) => ({
         set({ isLoading: loading });
     },
     getPodsForApp: (appId) => {
-        return get().podsStatus.get(appId);
+        return get().pods状态.get(appId);
     },
-    subscribeToStatusChanges: (callback) => {
+    subscribeTo状态Changes: (callback) => {
         set((state) => {
             const newListeners = new Set(state.listeners);
             newListeners.add(callback);

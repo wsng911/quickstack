@@ -48,7 +48,7 @@ export default function ChartDiskRessources({
     return (
         <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square w-full max-w-[250px]"
+            class名称="mx-auto aspect-square w-full max-w-[250px]"
         >
             <RadialBarChart
                 data={chartData}
@@ -61,9 +61,9 @@ export default function ChartDiskRessources({
                         // Convert the value from bytes to gigabytes
                         const formattedValue = KubeSizeConverter.convertBytesToReadableSize(value as number);
                         // Optionally, you can customize the label (name) here if needed
-                        return <div className='flex gap-2'>
-                            <div className='self-center rounded w-2 h-2' style={{ backgroundColor: (chartConfig as any)[name].color }}></div>
-                            <div className='flex-1'>{(chartConfig as any)[name].label}:</div>
+                        return <div class名称='flex gap-2'>
+                            <div class名称='self-center rounded w-2 h-2' style={{ backgroundColor: (chartConfig as any)[name].color }}></div>
+                            <div class名称='flex-1'>{(chartConfig as any)[name].label}:</div>
                             <div>{formattedValue}</div>
                         </div>
                     }} />}
@@ -86,21 +86,21 @@ export default function ChartDiskRessources({
                                         <tspan
                                             x={viewBox.cx}
                                             y={(viewBox.cy || 0) - 10}
-                                            className="fill-foreground text-4xl font-bold"
+                                            class名称="fill-foreground text-4xl font-bold"
                                         >
                                             {diskUsagePercent.toFixed(0)}%
                                         </tspan>
                                         <tspan
                                             x={viewBox.cx}
                                             y={(viewBox.cy || 0) + 14}
-                                            className="fill-muted-foreground"
+                                            class名称="fill-muted-foreground"
                                         >
                                             Storage
                                         </tspan>
                                         <tspan
                                             x={viewBox.cx}
                                             y={(viewBox.cy || 0) + 30}
-                                            className="fill-muted-foreground">
+                                            class名称="fill-muted-foreground">
                                             {KubeSizeConverter.convertBytesToReadableSize(diskUsedAndReserved, 1, true)} / {KubeSizeConverter.convertBytesToReadableSize(diskCapacity, 1)}
                                         </tspan>
                                     </text>
@@ -114,21 +114,21 @@ export default function ChartDiskRessources({
                     stackId="a"
                     cornerRadius={5}
                     fill="var(--color-diskUsed)"
-                    className="stroke-transparent stroke-2"
+                    class名称="stroke-transparent stroke-2"
                 />
                 <RadialBar
                     dataKey="diskReserved"
                     fill="var(--color-diskReserved)"
                     stackId="a"
                     cornerRadius={5}
-                    className="stroke-transparent stroke-2"
+                    class名称="stroke-transparent stroke-2"
                 />
                 <RadialBar
                     dataKey="diskSchedulable"
                     fill="var(--color-diskSchedulable)"
                     stackId="a"
                     cornerRadius={5}
-                    className="stroke-transparent stroke-2"
+                    class名称="stroke-transparent stroke-2"
                 />
             </RadialBarChart>
         </ChartContainer>
@@ -137,10 +137,10 @@ export default function ChartDiskRessources({
 
 
 /*
- <CardContent className="flex-1 pb-0">
+ <CardContent class名称="flex-1 pb-0">
             <ChartContainer
                 config={chartConfig}
-                className="mx-auto aspect-square max-h-[250px]">
+                class名称="mx-auto aspect-square max-h-[250px]">
 
                 <RadialBarChart
                     data={chartData}
@@ -151,7 +151,7 @@ export default function ChartDiskRessources({
                         gridType="circle"
                         radialLines={false}
                         stroke="none"
-                        className="first:fill-muted last:fill-background"
+                        class名称="first:fill-muted last:fill-background"
                         polarRadius={[86, 74]}
                     />
 
@@ -193,14 +193,14 @@ export default function ChartDiskRessources({
                                             <tspan
                                                 x={viewBox.cx}
                                                 y={viewBox.cy}
-                                                className="fill-foreground text-4xl font-bold"
+                                                class名称="fill-foreground text-4xl font-bold"
                                             >
                                                 {(nodeRessource.diskUsageAbsolut / nodeRessource.diskUsageCapacity * 100).toFixed(1)}
                                             </tspan>
                                             <tspan
                                                 x={viewBox.cx}
                                                 y={(viewBox.cy || 0) + 24}
-                                                className="fill-muted-foreground"
+                                                class名称="fill-muted-foreground"
                                             >
                                                 %
                                             </tspan>

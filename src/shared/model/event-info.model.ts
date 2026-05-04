@@ -1,5 +1,5 @@
 export interface EventInfoModel {
-    podName: string,
+    pod名称: string,
     action: string,
     eventTime: Date,
     note: string,

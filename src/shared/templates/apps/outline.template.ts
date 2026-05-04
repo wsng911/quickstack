@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const outlineAppTemplate: AppTemplateModel = {
     name: "Outline",
-    iconName: 'https://cdn.simpleicons.org/outline',
+    icon名称: 'https://cdn.simpleicons.org/outline',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -49,7 +49,7 @@ FORCE_HTTPS=false
             size: 500,
             containerMountPath: '/var/lib/outline/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

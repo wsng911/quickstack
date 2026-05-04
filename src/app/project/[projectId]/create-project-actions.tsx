@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 
-import { EditAppDialog } from "./edit-app-dialog";
+import { 编辑AppDialog } from "./edit-app-dialog";
 import { Blocks, Database, File, LayoutGrid, Plus } from "lucide-react";
 import ChooseTemplateDialog from "./choose-template-dialog";
 import {
@@ -14,7 +14,7 @@ import {
 import { useState } from "react";
 
 
-export default function CreateProjectActions({
+export default function 创建Project操作({
     projectId,
 }: {
     projectId: string;
@@ -24,13 +24,13 @@ export default function CreateProjectActions({
 
     return (
         <>
-            <ChooseTemplateDialog projectId={projectId} templateType={templateType} onClose={() => setTemplateType(undefined)} />
+            <ChooseTemplateDialog projectId={projectId} templateType={templateType} on关闭={() => setTemplateType(undefined)} />
             <DropdownMenu>
-                <DropdownMenuTrigger asChild><Button><Plus /> Create App</Button></DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild><Button><Plus /> 创建 App</Button></DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <EditAppDialog projectId={projectId}>
+                    <编辑AppDialog projectId={projectId}>
                         <DropdownMenuItem><File /> Empty App</DropdownMenuItem>
-                    </EditAppDialog>
+                    </编辑AppDialog>
                     <DropdownMenuItem onClick={() => setTemplateType('database')}><Database /> Database</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setTemplateType('template')}><Blocks /> Template</DropdownMenuItem>
                 </DropdownMenuContent>

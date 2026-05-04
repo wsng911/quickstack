@@ -13,13 +13,13 @@ vi.mock('@/server/adapter/kubernetes-api.adapter', () => ({
     default: {
         getKubeConfig: vi.fn(),
         batch: {
-            listNamespacedJob: vi.fn().mockResolvedValue({ body: { items: [] } }),
+            list名称spacedJob: vi.fn().mockResolvedValue({ body: { items: [] } }),
         },
     },
 }));
 vi.mock('@/server/services/build.service', () => ({
     default: {
-        getJobStatusString: vi.fn(),
+        getJob状态String: vi.fn(),
     },
 }));
 vi.mock('@/server/services/deployment.service', () => ({
@@ -58,7 +58,7 @@ describe('BuildWatchService', () => {
     });
 
     it('ignores pending jobs and does not trigger deployment work', async () => {
-        vi.mocked(buildService.getJobStatusString).mockReturnValue('PENDING');
+        vi.mocked(buildService.getJob状态String).mockReturnValue('PENDING');
 
         await (buildWatchService as any).handleJobEvent({
             metadata: {

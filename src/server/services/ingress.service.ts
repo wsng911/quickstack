@@ -1,7 +1,7 @@
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import k3s from "../adapter/kubernetes-api.adapter";
 import { V1Ingress, V1Secret } from "@kubernetes/client-node";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import { Constants } from "../../shared/utils/constants";
 import ingressSetupService from "./setup-services/ingress-setup.service";
 import { dlog } from "./deployment-logs.service";
@@ -11,13 +11,13 @@ import { CryptoUtils } from "../utils/crypto.utils";
 class IngressService {
 
     async getAllIngressForApp(projectId: string, appId: string) {
-        const res = await k3s.network.listNamespacedIngress(projectId);
+        const res = await k3s.network.list名称spacedIngress(projectId);
         return res.body.items.filter((item) => item.metadata?.annotations?.[Constants.QS_ANNOTATION_APP_ID] === appId);
     }
 
-    async getIngressByName(projectId: string, domainId: string) {
-        const res = await k3s.network.listNamespacedIngress(projectId);
-        return res.body.items.find((item) => item.metadata?.name === KubeObjectNameUtils.getIngressName(domainId));
+    async getIngressBy名称(projectId: string, domainId: string) {
+        const res = await k3s.network.list名称spacedIngress(projectId);
+        return res.body.items.find((item) => item.metadata?.name === KubeObject名称Utils.getIngress名称(domainId));
     }
 
     async deleteUnusedIngressesOfApp(app: AppExtendedModel) {
@@ -26,16 +26,16 @@ class IngressService {
 
         if (currentDomains.size === 0) {
             for (const ingress of existingIngresses) {
-                await k3s.network.deleteNamespacedIngress(ingress.metadata!.name!, app.projectId);
-                console.log(`Deleted Ingress ${ingress.metadata!.name} for app ${app.id}`);
+                await k3s.network.delete名称spacedIngress(ingress.metadata!.name!, app.projectId);
+                console.log(`删除d Ingress ${ingress.metadata!.name} for app ${app.id}`);
             }
         } else {
             for (const ingress of existingIngresses) {
                 const ingressDomain = ingress.spec?.rules?.[0]?.host;
 
                 if (ingressDomain && !currentDomains.has(ingressDomain)) {
-                    await k3s.network.deleteNamespacedIngress(ingress.metadata!.name!, app.projectId);
-                    console.log(`Deleted Ingress ${ingress.metadata!.name} for domain ${ingressDomain}`);
+                    await k3s.network.delete名称spacedIngress(ingress.metadata!.name!, app.projectId);
+                    console.log(`删除d Ingress ${ingress.metadata!.name} for domain ${ingressDomain}`);
                 }
             }
         }
@@ -44,17 +44,17 @@ class IngressService {
     async deleteAllIngressForApp(projectId: string, appId: string) {
         const existingIngresses = await this.getAllIngressForApp(projectId, appId);
         for (const ingress of existingIngresses) {
-            await k3s.network.deleteNamespacedIngress(ingress.metadata!.name!, projectId);
-            console.log(`Deleted Ingress ${ingress.metadata!.name} for app ${appId}`);
+            await k3s.network.delete名称spacedIngress(ingress.metadata!.name!, projectId);
+            console.log(`删除d Ingress ${ingress.metadata!.name} for app ${appId}`);
         }
     }
 
     async createOrUpdateIngressForApp(deploymentId: string, app: AppExtendedModel) {
 
         await ingressSetupService.createTraefikRedirectMiddlewareIfNotExist();
-        const basicAuthMiddlewareName = await this.configureBasicAuthForApp(app);
+        const basicAuthMiddleware名称 = await this.configureBasicAuthForApp(app);
         for (const domainObj of app.appDomains) {
-            await this.createOrUpdateIngress(deploymentId, app, domainObj, basicAuthMiddlewareName);
+            await this.createOrUpdateIngress(deploymentId, app, domainObj, basicAuthMiddleware名称);
         }
         await this.deleteUnusedBasicAuthMiddlewaresForApp(app);
         await this.deleteUnusedIngressesOfApp(app);
@@ -63,13 +63,13 @@ class IngressService {
     async createOrUpdateIngress(deploymentId: string,
         app: { id: string, projectId: string },
         domain: { id: string, hostname: string, port: number, useSsl: boolean, redirectHttps: boolean },
-        basicAuthMiddlewareName?: string) {
+        basicAuthMiddleware名称?: string) {
         const hostname = domain.hostname;
-        const ingressName = KubeObjectNameUtils.getIngressName(domain.id);
-        const existingIngress = await this.getIngressByName(app.projectId, domain.id);
+        const ingress名称 = KubeObject名称Utils.getIngress名称(domain.id);
+        const existingIngress = await this.getIngressBy名称(app.projectId, domain.id);
 
         const middlewares = [
-            basicAuthMiddlewareName,
+            basicAuthMiddleware名称,
             (domain.useSsl && domain.redirectHttps) ? 'kube-system-redirect-to-https@kubernetescrd' : undefined,
         ].filter((middleware) => !!middleware).join(',') ?? undefined;
 
@@ -77,7 +77,7 @@ class IngressService {
             apiVersion: 'networking.k8s.io/v1',
             kind: 'Ingress',
             metadata: {
-                name: ingressName,
+                name: ingress名称,
                 namespace: app.projectId,
                 annotations: {
                     [Constants.QS_ANNOTATION_APP_ID]: app.id,
@@ -88,7 +88,7 @@ class IngressService {
                 },
             },
             spec: {
-                ingressClassName: 'traefik',
+                ingressClass名称: 'traefik',
                 rules: [
                     {
                         host: hostname,
@@ -99,7 +99,7 @@ class IngressService {
                                     pathType: 'Prefix',
                                     backend: {
                                         service: {
-                                            name: KubeObjectNameUtils.toServiceName(app.id),
+                                            name: KubeObject名称Utils.toService名称(app.id),
                                             port: {
                                                 number: domain.port,
                                             },
@@ -114,7 +114,7 @@ class IngressService {
                     tls: [
                         {
                             hosts: [hostname],
-                            secretName: `secret-tls-${domain.id}`,
+                            secret名称: `secret-tls-${domain.id}`,
                         },
                     ],
                 }),
@@ -123,11 +123,11 @@ class IngressService {
 
         await dlog(deploymentId, `Configuring Ingress with Domain ${domain.useSsl ? 'https' : 'http'}://${hostname} --> ${app.id}:${domain.port}`);
         if (existingIngress) {
-            await k3s.network.replaceNamespacedIngress(ingressName, app.projectId, ingressDefinition);
-            console.log(`Ingress ${ingressName} for domain ${hostname} successfully updated.`);
+            await k3s.network.replace名称spacedIngress(ingress名称, app.projectId, ingressDefinition);
+            console.log(`Ingress ${ingress名称} for domain ${hostname} successfully updated.`);
         } else {
-            await k3s.network.createNamespacedIngress(app.projectId, ingressDefinition);
-            console.log(`Ingress ${ingressName} for domain ${hostname} successfully created.`);
+            await k3s.network.create名称spacedIngress(app.projectId, ingressDefinition);
+            console.log(`Ingress ${ingress名称} for domain ${hostname} successfully created.`);
         }
     }
 
@@ -149,30 +149,30 @@ class IngressService {
     async deleteUnusedBasicAuthMiddlewares(namespace: string, basicAuthId: string) {
 
         // delete middleware
-        const middlewareName = `ba-${basicAuthId}`;
-        const existingMiddlewares = await k3s.customObjects.listNamespacedCustomObject('traefik.io',            // group
+        const middleware名称 = `ba-${basicAuthId}`;
+        const existingMiddlewares = await k3s.customObjects.list名称spacedCustomObject('traefik.io',            // group
             'v1alpha1',              // version
             namespace,        // namespace
             'middlewares'            // plural name of the custom resource
         );
-        const existingBasicAuthMiddleware = (existingMiddlewares.body as any).items.find((item: any) => item.metadata?.name === middlewareName);
+        const existingBasicAuthMiddleware = (existingMiddlewares.body as any).items.find((item: any) => item.metadata?.name === middleware名称);
         if (existingBasicAuthMiddleware) {
-            await k3s.customObjects.deleteNamespacedCustomObject('traefik.io', 'v1alpha1', namespace, 'middlewares', middlewareName);
+            await k3s.customObjects.delete名称spacedCustomObject('traefik.io', 'v1alpha1', namespace, 'middlewares', middleware名称);
         }
 
         // delete traefik basic auth secret
-        const secretName = `bas-${basicAuthId}`;
-        const existingSecrets = await k3s.core.listNamespacedSecret(namespace);
-        const existingSecret = existingSecrets.body.items.find((item) => item.metadata?.name === secretName);
+        const secret名称 = `bas-${basicAuthId}`;
+        const existingSecrets = await k3s.core.list名称spacedSecret(namespace);
+        const existingSecret = existingSecrets.body.items.find((item) => item.metadata?.name === secret名称);
         if (existingSecret) {
-            await k3s.core.deleteNamespacedSecret(secretName, namespace);
+            await k3s.core.delete名称spacedSecret(secret名称, namespace);
         }
 
         // delete plaintext credentials secret
-        const plaintextSecretName = `bas-plain-${basicAuthId}`;
-        const existingPlaintextSecret = existingSecrets.body.items.find((item) => item.metadata?.name === plaintextSecretName);
+        const plaintextSecret名称 = `bas-plain-${basicAuthId}`;
+        const existingPlaintextSecret = existingSecrets.body.items.find((item) => item.metadata?.name === plaintextSecret名称);
         if (existingPlaintextSecret) {
-            await k3s.core.deleteNamespacedSecret(plaintextSecretName, namespace);
+            await k3s.core.delete名称spacedSecret(plaintextSecret名称, namespace);
         }
     }
 
@@ -181,9 +181,9 @@ class IngressService {
      * @returns { username, password } or undefined if not present
      */
     async getPlaintextCredentialsFromSecret(namespace: string, basicAuthId: string): Promise<{ username: string; password: string } | undefined> {
-        const plaintextSecretName = `bas-plain-${basicAuthId}`;
-        const existingSecrets = await k3s.core.listNamespacedSecret(namespace);
-        const secret = existingSecrets.body.items.find((item) => item.metadata?.name === plaintextSecretName);
+        const plaintextSecret名称 = `bas-plain-${basicAuthId}`;
+        const existingSecrets = await k3s.core.list名称spacedSecret(namespace);
+        const secret = existingSecrets.body.items.find((item) => item.metadata?.name === plaintextSecret名称);
         if (!secret?.data) return undefined;
         const usernameB64 = secret.data['username'];
         const passwordB64 = secret.data['password'];
@@ -196,100 +196,100 @@ class IngressService {
 
     /**
      * Configures a basic auth middleware in a namespace.
-     * @param storeCredentialsSeparately When true, also stores plainUsername and encryptet plainPassword in the secret for later retrieval.
+     * @param storeCredentialsSeparately When true, also stores plain用户名 and encryptet plain密码 in the secret for later retrieval.
      * @returns middleware name for annotation in ingress controller
      */
-    async configureBasicAuthMiddleware(namespace: string, basicAuthId: string, usernamePassword: [string, string][], storeCredentialsSeparately = false) {
+    async configureBasicAuthMiddleware(namespace: string, basicAuthId: string, username密码: [string, string][], storeCredentialsSeparately = false) {
 
-        const basicAuthNameMiddlewareName = `ba-${basicAuthId}`; // basic auth middleware
-        const basicAuthSecretName = `bas-${basicAuthId}`; // basic auth secret
+        const basicAuth名称Middleware名称 = `ba-${basicAuthId}`; // basic auth middleware
+        const basicAuthSecret名称 = `bas-${basicAuthId}`; // basic auth secret
 
-        const secretNamespace = namespace;
-        const middlewareNamespace = namespace;
+        const secret名称space = namespace;
+        const middleware名称space = namespace;
 
-        // Create a secret with basic auth users
-        const existingSecrets = await k3s.core.listNamespacedSecret(secretNamespace);
-        const existingSecret = existingSecrets.body.items.find((item) => item.metadata?.name === basicAuthSecretName);
+        // 创建 a secret with basic auth users
+        const existingSecrets = await k3s.core.list名称spacedSecret(secret名称space);
+        const existingSecret = existingSecrets.body.items.find((item) => item.metadata?.name === basicAuthSecret名称);
 
-        const usernameAndSha1PasswordStrings = usernamePassword.map(([username, password]) => `${username}:{SHA}${createHash('sha1').update(password).digest('base64')}`);
+        const usernameAndSha1密码Strings = username密码.map(([username, password]) => `${username}:{SHA}${createHash('sha1').update(password).digest('base64')}`);
 
         // Traefik requires the secret to contain only the `users` field
         const secretManifest: V1Secret = {
             apiVersion: 'v1',
             kind: 'Secret',
             metadata: {
-                name: basicAuthSecretName,
-                namespace: secretNamespace,
+                name: basicAuthSecret名称,
+                namespace: secret名称space,
             },
             data: {
-                users: Buffer.from(usernameAndSha1PasswordStrings.join('\n')).toString('base64')
+                users: Buffer.from(usernameAndSha1密码Strings.join('\n')).toString('base64')
             }
         };
 
         if (existingSecret) {
-            await k3s.core.deleteNamespacedSecret(basicAuthSecretName, secretNamespace);
+            await k3s.core.delete名称spacedSecret(basicAuthSecret名称, secret名称space);
         }
-        await k3s.core.createNamespacedSecret(
-            secretNamespace,       // namespace
+        await k3s.core.create名称spacedSecret(
+            secret名称space,       // namespace
             secretManifest          // object manifest
         );
 
         // Store plaintext credentials in a separate secret so they can be displayed to the user
-        if (storeCredentialsSeparately && usernamePassword.length > 0) {
-            const plaintextSecretName = `bas-plain-${basicAuthId}`;
-            const existingPlaintextSecret = existingSecrets.body.items.find((item) => item.metadata?.name === plaintextSecretName);
+        if (storeCredentialsSeparately && username密码.length > 0) {
+            const plaintextSecret名称 = `bas-plain-${basicAuthId}`;
+            const existingPlaintextSecret = existingSecrets.body.items.find((item) => item.metadata?.name === plaintextSecret名称);
             const plaintextSecretManifest: V1Secret = {
                 apiVersion: 'v1',
                 kind: 'Secret',
                 metadata: {
-                    name: plaintextSecretName,
-                    namespace: secretNamespace,
+                    name: plaintextSecret名称,
+                    namespace: secret名称space,
                 },
                 data: {
-                    username: Buffer.from(usernamePassword[0][0]).toString('base64'),
-                    password: Buffer.from(CryptoUtils.encrypt(usernamePassword[0][1])).toString('base64')
+                    username: Buffer.from(username密码[0][0]).toString('base64'),
+                    password: Buffer.from(CryptoUtils.encrypt(username密码[0][1])).toString('base64')
                 }
             };
             if (existingPlaintextSecret) {
-                await k3s.core.deleteNamespacedSecret(plaintextSecretName, secretNamespace);
+                await k3s.core.delete名称spacedSecret(plaintextSecret名称, secret名称space);
             }
-            await k3s.core.createNamespacedSecret(secretNamespace, plaintextSecretManifest);
+            await k3s.core.create名称spacedSecret(secret名称space, plaintextSecretManifest);
         }
 
-        // Create a middleware with basic auth
-        const existingBasicAuthMiddlewares = await k3s.customObjects.listNamespacedCustomObject('traefik.io',            // group
+        // 创建 a middleware with basic auth
+        const existingBasicAuthMiddlewares = await k3s.customObjects.list名称spacedCustomObject('traefik.io',            // group
             'v1alpha1',              // version
-            middlewareNamespace,        // namespace
+            middleware名称space,        // namespace
             'middlewares'            // plural name of the custom resource
         );
-        const existingBasicAuthMiddleware = (existingBasicAuthMiddlewares.body as any).items.find((item: any) => item.metadata?.name === basicAuthNameMiddlewareName);
+        const existingBasicAuthMiddleware = (existingBasicAuthMiddlewares.body as any).items.find((item: any) => item.metadata?.name === basicAuth名称Middleware名称);
 
         const middlewareManifest = {
             apiVersion: 'traefik.io/v1alpha1',
             kind: 'Middleware',
             metadata: {
-                name: basicAuthNameMiddlewareName,
-                namespace: middlewareNamespace,
+                name: basicAuth名称Middleware名称,
+                namespace: middleware名称space,
             },
             spec: {
                 basicAuth: {
-                    secret: basicAuthSecretName,
+                    secret: basicAuthSecret名称,
                 }
             },
         };
 
         if (existingBasicAuthMiddleware) {
-            await k3s.customObjects.deleteNamespacedCustomObject('traefik.io', 'v1alpha1', middlewareNamespace, 'middlewares', basicAuthNameMiddlewareName);
+            await k3s.customObjects.delete名称spacedCustomObject('traefik.io', 'v1alpha1', middleware名称space, 'middlewares', basicAuth名称Middleware名称);
         }
-        await k3s.customObjects.createNamespacedCustomObject(
+        await k3s.customObjects.create名称spacedCustomObject(
             'traefik.io',           // group
             'v1alpha1',             // version
-            middlewareNamespace,    // namespace
+            middleware名称space,    // namespace
             'middlewares',          // plural name of the custom resource
             middlewareManifest      // object manifest
         );
 
-        return `${namespace}-${basicAuthNameMiddlewareName}@kubernetescrd`;
+        return `${namespace}-${basicAuth名称Middleware名称}@kubernetescrd`;
     }
 }
 

@@ -1,5 +1,5 @@
 import { UserGroupUtils } from "@/shared/utils/role.utils";
-import { adminRoleName, RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
+import { adminRole名称, RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
 import { UserSession } from "@/shared/model/sim-session.model";
 
 describe(UserGroupUtils.name, () => {
@@ -11,7 +11,7 @@ describe(UserGroupUtils.name, () => {
     beforeEach(() => {
         adminSession = {
             userGroup: {
-                name: adminRoleName,
+                name: adminRole名称,
             },
         } as any;
 

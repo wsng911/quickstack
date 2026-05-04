@@ -3,8 +3,8 @@ import k3s from "../adapter/kubernetes-api.adapter";
 import { V1Deployment, V1ReplicaSet, V1Probe } from "@kubernetes/client-node";
 import buildService from "./build.service";
 import { ListUtils } from "../../shared/utils/list.utils";
-import { DeploymentInfoModel, DeploymentStatus } from "@/shared/model/deployment-info.model";
-import { BuildJobStatus } from "@/shared/model/build-job";
+import { DeploymentInfoModel, Deployment状态 } from "@/shared/model/deployment-info.model";
+import { BuildJob状态 } from "@/shared/model/build-job";
 import { ServiceException } from "@/shared/model/service.exception.model";
 import pvcService from "./pvc.service";
 import ingressService from "./ingress.service";
@@ -24,25 +24,25 @@ import { AppBuildMethod } from "@/shared/model/app-source-info.model";
 
 class DeploymentService {
 
-    async getDeployment(namespace: string, appName: string) {
-        const allDeployments = await k3s.apps.listNamespacedDeployment(namespace);
-        if (allDeployments.body?.items?.some((item) => item.metadata?.name === appName)) {
-            const res = await k3s.apps.readNamespacedDeployment(appName, namespace);
+    async getDeployment(namespace: string, app名称: string) {
+        const allDeployments = await k3s.apps.list名称spacedDeployment(namespace);
+        if (allDeployments.body?.items?.some((item) => item.metadata?.name === app名称)) {
+            const res = await k3s.apps.read名称spacedDeployment(app名称, namespace);
             return res.body;
         }
     }
 
     async getAllDeployments() {
-        const allDeployments = await k3s.apps.listDeploymentForAllNamespaces();
+        const allDeployments = await k3s.apps.listDeploymentForAll名称spaces();
         return allDeployments.body.items;
     }
 
-    async applyDeployment(namespace: string, appName: string, body: V1Deployment) {
-        const existingDeployment = await this.getDeployment(namespace, appName);
+    async applyDeployment(namespace: string, app名称: string, body: V1Deployment) {
+        const existingDeployment = await this.getDeployment(namespace, app名称);
         if (existingDeployment) {
-            await k3s.apps.replaceNamespacedDeployment(appName, namespace, body);
+            await k3s.apps.replace名称spacedDeployment(app名称, namespace, body);
         } else {
-            await k3s.apps.createNamespacedDeployment(namespace, body);
+            await k3s.apps.create名称spacedDeployment(namespace, body);
         }
     }
 
@@ -51,8 +51,8 @@ class DeploymentService {
         if (!existingDeployment) {
             return;
         }
-        const returnVal = await k3s.apps.deleteNamespacedDeployment(appId, projectId);
-        console.log(`Deleted Deployment ${appId} in namespace ${projectId}`);
+        const returnVal = await k3s.apps.delete名称spacedDeployment(appId, projectId);
+        console.log(`删除d Deployment ${appId} in namespace ${projectId}`);
         return returnVal;
     }
 
@@ -74,7 +74,7 @@ class DeploymentService {
     async createDeployment(
         deploymentId: string,
         app: AppExtendedModel,
-        buildJobName?: string,
+        buildJob名称?: string,
         gitCommitHash?: string,
         gitCommitMessage?: string,
         buildMethod?: AppBuildMethod,
@@ -88,7 +88,7 @@ class DeploymentService {
 
         dlog(deploymentId, `Starting deployment of containter...`);
 
-        await namespaceService.createNamespaceIfNotExists(app.projectId);
+        await namespaceService.create名称spaceIfNotExists(app.projectId);
         const appHasPvcChanges = await pvcService.doesAppConfigurationIncreaseAnyPvcSize(app);
         if (appHasPvcChanges) {
             dlog(deploymentId, `Configuring Storage Volumes...`);
@@ -143,7 +143,7 @@ class DeploymentService {
                         containers: [
                             {
                                 name: app.id,
-                                image: !!buildJobName ? registryService.createContainerRegistryUrlForAppId(app.id) : app.containerImageSource as string,
+                                image: !!buildJob名称 ? registryService.createContainerRegistryUrlForAppId(app.id) : app.containerImageSource as string,
                                 imagePullPolicy: 'Always',
                                 ...(app.containerCommand ? { command: [app.containerCommand] } : {}),
                                 ...(app.containerArgs ? { args: JSON.parse(app.containerArgs) } : {}),
@@ -157,8 +157,8 @@ class DeploymentService {
                 }
             }
         };
-        if (buildJobName) {
-            body.spec!.template!.metadata!.annotations!.buildJobName = buildJobName; // add buildJobName to deployment
+        if (buildJob名称) {
+            body.spec!.template!.metadata!.annotations!.buildJob名称 = buildJob名称; // add buildJob名称 to deployment
         }
         if (buildMethod) {
             body.spec!.template!.metadata!.annotations![Constants.QS_ANNOTATION_BUILD_METHOD] = buildMethod;
@@ -261,10 +261,10 @@ class DeploymentService {
             dlog(deploymentId, `Configured Health Checks.`);
         }
 
-        const dockerPullSecretName = await secretService.createOrUpdateDockerPullSecret(app);
-        if (dockerPullSecretName) {
-            dlog(deploymentId, `Configured credentials to pull Docker Image (${dockerPullSecretName})`);
-            body.spec!.template!.spec!.imagePullSecrets = [{ name: dockerPullSecretName }];
+        const dockerPullSecret名称 = await secretService.createOrUpdateDockerPullSecret(app);
+        if (dockerPullSecret名称) {
+            dlog(deploymentId, `Configured credentials to pull Docker Image (${dockerPullSecret名称})`);
+            body.spec!.template!.spec!.imagePullSecrets = [{ name: dockerPullSecret名称 }];
         }
 
         if (app.securityContextRunAsUser != null || app.securityContextRunAsGroup != null || app.securityContextFsGroup != null) {
@@ -278,10 +278,10 @@ class DeploymentService {
 
         if (existingDeployment) {
             dlog(deploymentId, `Replacing existing deployment...`);
-            const res = await k3s.apps.replaceNamespacedDeployment(app.id, app.projectId, body);
+            const res = await k3s.apps.replace名称spacedDeployment(app.id, app.projectId, body);
         } else {
             dlog(deploymentId, `Creating deployment...`);
-            const res = await k3s.apps.createNamespacedDeployment(app.projectId, body);
+            const res = await k3s.apps.create名称spacedDeployment(app.projectId, body);
         }
         dlog(deploymentId, `Cleanup unused ressources from previous deployments...`);
         await configMapService.deleteUnusedConfigMaps(app);
@@ -299,28 +299,28 @@ class DeploymentService {
             throw new ServiceException("This app has not been deployed yet. Please deploy it first.");
         }
         existingDeployment.spec!.replicas = replicas;
-        return k3s.apps.replaceNamespacedDeployment(appId, projectId, existingDeployment);
+        return k3s.apps.replace名称spacedDeployment(appId, projectId, existingDeployment);
     }
 
     async setReplicasToZeroAndWaitForShutdown(projectId: string, appId: string) {
         await this.setReplicasForDeployment(projectId, appId, 0);
-        const podNames = await podService.getPodsForApp(projectId, appId);
-        for (const pod of podNames) {
-            await podService.waitUntilPodIsTerminated(projectId, pod.podName);
+        const pod名称s = await podService.getPodsForApp(projectId, appId);
+        for (const pod of pod名称s) {
+            await podService.waitUntilPodIsTerminated(projectId, pod.pod名称);
         }
     }
 
 
-    async getDeploymentStatus(projectId: string, appId: string) {
+    async getDeployment状态(projectId: string, appId: string) {
         const deployment = await this.getDeployment(projectId, appId);
         if (!deployment) {
             return 'UNKNOWN';
         }
-        return this.mapReplicasetToStatus(deployment);
+        return this.mapReplicasetTo状态(deployment);
     }
 
     /**
-     * Searches for Build Jobs (only for Git Projects) and ReplicaSets (for all projects) and returns a list of DeploymentModel
+     * 搜索es for Build Jobs (only for Git Projects) and ReplicaSets (for all projects) and returns a list of DeploymentModel
      * Build are only included if they are in status RUNNING, FAILED or UNKNOWN. SUCCESSFUL builds are not included because they are already part of the ReplicaSet history.
      * @param projectId
      * @param appId
@@ -334,10 +334,10 @@ class DeploymentService {
             .filter((build) => ['RUNNING', 'PENDING', 'FAILED', 'UNKNOWN'].includes(build.status))
             .map((build) => {
                 return {
-                    replicasetName: undefined,
+                    replicaset名称: undefined,
                     createdAt: build.startTime!,
-                    buildJobName: build.name!,
-                status: this.mapBuildStatusToDeploymentStatus(build.status),
+                    buildJob名称: build.name!,
+                status: this.mapBuild状态ToDeployment状态(build.status),
                 gitCommit: build.gitCommit,
                 gitCommitMessage: build.gitCommitMessage,
                 deploymentId: build.deploymentId,
@@ -348,14 +348,14 @@ class DeploymentService {
         return ListUtils.sortByDate(replicasetRevisions, (i) => i.createdAt!, true);
     }
 
-    mapBuildStatusToDeploymentStatus(buildJobStatus?: BuildJobStatus) {
-        const map = new Map<BuildJobStatus, DeploymentStatus>([
+    mapBuild状态ToDeployment状态(buildJob状态?: BuildJob状态) {
+        const map = new Map<BuildJob状态, Deployment状态>([
             ['UNKNOWN', 'UNKNOWN'],
             ['RUNNING', 'BUILDING'],
             ['FAILED', 'ERROR'],
             ['PENDING', 'PENDING']
         ]);
-        return map.get(buildJobStatus ?? 'UNKNOWN') ?? 'UNKNOWN';
+        return map.get(buildJob状态 ?? 'UNKNOWN') ?? 'UNKNOWN';
     }
 
 
@@ -367,14 +367,14 @@ class DeploymentService {
         }
 
         // List ReplicaSets in the namespace to find those associated with the deployment
-        const replicaSetsForDeployment = await k3s.apps.listNamespacedReplicaSet(projectId, undefined, undefined, undefined, undefined, `app=${appId}`);
+        const replicaSetsForDeployment = await k3s.apps.list名称spacedReplicaSet(projectId, undefined, undefined, undefined, undefined, `app=${appId}`);
 
         const revisions = replicaSetsForDeployment.body.items.map((rs, index) => {
-            let status = this.mapReplicasetToStatus(rs);
+            let status = this.mapReplicasetTo状态(rs);
             return {
-                replicasetName: rs.metadata?.name!,
+                replicaset名称: rs.metadata?.name!,
                 createdAt: rs.metadata?.creationTimestamp!,
-                buildJobName: rs.spec?.template?.metadata?.annotations?.buildJobName!,
+                buildJob名称: rs.spec?.template?.metadata?.annotations?.buildJob名称!,
                 gitCommit: rs.spec?.template?.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_COMMIT],
                 gitCommitMessage: rs.spec?.template?.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_COMMIT_MESSAGE],
                 status: status,
@@ -385,9 +385,9 @@ class DeploymentService {
         return ListUtils.sortByDate(revisions, (i) => i.createdAt!, true);
     }
 
-    mapReplicasetToStatus(deployment: V1Deployment | V1ReplicaSet): DeploymentStatus {
+    mapReplicasetTo状态(deployment: V1Deployment | V1ReplicaSet): Deployment状态 {
         /*
-        Fields for Status:
+        Fields for 状态:
             availableReplicas: 1,
             conditions: undefined,
             fullyLabeledReplicas: 1,
@@ -395,7 +395,7 @@ class DeploymentService {
             readyReplicas: 1,
             replicas: 1
         */
-        let status: DeploymentStatus = 'UNKNOWN';
+        let status: Deployment状态 = 'UNKNOWN';
         if (deployment.status?.replicas === undefined) {
             return 'SHUTDOWN';
         }

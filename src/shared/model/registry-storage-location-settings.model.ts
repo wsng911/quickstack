@@ -1,8 +1,8 @@
 import { stringToBoolean } from "@/shared/utils/zod.utils";
 import { z } from "zod";
 
-export const registryStorageLocationSettingsZodModel = z.object({
+export const registryStorageLocation设置ZodModel = z.object({
   registryStorageLocation: z.string(),
 })
 
-export type RegistryStorageLocationSettingsModel = z.infer<typeof registryStorageLocationSettingsZodModel>;
+export type RegistryStorageLocation设置Model = z.infer<typeof registryStorageLocation设置ZodModel>;

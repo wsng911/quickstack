@@ -1,7 +1,7 @@
 'use client';
 
-import { SubmitButton } from "@/components/custom/submit-button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { 提交Button } from "@/components/custom/submit-button";
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FormUtils } from "@/frontend/utils/form.utilts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 
 
-export default function EnvEdit({ app, readonly }: {
+export default function Env编辑({ app, readonly }: {
     app: AppExtendedModel;
     readonly: boolean;
 }) {
@@ -29,7 +29,7 @@ export default function EnvEdit({ app, readonly }: {
     const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppEnvVariablesModel) => saveEnvVariables(state, payload, app.id), FormUtils.getInitialFormState<typeof appEnvVariablesZodModel>());
     useEffect(() => {
         if (state.status === 'success') {
-            toast.success('Env Variables Limits Saved', {
+            toast.success('Env Variables Limits 保存d', {
                 description: "Click \"deploy\" to apply the changes to your app.",
             });
         }
@@ -40,17 +40,17 @@ export default function EnvEdit({ app, readonly }: {
         <Card>
             <CardHeader>
                 <CardTitle>Environment Variables</CardTitle>
-                <CardDescription>
+                <Card描述>
                     Provide optional environment variables for your application.
-                    {app.appType !== 'APP' && <div className="text-sm text-red-500 pt-2">You should not change ENV variables for databases.</div>}
+                    {app.appType !== 'APP' && <div class名称="text-sm text-red-500 pt-2">You should not change ENV variables for databases.</div>}
 
-                </CardDescription>
+                </Card描述>
             </CardHeader>
             <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                     return formAction(data);
                 })()}>
-                    <CardContent className="space-y-4">
+                    <CardContent class名称="space-y-4">
                         <FormField
                             control={form.control}
                             name="envVars"
@@ -58,7 +58,7 @@ export default function EnvEdit({ app, readonly }: {
                                 <FormItem>
                                     <FormLabel>Env Variables</FormLabel>
                                     <FormControl>
-                                        <Textarea className="h-96" placeholder="NAME=VALUE..." {...field} value={field.value} />
+                                        <Textarea class名称="h-96" placeholder="NAME=VALUE..." {...field} value={field.value} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -66,7 +66,7 @@ export default function EnvEdit({ app, readonly }: {
                         />
                     </CardContent>
                     {!readonly && <CardFooter>
-                        <SubmitButton>Save</SubmitButton>
+                        <提交Button>保存</提交Button>
                     </CardFooter>}
                 </form>
             </Form >

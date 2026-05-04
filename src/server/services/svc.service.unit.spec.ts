@@ -1,9 +1,9 @@
 const k3sMocks = vi.hoisted(() => ({
-    listNamespacedService: vi.fn(),
-    readNamespacedService: vi.fn(),
-    createNamespacedService: vi.fn(),
-    replaceNamespacedService: vi.fn(),
-    deleteNamespacedService: vi.fn(),
+    list名称spacedService: vi.fn(),
+    read名称spacedService: vi.fn(),
+    create名称spacedService: vi.fn(),
+    replace名称spacedService: vi.fn(),
+    delete名称spacedService: vi.fn(),
 }));
 
 const logMocks = vi.hoisted(() => ({
@@ -13,11 +13,11 @@ const logMocks = vi.hoisted(() => ({
 vi.mock('@/server/adapter/kubernetes-api.adapter', () => ({
     default: {
         core: {
-            listNamespacedService: k3sMocks.listNamespacedService,
-            readNamespacedService: k3sMocks.readNamespacedService,
-            createNamespacedService: k3sMocks.createNamespacedService,
-            replaceNamespacedService: k3sMocks.replaceNamespacedService,
-            deleteNamespacedService: k3sMocks.deleteNamespacedService,
+            list名称spacedService: k3sMocks.list名称spacedService,
+            read名称spacedService: k3sMocks.read名称spacedService,
+            create名称spacedService: k3sMocks.create名称spacedService,
+            replace名称spacedService: k3sMocks.replace名称spacedService,
+            delete名称spacedService: k3sMocks.delete名称spacedService,
         },
     },
 }));
@@ -32,7 +32,7 @@ import { AppExtendedModel } from '@/shared/model/app-extended.model';
 describe('svc.service', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        k3sMocks.listNamespacedService.mockResolvedValue({ body: { items: [] } });
+        k3sMocks.list名称spacedService.mockResolvedValue({ body: { items: [] } });
     });
 
     it('creates a NodePort service for an App with only an App Node Port', async () => {
@@ -52,8 +52,8 @@ describe('svc.service', () => {
 
         await svcService.createOrUpdateServiceForApp('deployment-1', app);
 
-        expect(k3sMocks.createNamespacedService).toHaveBeenCalledTimes(1);
-        const [, service] = k3sMocks.createNamespacedService.mock.calls[0];
+        expect(k3sMocks.create名称spacedService).toHaveBeenCalledTimes(1);
+        const [, service] = k3sMocks.create名称spacedService.mock.calls[0];
         expect(service.spec).toMatchObject({
             type: 'NodePort',
             ports: [
@@ -94,7 +94,7 @@ describe('svc.service', () => {
 
         await svcService.createOrUpdateServiceForApp('deployment-1', app);
 
-        const [, service] = k3sMocks.createNamespacedService.mock.calls[0];
+        const [, service] = k3sMocks.create名称spacedService.mock.calls[0];
         expect(service.spec).toMatchObject({
             type: 'NodePort',
             ports: [
@@ -125,8 +125,8 @@ function createApp(overrides: Partial<AppExtendedModel>): AppExtendedModel {
         sourceType: 'CONTAINER',
         buildMethod: 'RAILPACK',
         containerImageSource: null,
-        containerRegistryUsername: null,
-        containerRegistryPassword: null,
+        containerRegistry用户名: null,
+        containerRegistry密码: null,
         containerCommand: null,
         containerArgs: null,
         securityContextRunAsUser: null,
@@ -135,7 +135,7 @@ function createApp(overrides: Partial<AppExtendedModel>): AppExtendedModel {
         securityContextPrivileged: false,
         gitUrl: null,
         gitBranch: null,
-        gitUsername: null,
+        git用户名: null,
         gitToken: null,
         dockerfilePath: './Dockerfile',
         replicas: 1,

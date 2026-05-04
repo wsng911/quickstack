@@ -25,7 +25,7 @@ import { FilterIcon, FilterX, Trash2 } from "lucide-react"
 export function DataTableColumnHeader<TData, TValue>({
   column,
   title,
-  className,
+  class名称,
   filterOptions = [],
   disableSorting = false,
 }: DataTableColumnHeaderProps<TData, TValue>) {
@@ -49,27 +49,27 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   if (!column.getCanSort() && filterOptions.length === 0) {
-      return <div className={cn(className)}>{title}</div>
+      return <div class名称={cn(class名称)}>{title}</div>
   }
 
   return (
-      <div className={cn("flex items-center space-x-0.5", className)}>
+      <div class名称={cn("flex items-center space-x-0.5", class名称)}>
           <DropdownMenu>
               <DropdownMenuTrigger asChild>
                   <Button
                       variant="ghost"
                       size="sm"
-                      className="-ml-3 h-8 data-[state=open]:bg-accent"
+                      class名称="-ml-3 h-8 data-[state=open]:bg-accent"
                   >
                       <span>{title}</span>
                       {!disableSorting && <>
                           {
                               column.getIsSorted() === "desc" ? (
-                                  <ArrowDownIcon className="ml-2 h-4 w-4" />
+                                  <ArrowDownIcon class名称="ml-2 h-4 w-4" />
                               ) : column.getIsSorted() === "asc" ? (
-                                  <ArrowUpIcon className="ml-2 h-4 w-4" />
+                                  <ArrowUpIcon class名称="ml-2 h-4 w-4" />
                               ) : (
-                                  <CaretSortIcon className="ml-2 h-4 w-4" />
+                                  <CaretSortIcon class名称="ml-2 h-4 w-4" />
                               )
                           }
                       </>}
@@ -78,16 +78,16 @@ export function DataTableColumnHeader<TData, TValue>({
               {!disableSorting &&<DropdownMenuContent align="start">
                   {/* Sorting options */}
                   <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-                      <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                      <ArrowUpIcon class名称="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                       Asc
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-                      <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                      <ArrowDownIcon class名称="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                       Desc
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-                      <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                      <EyeNoneIcon class名称="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                       Hide
                   </DropdownMenuItem>
               </DropdownMenuContent>}
@@ -98,7 +98,7 @@ export function DataTableColumnHeader<TData, TValue>({
                   <Button
                       variant="ghost"
                       size="sm"
-                      className="-ml-3 h-8 data-[state=open]:bg-accent"
+                      class名称="-ml-3 h-8 data-[state=open]:bg-accent"
                   >
                      {tempFilters.length === 0 ? <FilterIcon /> : <FilterX />}
                   </Button>
@@ -117,14 +117,14 @@ export function DataTableColumnHeader<TData, TValue>({
                                       type="checkbox"
                                       readOnly
                                       checked={tempFilters.includes(`${option.accessorKey}_${option.filterLabel}`)}
-                                      className="mr-2"
+                                      class名称="mr-2"
                                   />
                                   {option.filterLabel}
                               </DropdownMenuItem>
                           ))}
                           <DropdownMenuSeparator />
                           <DropdownMenuItem onClick={clearFilters}>
-                              <Trash2 className="mr-1 h-3.5 w-3.5 text-muted-foreground/70" /> Clear Filters
+                              <Trash2 class名称="mr-1 h-3.5 w-3.5 text-muted-foreground/70" /> Clear Filters
                           </DropdownMenuItem>
                       </>
                   )}

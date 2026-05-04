@@ -34,14 +34,14 @@ export const saveGeneralAppSourceInfo = async (prevState: any, inputData: AppSou
             await appService.save({
                 ...existingApp,
                 ...validatedData,
-                gitUsername: validatedData.gitUsername || null,
+                git用户名: validatedData.git用户名 || null,
                 gitToken: validatedData.gitToken || null,
                 dockerfilePath: validatedData.buildMethod === 'DOCKERFILE'
                     ? validatedData.dockerfilePath ?? existingApp.dockerfilePath
                     : existingApp.dockerfilePath,
                 containerImageSource: null,
-                containerRegistryUsername: null,
-                containerRegistryPassword: null,
+                containerRegistry用户名: null,
+                containerRegistry密码: null,
                 sourceType: 'GIT',
                 id: appId,
             });
@@ -66,14 +66,14 @@ export const saveGeneralAppSourceInfo = async (prevState: any, inputData: AppSou
             await appService.save({
                 ...existingApp,
                 ...validatedData,
-                gitUsername: null,
+                git用户名: null,
                 gitToken: null,
                 dockerfilePath: validatedData.buildMethod === 'DOCKERFILE'
                     ? validatedData.dockerfilePath ?? existingApp.dockerfilePath
                     : existingApp.dockerfilePath,
                 containerImageSource: null,
-                containerRegistryUsername: null,
-                containerRegistryPassword: null,
+                containerRegistry用户名: null,
+                containerRegistry密码: null,
                 sourceType: 'GIT_SSH',
                 id: appId,
             });
@@ -89,11 +89,11 @@ export const saveGeneralAppSourceInfo = async (prevState: any, inputData: AppSou
             await appService.save({
                 ...existingApp,
                 ...validatedData,
-                containerRegistryUsername: validatedData.containerRegistryUsername || null,
-                containerRegistryPassword: validatedData.containerRegistryPassword || null,
+                containerRegistry用户名: validatedData.containerRegistry用户名 || null,
+                containerRegistry密码: validatedData.containerRegistry密码 || null,
                 gitUrl: null,
                 gitBranch: null,
-                gitUsername: null,
+                git用户名: null,
                 gitToken: null,
                 sourceType: 'CONTAINER',
                 id: appId,

@@ -1,26 +1,26 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteNodePort } from "./actions";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import NodePortEditDialog from "./node-port-edit-dialog";
+import NodePort编辑Dialog from "./node-port-edit-dialog";
 import { Button } from "@/components/ui/button";
-import { EditIcon, Plus, TrashIcon } from "lucide-react";
+import { 编辑Icon, Plus, TrashIcon } from "lucide-react";
 import { Toast } from "@/frontend/utils/toast.utils";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 
 export default function NodePortsCard({ app, readonly }: {
     app: AppExtendedModel;
     readonly: boolean;
 }) {
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
 
-    const asyncDeleteNodePort = async (nodePortId: string) => {
+    const async删除NodePort = async (nodePortId: string) => {
         const confirm = await openDialog({
-            title: 'Delete Node Port',
+            title: '删除 Node Port',
             description: 'The node port will be removed and the changes will take effect after you redeploy the app. Are you sure you want to remove this node port?',
-            okButton: 'Delete Node Port',
+            okButton: '删除 Node Port',
         });
         if (confirm) {
             await Toast.fromAction(() => deleteNodePort(nodePortId));
@@ -31,9 +31,9 @@ export default function NodePortsCard({ app, readonly }: {
         <Card>
             <CardHeader>
                 <CardTitle>Node Ports</CardTitle>
-                <CardDescription>
+                <Card描述>
                     Expose this app directly on a node/host port, bypassing Traefik. Useful for non-HTTP workloads such as SFTP, game servers, or other TCP/UDP services.
-                </CardDescription>
+                </Card描述>
             </CardHeader>
             <CardContent>
                 <Table>
@@ -43,21 +43,21 @@ export default function NodePortsCard({ app, readonly }: {
                             <TableHead>Container Port</TableHead>
                             <TableHead>Node Port</TableHead>
                             <TableHead>Protocol</TableHead>
-                            {!readonly && <TableHead className="w-[100px]">Actions</TableHead>}
+                            {!readonly && <TableHead class名称="w-[100px]">操作</TableHead>}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {app.appNodePorts.map((np) => (
                             <TableRow key={np.id}>
-                                <TableCell className="font-medium">{np.port}</TableCell>
-                                <TableCell className="font-medium">{np.nodePort}</TableCell>
-                                <TableCell className="font-medium">{np.protocol}</TableCell>
+                                <TableCell class名称="font-medium">{np.port}</TableCell>
+                                <TableCell class名称="font-medium">{np.nodePort}</TableCell>
+                                <TableCell class名称="font-medium">{np.protocol}</TableCell>
                                 {!readonly && (
-                                    <TableCell className="font-medium flex gap-2">
-                                        <NodePortEditDialog appId={app.id} appNodePort={np}>
-                                            <Button variant="ghost"><EditIcon /></Button>
-                                        </NodePortEditDialog>
-                                        <Button variant="ghost" onClick={() => asyncDeleteNodePort(np.id)}>
+                                    <TableCell class名称="font-medium flex gap-2">
+                                        <NodePort编辑Dialog appId={app.id} appNodePort={np}>
+                                            <Button variant="ghost"><编辑Icon /></Button>
+                                        </NodePort编辑Dialog>
+                                        <Button variant="ghost" onClick={() => async删除NodePort(np.id)}>
                                             <TrashIcon />
                                         </Button>
                                     </TableCell>
@@ -69,9 +69,9 @@ export default function NodePortsCard({ app, readonly }: {
             </CardContent>
             {!readonly && (
                 <CardFooter>
-                    <NodePortEditDialog appId={app.id}>
-                        <Button><Plus /> Add Node Port</Button>
-                    </NodePortEditDialog>
+                    <NodePort编辑Dialog appId={app.id}>
+                        <Button><Plus /> 添加 Node Port</Button>
+                    </NodePort编辑Dialog>
                 </CardFooter>
             )}
         </Card>

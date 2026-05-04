@@ -1,7 +1,7 @@
 'use client';
 
-import { SubmitButton } from "@/components/custom/submit-button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { 提交Button } from "@/components/custom/submit-button";
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FormUtils } from "@/frontend/utils/form.utilts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,46 +11,46 @@ import { ServerActionResult } from "@/shared/model/server-action-error-return.mo
 import { Input } from "@/components/ui/input";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { ProfilePasswordChangeModel, profilePasswordChangeZodModel } from "@/shared/model/update-password.model";
-import { changePassword } from "./actions";
+import { Profile密码ChangeModel, profile密码ChangeZodModel } from "@/shared/model/update-password.model";
+import { change密码 } from "./actions";
 
-export default function ProfilePasswordChange() {
-    const form = useForm<ProfilePasswordChangeModel>({
-        resolver: zodResolver(profilePasswordChangeZodModel)
+export default function Profile密码Change() {
+    const form = useForm<Profile密码ChangeModel>({
+        resolver: zodResolver(profile密码ChangeZodModel)
     });
 
-    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: ProfilePasswordChangeModel) =>
-        changePassword(state, payload), FormUtils.getInitialFormState<typeof profilePasswordChangeZodModel>());
+    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: Profile密码ChangeModel) =>
+        change密码(state, payload), FormUtils.getInitialFormState<typeof profile密码ChangeZodModel>());
 
     useEffect(() => {
         if (state.status === 'success') {
-            toast.success('Password updated successfully');
-            form.setValue('oldPassword', '');
-            form.setValue('newPassword', '');
-            form.setValue('confirmNewPassword', '');
+            toast.success('密码 updated successfully');
+            form.setValue('old密码', '');
+            form.setValue('new密码', '');
+            form.setValue('confirmNew密码', '');
             form.clearErrors();
         }
-        FormUtils.mapValidationErrorsToForm<typeof profilePasswordChangeZodModel>(state, form)
+        FormUtils.mapValidationErrorsToForm<typeof profile密码ChangeZodModel>(state, form)
     }, [state]);
 
     const sourceTypeField = form.watch();
     return <>
         <Card>
             <CardHeader>
-                <CardTitle>Password</CardTitle>
-                <CardDescription>Change your existing login password.</CardDescription>
+                <CardTitle>密码</CardTitle>
+                <Card描述>Change your existing login password.</Card描述>
             </CardHeader>
             <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                     return formAction(data);
                 })()}>
-                    <CardContent className="space-y-4">
+                    <CardContent class名称="space-y-4">
                         <FormField
                             control={form.control}
-                            name="oldPassword"
+                            name="old密码"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Current Password</FormLabel>
+                                    <FormLabel>Current 密码</FormLabel>
                                     <FormControl>
                                         <Input type="password" {...field} />
                                     </FormControl>
@@ -60,10 +60,10 @@ export default function ProfilePasswordChange() {
                         />
                         <FormField
                             control={form.control}
-                            name="newPassword"
+                            name="new密码"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>New Password</FormLabel>
+                                    <FormLabel>New 密码</FormLabel>
                                     <FormControl>
                                         <Input type="password" {...field} />
                                     </FormControl>
@@ -73,10 +73,10 @@ export default function ProfilePasswordChange() {
                         />
                         <FormField
                             control={form.control}
-                            name="confirmNewPassword"
+                            name="confirmNew密码"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Confirm new Password</FormLabel>
+                                    <FormLabel>确认 new 密码</FormLabel>
                                     <FormControl>
                                         <Input type="password" {...field} />
                                     </FormControl>
@@ -85,9 +85,9 @@ export default function ProfilePasswordChange() {
                             )}
                         />
                     </CardContent>
-                    <CardFooter className="gap-4">
-                        <SubmitButton>Change Password</SubmitButton>
-                        <p className="text-red-500">{state?.message}</p>
+                    <CardFooter class名称="gap-4">
+                        <提交Button>Change 密码</提交Button>
+                        <p class名称="text-red-500">{state?.message}</p>
                     </CardFooter>
                 </form>
             </Form >

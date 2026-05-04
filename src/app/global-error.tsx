@@ -19,20 +19,20 @@ export default function GlobalError({
 }) {
     return (
         <html >
-            <body className={cn(
+            <body class名称={cn(
                 "min-h-screen bg-background font-sans antialiased",
                 inter.variable
             )}>
-                <div className="h-screen w-fuäll flex flex-col items-center justify-center p-4 space-y-4 bg-background text-foreground">
-                    <div className="flex flex-col items-center justify-center space-y-2 text-center max-w-md">
-                        <div className="rounded-full bg-destructive/10 p-3">
-                            <AlertCircle className="h-8 w-8 text-destructive" />
+                <div class名称="h-screen w-fuäll flex flex-col items-center justify-center p-4 space-y-4 bg-background text-foreground">
+                    <div class名称="flex flex-col items-center justify-center space-y-2 text-center max-w-md">
+                        <div class名称="rounded-full bg-destructive/10 p-3">
+                            <AlertCircle class名称="h-8 w-8 text-destructive" />
                         </div>
-                        <h2 className="text-2xl font-bold tracking-tight">Something went wrong!</h2>
-                        <p className="text-muted-foreground mt-4">
+                        <h2 class名称="text-2xl font-bold tracking-tight">Something went wrong!</h2>
+                        <p class名称="text-muted-foreground mt-4">
                             An unexpected error occurred. Please check if your authorized for this action and try again.
                         </p>
-                        <p className="text-xs text-muted-foreground mt-6">
+                        <p class名称="text-xs text-muted-foreground mt-6">
                             Digest: {error.digest}
                         </p>
                     </div>

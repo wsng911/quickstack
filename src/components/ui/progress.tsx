@@ -9,7 +9,7 @@ const Progress = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & {
     color?: "blue" | "green" | "red" | "orange" | "default"
   }
->(({ className, value, color = "default", ...props }, ref) => {
+>(({ class名称, value, color = "default", ...props }, ref) => {
   const colorClasses = {
     blue: "bg-blue-400",
     green: "bg-green-400",
@@ -21,14 +21,14 @@ const Progress = React.forwardRef<
   return (
     <ProgressPrimitive.Root
       ref={ref}
-      className={cn(
+      class名称={cn(
         "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
-        className
+        class名称
       )}
       {...props}
     >
       <ProgressPrimitive.Indicator
-        className={cn(
+        class名称={cn(
           "h-full w-full flex-1 transition-all",
           colorClasses[color]
         )}
@@ -37,7 +37,7 @@ const Progress = React.forwardRef<
     </ProgressPrimitive.Root>
   )
 })
-Progress.displayName = ProgressPrimitive.Root.displayName
+Progress.display名称 = ProgressPrimitive.Root.display名称
 
 export { Progress }
 

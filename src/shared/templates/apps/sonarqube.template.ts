@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const sonarqubeAppTemplate: AppTemplateModel = {
     name: "SonarQube",
-    iconName: 'https://avatars.githubusercontent.com/u/54465?s=200&v=4',
+    icon名称: 'https://avatars.githubusercontent.com/u/54465?s=200&v=4',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -34,13 +34,13 @@ export const sonarqubeAppTemplate: AppTemplateModel = {
             size: 1000,
             containerMountPath: '/opt/sonarqube/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }, {
             size: 200,
             containerMountPath: '/opt/sonarqube/extensions',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

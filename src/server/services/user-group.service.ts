@@ -3,8 +3,8 @@ import dataAccess from "../adapter/db.client";
 import { revalidateTag, unstable_cache } from "next/cache";
 import { Tags } from "../utils/cache-tag-generator.utils";
 import { ServiceException } from "@/shared/model/service.exception.model";
-import { RoleEditModel } from "@/shared/model/role-edit.model";
-import { adminRoleName } from "@/shared/model/role-extended.model.ts";
+import { Role编辑Model } from "@/shared/model/role-edit.model";
+import { adminRole名称 } from "@/shared/model/role-extended.model.ts";
 import { UserGroupExtended } from "@/shared/model/sim-session.model";
 
 export class UserGroupService {
@@ -16,7 +16,7 @@ export class UserGroupService {
                     select: {
                         name: true,
                         id: true,
-                        canAccessBackups: true,
+                        canAccess返回ups: true,
                         roleProjectPermissions: {
                             select: {
                                 projectId: true,
@@ -51,9 +51,9 @@ export class UserGroupService {
         })(email);
     }
 
-    async saveWithPermissions(item: RoleEditModel) {
+    async saveWithPermissions(item: Role编辑Model) {
         try {
-            if (item.name === adminRoleName) {
+            if (item.name === adminRole名称) {
                 throw new ServiceException("You cannot assign the name 'admin' to a role");
             }
             await dataAccess.client.$transaction(async tx => {
@@ -67,14 +67,14 @@ export class UserGroupService {
                         },
                         data: {
                             name: item.name,
-                            canAccessBackups: item.canAccessBackups,
+                            canAccess返回ups: item.canAccess返回ups,
                         }
                     });
                 } else {
                     savedRole = await tx.userGroup.create({
                         data: {
                             name: item.name,
-                            canAccessBackups: item.canAccessBackups,
+                            canAccess返回ups: item.canAccess返回ups,
                         }
                     });
                 }
@@ -122,9 +122,9 @@ export class UserGroupService {
         }
     }
 
-    async save(item: Prisma.UserGroupUncheckedCreateInput | Prisma.UserGroupUncheckedUpdateInput) {
+    async save(item: Prisma.UserGroupUnchecked创建Input | Prisma.UserGroupUncheckedUpdateInput) {
         try {
-            if (item.name === adminRoleName) {
+            if (item.name === adminRole名称) {
                 throw new ServiceException("You cannot assign the name 'admin' to a role");
             }
             if (item.id) {
@@ -136,7 +136,7 @@ export class UserGroupService {
                 });
             } else {
                 await dataAccess.client.userGroup.create({
-                    data: item as Prisma.UserGroupUncheckedCreateInput
+                    data: item as Prisma.UserGroupUnchecked创建Input
                 });
             }
         } finally {
@@ -236,16 +236,16 @@ export class UserGroupService {
         }
     }
 
-    async getOrCreateAdminRole() {
+    async getOr创建AdminRole() {
         let adminRole = await dataAccess.client.userGroup.findFirst({
             where: {
-                name: adminRoleName
+                name: adminRole名称
             }
         });
         if (!adminRole) {
             adminRole = await dataAccess.client.userGroup.create({
                 data: {
-                    name: adminRoleName
+                    name: adminRole名称
                 }
             });
         }
@@ -257,7 +257,7 @@ export class UserGroupService {
             const dbAdminRole = await dataAccess.client.userGroup.findFirst({
                 where: {
                     name: {
-                        in: [adminRoleName]
+                        in: [adminRole名称]
                     }
                 },
                 include: {
@@ -266,7 +266,7 @@ export class UserGroupService {
             });
             if (!dbAdminRole) {
                 console.warn("*** No admin users found. Creating default admin role ***");
-                const adminRole = await this.getOrCreateAdminRole();
+                const adminRole = await this.getOr创建AdminRole();
                 await dataAccess.client.user.updateMany({
                     where: {
                         userGroupId: null
@@ -281,7 +281,7 @@ export class UserGroupService {
             if (dbAdminRole.users.length === 0) {
                 // making all users to admins
                 console.warn("*** No admin users found. Assigning all users to admin role ***");
-                const adminRole = await this.getOrCreateAdminRole();
+                const adminRole = await this.getOr创建AdminRole();
                 await dataAccess.client.user.updateMany({
                     data: {
                         userGroupId: adminRole.id

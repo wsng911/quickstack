@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, Alert描述, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,11 +19,11 @@ export function GitSshUrlStep({ formData, publicKey, isEnsuringKey, isLoadingBra
     onRetry: () => Promise<boolean>;
 }) {
     return (
-        <div className="space-y-4">
+        <div class名称="space-y-4">
             <Alert>
-                <KeyRound className="h-4 w-4" />
-                <AlertTitle>Add this deploy key to your Git provider</AlertTitle>
-                <AlertDescription>Some Git providers require a unique deploy key per repository. Regenerate the key if this key is already used elsewhere.</AlertDescription>
+                <KeyRound class名称="h-4 w-4" />
+                <AlertTitle>添加 this deploy key to your Git provider</AlertTitle>
+                <Alert描述>Some Git providers require a unique deploy key per repository. Regenerate the key if this key is already used elsewhere.</Alert描述>
             </Alert>
             <IconInput
                 icon={LinkIcon}
@@ -33,16 +33,16 @@ export function GitSshUrlStep({ formData, publicKey, isEnsuringKey, isLoadingBra
                 onChange={(event) => onChange({ gitUrl: event.target.value, gitBranch: '' })}
             />
             {!!formData.gitUrl?.trim() && (
-                <div className="space-y-2">
-                    <div className="flex items-center justify-between gap-3">
+                <div class名称="space-y-2">
+                    <div class名称="flex items-center justify-between gap-3">
                         <Label>Public Deploy Key</Label>
-                        <div className="flex gap-2">
+                        <div class名称="flex gap-2">
                             <Button type="button" size="sm" variant="outline" onClick={onCopy} disabled={!publicKey}>
-                                <ClipboardCopy className="h-4 w-4" />
+                                <ClipboardCopy class名称="h-4 w-4" />
                                 Copy
                             </Button>
                             <Button type="button" size="sm" variant="secondary" onClick={onRegenerate} disabled={!publicKey}>
-                                <RefreshCw className="h-4 w-4" />
+                                <RefreshCw class名称="h-4 w-4" />
                                 Regenerate key
                             </Button>
                         </div>
@@ -50,9 +50,9 @@ export function GitSshUrlStep({ formData, publicKey, isEnsuringKey, isLoadingBra
                     <Textarea
                         readOnly
                         value={isEnsuringKey ? 'Generating deploy key...' : publicKey ?? ''}
-                        className="min-h-28 font-mono text-xs"
+                        class名称="min-h-28 font-mono text-xs"
                     />
-                    <Label className="text-muted-foreground font-normal">Make sure to add the deploy key to your Git repository with read access.</Label>
+                    <Label class名称="text-muted-foreground font-normal">Make sure to add the deploy key to your Git repository with read access.</Label>
                 </div>
             )}
             <BranchLoadingState loading={isLoadingBranches} error={branchError} onRetry={onRetry} />

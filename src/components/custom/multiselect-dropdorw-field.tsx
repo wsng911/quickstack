@@ -50,7 +50,7 @@ export function MultiselectDropdownField<TFormType extends FieldValues>(
 
 
   return <>
-    <div className="hidden">
+    <div class名称="hidden">
       <FormField
         control={form.control}
         name={name as any}
@@ -68,10 +68,10 @@ export function MultiselectDropdownField<TFormType extends FieldValues>(
       <DropdownMenuTrigger asChild>
         <Button variant="outline">{!(form.getValues()[name] as string) || (form.getValues()[name] as string).length === 0 ? label : (form.getValues()[name] as string)?.replaceAll(',', ', ')}</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent class名称="w-56">
         <DropdownMenuLabel>Kantone</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <ScrollArea className="h-60">
+        <ScrollArea class名称="h-60">
           {Array.from(values.entries()).map(([key, value]) => {
             return <DropdownMenuCheckboxItem
               key={key}

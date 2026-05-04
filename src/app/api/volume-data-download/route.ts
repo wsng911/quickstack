@@ -12,19 +12,19 @@ export async function GET(request: NextRequest) {
     try {
         await getAuthUserSession();
         const requestUrl = new URL(request.url);
-        const fileName = requestUrl.searchParams.get('fileName');
-        if (!fileName) {
+        const file名称 = requestUrl.searchParams.get('file名称');
+        if (!file名称) {
             throw new ServiceException('No file name provided.');
         }
 
-        if (fileName.includes('..') || fileName.includes('/')) {
+        if (file名称.includes('..') || file名称.includes('/')) {
             throw new ServiceException('Invalid file name.');
         }
 
         const dirOfTempDoanloadedData = PathUtils.tempVolumeDownloadPath;
-        const tarPath = path.join(dirOfTempDoanloadedData, fileName);
+        const tarPath = path.join(dirOfTempDoanloadedData, file名称);
         if (!await FsUtils.fileExists(tarPath)) {
-            throw new ServiceException(`File ${fileName} does not exist.`);
+            throw new ServiceException(`File ${file名称} does not exist.`);
         }
 
         const buffer = await fs.readFile(tarPath);

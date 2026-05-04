@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const podsInfoZodModel = z.object({
-    podName: z.string(),
-    containerName: z.string(),
+    pod名称: z.string(),
+    container名称: z.string(),
     uid: z.string().optional(),
     status: z.string().optional(),
 });

@@ -18,9 +18,9 @@ export const nodeInfoZodModel = z.object({
   diskOk: z.boolean(),
   pidOk: z.boolean(),
   schedulable: z.boolean(),
-  memoryStatusText: z.string().optional(),
-  diskStatusText: z.string().optional(),
-  pidStatusText: z.string().optional(),
+  memory状态Text: z.string().optional(),
+  disk状态Text: z.string().optional(),
+  pid状态Text: z.string().optional(),
   isMasterNode: z.boolean(),
 })
 

@@ -25,9 +25,9 @@ class AppLogsService {
         const appLogsFolder = PathUtils.appLogsFolder(appId);
         await FsUtils.createDirIfNotExistsAsync(appLogsFolder, true);
 
-        const fileNames = await FsUtils.listFilesInDirAsync(appLogsFolder);
-        const logFiles = fileNames.map((fileName) => {
-            const date = this.dateFromAppLogsFileName(fileName);
+        const file名称s = await FsUtils.listFilesInDirAsync(appLogsFolder);
+        const logFiles = file名称s.map((file名称) => {
+            const date = this.dateFromAppLogsFile名称(file名称);
             if (!date) {
                 return undefined;
             }
@@ -45,12 +45,12 @@ class AppLogsService {
         return logFiles;
     }
 
-    private dateFromAppLogsFileName(fileName: string) {
+    private dateFromAppLogsFile名称(file名称: string) {
         try {
-            const dateStr = fileName.replace('.tar.gz', '').split("_")[1];
+            const dateStr = file名称.replace('.tar.gz', '').split("_")[1];
             return new Date(dateStr);
         } catch (error) {
-            console.error("Error parsing date from file name", fileName);
+            console.error("Error parsing date from file name", file名称);
             return undefined;
         }
     }
@@ -126,7 +126,7 @@ class AppLogsService {
             if (await FsUtils.fileExists(logPath)) {
                 logPathsWritten.push(logPath);
             } else {
-                console.error(`Error writing logs to file for pod ${pod.podName} in app ${app.id}. There was no file written!`);
+                console.error(`Error writing logs to file for pod ${pod.pod名称} in app ${app.id}. There was no file written!`);
             }
         }
 
@@ -158,12 +158,12 @@ class AppLogsService {
         };
     }
 
-    private async writeLogsToFileForPod(pod: { podName: string; containerName: string; uid?: string; status?: string; },
+    private async writeLogsToFileForPod(pod: { pod名称: string; container名称: string; uid?: string; status?: string; },
         app: App, startOfDay: Date, secondsSinceMidnight: number) {
 
-        console.log(`Fetching logs for pod ${pod.podName} in container ${pod.containerName}`);
+        console.log(`Fetching logs for pod ${pod.pod名称} in container ${pod.container名称}`);
         const textLogFilePath = path.join(PathUtils.appLogsFolder(app.id),
-            `${startOfDay.toISOString().split('T')[0]}_${pod.podName}.log`);
+            `${startOfDay.toISOString().split('T')[0]}_${pod.pod名称}.log`);
         await FsUtils.deleteFileIfExists(textLogFilePath); // delete existing log file --> new one will be created
 
         await new Promise<void>(async (resolve, reject) => {
@@ -171,7 +171,7 @@ class AppLogsService {
 
                 let logStream = new stream.PassThrough();
 
-                const requestWebSocket = await k3s.log.log(app.projectId, pod.podName, pod.containerName, logStream, {
+                const requestWebSocket = await k3s.log.log(app.projectId, pod.pod名称, pod.container名称, logStream, {
                     follow: false,
                     sinceSeconds: Math.round(secondsSinceMidnight),
                     timestamps: true,
@@ -186,17 +186,17 @@ class AppLogsService {
                 });
 
                 logStream.on('error', (error) => {
-                    console.error(`Error fetching logs for pod ${pod.podName} in container ${pod.containerName}`, error);
+                    console.error(`Error fetching logs for pod ${pod.pod名称} in container ${pod.container名称}`, error);
                     reject(error);
                 });
 
                 logStream.on('end', () => {
-                    console.log(`[END] Log stream ended for ${pod.podName}`);
+                    console.log(`[END] Log stream ended for ${pod.pod名称}`);
                     resolve();
                     requestWebSocket?.abort();
                 });
             } catch (error) {
-                console.error(`Error fetching logs for pod ${pod.podName} in container ${pod.containerName}`, error);
+                console.error(`Error fetching logs for pod ${pod.pod名称} in container ${pod.container名称}`, error);
                 reject(error);
             }
         });

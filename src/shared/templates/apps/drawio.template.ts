@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const drawioAppTemplate: AppTemplateModel = {
     name: "draw.io",
-    iconName: 'https://raw.githubusercontent.com/jgraph/drawio/dev/src/main/webapp/images/drawlogo.svg',
+    icon名称: 'https://raw.githubusercontent.com/jgraph/drawio/dev/src/main/webapp/images/drawlogo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",

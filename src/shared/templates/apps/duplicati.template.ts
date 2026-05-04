@@ -5,9 +5,9 @@ import { AppTemplateUtils } from "@/server/utils/app-template.utils";
 
 export const duplicatiAppTemplate: AppTemplateModel = {
     name: "Duplicati",
-    iconName: 'https://avatars.githubusercontent.com/u/2245683?s=200&v=4',
+    icon名称: 'https://avatars.githubusercontent.com/u/2245683?s=200&v=4',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -35,13 +35,13 @@ export const duplicatiAppTemplate: AppTemplateModel = {
             size: 100,
             containerMountPath: '/config',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }, {
             size: 800,
             containerMountPath: '/backups',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -52,7 +52,7 @@ export const duplicatiAppTemplate: AppTemplateModel = {
 };
 
 
-export const postCreateDuplicatiAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
+export const post创建DuplicatiAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
     const duplicatiApp = createdApps[0];
 
     // strong password generator for system user

@@ -12,7 +12,7 @@ const saltRounds = 10;
 
 export class UserService {
 
-    async changePassword(userMail: string, oldPassword: string, newPassword: string) {
+    async change密码(userMail: string, old密码: string, new密码: string) {
         try {
             const user = await dataAccess.client.user.findUnique({
                 where: {
@@ -22,17 +22,17 @@ export class UserService {
             if (!user) {
                 throw new ServiceException("User not found");
             }
-            const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
-            if (!isPasswordValid) {
+            const is密码Valid = await bcrypt.compare(old密码, user.password);
+            if (!is密码Valid) {
                 throw new ServiceException("Old password is incorrect");
             }
-            const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+            const hashed密码 = await bcrypt.hash(new密码, saltRounds);
             await dataAccess.client.user.update({
                 where: {
                     email: userMail
                 },
                 data: {
-                    password: hashedPassword
+                    password: hashed密码
                 }
             });
         } finally {
@@ -40,15 +40,15 @@ export class UserService {
         }
     }
 
-    async changePasswordImediately(userMail: string, newPassword: string) {
+    async change密码Imediately(userMail: string, new密码: string) {
         try {
-            const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+            const hashed密码 = await bcrypt.hash(new密码, saltRounds);
             await dataAccess.client.user.update({
                 where: {
                     email: userMail
                 },
                 data: {
-                    password: hashedPassword
+                    password: hashed密码
                 }
             });
         } finally {
@@ -90,8 +90,8 @@ export class UserService {
             if (!dbUser) {
                 return null;
             }
-            const isPasswordValid = await bcrypt.compare(credentials.password, dbUser.password);
-            if (!isPasswordValid) {
+            const is密码Valid = await bcrypt.compare(credentials.password, dbUser.password);
+            if (!is密码Valid) {
                 return null;
             }
             return this.maptoDtoUser(dbUser);
@@ -102,11 +102,11 @@ export class UserService {
 
     async registerUser(email: string, password: string, userGroupId: string | null) {
         try {
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const hashed密码 = await bcrypt.hash(password, saltRounds);
             const user = await dataAccess.client.user.create({
                 data: {
                     email,
-                    password: hashedPassword,
+                    password: hashed密码,
                     userGroupId
                 }
             });
@@ -148,7 +148,7 @@ export class UserService {
         });
     }
 
-    async getUserByEmail(email: string) {
+    async getUserBy邮箱(email: string) {
         return await dataAccess.client.user.findFirstOrThrow({
             where: {
                 email
@@ -158,7 +158,7 @@ export class UserService {
 
     async createNewTotpToken(userMail: string) {
         try {
-            await this.getUserByEmail(userMail);
+            await this.getUserBy邮箱(userMail);
 
             let totpSecret = new OTPAuth.Secret({ size: 20 });
 
@@ -216,7 +216,7 @@ export class UserService {
     }
 
     async verifyTotpToken(userMail: string, token: string) {
-        const user = await this.getUserByEmail(userMail);
+        const user = await this.getUserBy邮箱(userMail);
         if (!user.twoFaSecret) {
             throw new ServiceException("2FA is not enabled for this user");
         }
@@ -235,7 +235,7 @@ export class UserService {
 
     async deactivate2fa(userMail: string) {
         try {
-            await this.getUserByEmail(userMail);
+            await this.getUserBy邮箱(userMail);
             await dataAccess.client.user.update({
                 where: {
                     email: userMail

@@ -52,7 +52,7 @@ class DeploymentLogService {
         let bytesRead = 0;
 
         const readFileFromLastCheckpoint = () => new Promise<void>((resolve) => {
-            // Create a new read stream starting from the current end of the file
+            // 创建 a new read stream starting from the current end of the file
             const newStream = fs.createReadStream(logFilePath, {
                 encoding: 'utf8',
                 start: bytesRead,

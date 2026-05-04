@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
@@ -15,9 +15,9 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { AppDomain } from "@prisma/client"
-import { AppDomainEditModel, appDomainEditZodModel } from "@/shared/model/domain-edit.model"
+import { AppDomain编辑Model, appDomain编辑ZodModel } from "@/shared/model/domain-edit.model"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { saveDomain, getQuickstackDomainSuffix } from "./actions"
 import { toast } from "sonner"
@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/tooltip"
 
 
-export default function DialogEditDialog({ children, domain, appId }: { children: React.ReactNode; domain?: AppDomain; appId: string; }) {
+export default function Dialog编辑Dialog({ children, domain, appId }: { children: React.ReactNode; domain?: AppDomain; appId: string; }) {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [domainSuffix, setDomainSuffix] = useState<string | undefined>(undefined);
@@ -59,20 +59,20 @@ export default function DialogEditDialog({ children, domain, appId }: { children
         }
     }, [domain, domainSuffix]);
 
-    const form = useForm<AppDomainEditModel>({
-        resolver: zodResolver(appDomainEditZodModel),
+    const form = useForm<AppDomain编辑Model>({
+        resolver: zodResolver(appDomain编辑ZodModel),
         defaultValues: {
             ...domain,
             useSsl: domain?.useSsl === false ? false : true
         }
     });
 
-    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppDomainEditModel) =>
+    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppDomain编辑Model) =>
         saveDomain(state, {
             ...payload,
             appId,
             id: domain?.id
-        }), FormUtils.getInitialFormState<typeof appDomainEditZodModel>());
+        }), FormUtils.getInitialFormState<typeof appDomain编辑ZodModel>());
 
     useEffect(() => {
         if (state.status === 'success') {
@@ -82,7 +82,7 @@ export default function DialogEditDialog({ children, domain, appId }: { children
             });
             setIsOpen(false);
         }
-        FormUtils.mapValidationErrorsToForm<typeof appDomainEditZodModel>(state, form);
+        FormUtils.mapValidationErrorsToForm<typeof appDomain编辑ZodModel>(state, form);
     }, [state]);
 
     const values = form.watch();
@@ -103,7 +103,7 @@ export default function DialogEditDialog({ children, domain, appId }: { children
     };
 
     // Handle form submission
-    const handleFormSubmit = (data: AppDomainEditModel) => {
+    const handleForm提交 = (data: AppDomain编辑Model) => {
         return formAction(data);
     };
 
@@ -113,24 +113,24 @@ export default function DialogEditDialog({ children, domain, appId }: { children
                 {children}
             </div>
             <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent class名称="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>Edit Domain</DialogTitle>
-                        <DialogDescription>
+                        <DialogTitle>编辑 Domain</DialogTitle>
+                        <Dialog描述>
                             Configure your custom domain for this application. Note that the domain must be pointing to the server IP address.
-                        </DialogDescription>
+                        </Dialog描述>
                     </DialogHeader>
                     <Form {...form}>
-                        <form action={(e) => form.handleSubmit((data) => {
-                            return handleFormSubmit(data);
+                        <form action={(e) => form.handle提交((data) => {
+                            return handleForm提交(data);
                         })()}>
-                            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'custom' | 'quickstack')} className="w-full">
-                                <TabsList className="grid w-full grid-cols-2">
+                            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'custom' | 'quickstack')} class名称="w-full">
+                                <TabsList class名称="grid w-full grid-cols-2">
                                     <TabsTrigger value="custom">Custom Domain</TabsTrigger>
                                     {!!domainSuffix && <TabsTrigger value="quickstack">quickstack.me Domain</TabsTrigger>}
                                 </TabsList>
 
-                                <TabsContent value="custom" className="space-y-4 mt-4">
+                                <TabsContent value="custom" class名称="space-y-4 mt-4">
                                     <FormField
                                         control={form.control}
                                         name="hostname"
@@ -163,7 +163,7 @@ export default function DialogEditDialog({ children, domain, appId }: { children
                                     {values.useSsl && <CheckboxFormField form={form} name="redirectHttps" label="Redirect HTTP to HTTPS" />}
                                 </TabsContent>
 
-                                <TabsContent value="quickstack" className="space-y-4 mt-4">
+                                <TabsContent value="quickstack" class名称="space-y-4 mt-4">
                                     <FormField
                                         control={form.control}
                                         name="hostname"
@@ -173,7 +173,7 @@ export default function DialogEditDialog({ children, domain, appId }: { children
                                                 <FormItem>
                                                     <FormLabel>Domain Prefix</FormLabel>
                                                     <FormControl>
-                                                        <div className="flex items-center gap-2">
+                                                        <div class名称="flex items-center gap-2">
                                                             <Input
                                                                 placeholder="my-app"
                                                                 value={prefixValue}
@@ -187,7 +187,7 @@ export default function DialogEditDialog({ children, domain, appId }: { children
                                                             />
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
-                                                                    <span className="text-sm text-muted-foreground whitespace-nowrap">
+                                                                    <span class名称="text-sm text-muted-foreground whitespace-nowrap">
                                                                         .{domainSuffix}
                                                                     </span>
                                                                 </TooltipTrigger>
@@ -222,9 +222,9 @@ export default function DialogEditDialog({ children, domain, appId }: { children
                                 </TabsContent>
                             </Tabs>
 
-                            <div className="mt-4 space-y-4">
-                                <p className="text-red-500">{state.message}</p>
-                                <SubmitButton>Save</SubmitButton>
+                            <div class名称="mt-4 space-y-4">
+                                <p class名称="text-red-500">{state.message}</p>
+                                <提交Button>保存</提交Button>
                             </div>
                         </form>
                     </Form >

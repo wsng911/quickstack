@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const noderedAppTemplate: AppTemplateModel = {
     name: "Node-RED",
-    iconName: 'https://nodered.org/about/resources/media/node-red-icon-2.svg',
+    icon名称: 'https://nodered.org/about/resources/media/node-red-icon-2.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -34,7 +34,7 @@ export const noderedAppTemplate: AppTemplateModel = {
             size: 200,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

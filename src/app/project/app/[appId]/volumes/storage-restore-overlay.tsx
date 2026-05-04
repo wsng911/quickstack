@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { AppVolume } from "@prisma/client"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { restoreVolumeFromZip } from "./actions"
@@ -60,18 +60,18 @@ export default function StorageRestoreDialog({ children, volume, app }: { childr
         {children}
       </div>
       <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent class名称="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Restore Volume</DialogTitle>
-            <DialogDescription>
+            <Dialog描述>
               Provide a gzip file to restore the volume.
               The archive will be extracted at the root of the mount path.
               Make sure that the volume has enough space to store the extracted data.
-            </DialogDescription>
+            </Dialog描述>
           </DialogHeader>
           <Form {...form}>
             <form action={formAction}>
-              <div className="space-y-4">
+              <div class名称="space-y-4">
                 <FormField
                   control={form.control}
                   name="file"
@@ -86,8 +86,8 @@ export default function StorageRestoreDialog({ children, volume, app }: { childr
                   )}
                 />
 
-                <p className="text-red-500">{state.message ?? 'All existing data on the volume will be lost!'}</p>
-                <SubmitButton>Restore</SubmitButton>
+                <p class名称="text-red-500">{state.message ?? 'All existing data on the volume will be lost!'}</p>
+                <提交Button>Restore</提交Button>
               </div>
             </form>
           </Form >

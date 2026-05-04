@@ -12,7 +12,7 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
+  Card描述,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -23,7 +23,7 @@ import {
 } from '@/frontend/states/zustand.states';
 import { useEffect, useState, useMemo } from 'react';
 import ChartDiskRessources from './disk-chart';
-import { Actions } from '@/frontend/utils/nextjs-actions.utils';
+import { 操作 } from '@/frontend/utils/nextjs-actions.utils';
 import { getNodeResourceUsage } from './actions';
 import { toast } from 'sonner';
 import FullLoadingSpinner from '@/components/ui/full-loading-spinnter';
@@ -31,7 +31,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { KubeSizeConverter } from '@/shared/utils/kubernetes-size-converter.utils';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, Sheet描述, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Activity, Cpu, HardDrive, MemoryStick } from 'lucide-react';
 
 export default function ResourcesNodes({
@@ -49,7 +49,7 @@ export default function ResourcesNodes({
 
   const fetchResourcesNodes = async () => {
     try {
-      const data = await Actions.run(() => getNodeResourceUsage());
+      const data = await 操作.run(() => getNodeResourceUsage());
       setUpdatedResourcesNodes(data);
     } catch (ex) {
       toast.error('An error occurred while fetching current resource usage');
@@ -66,7 +66,7 @@ export default function ResourcesNodes({
 
   const { setBreadcrumbs } = useBreadcrumbs();
   useEffect(
-    () => setBreadcrumbs([{ name: 'Monitoring', url: '/monitoring' }]
+    () => setBreadcrumbs([{ name: '监控ing', url: '/monitoring' }]
     ), []);
 
   const clusterStats = useMemo(() => {
@@ -144,16 +144,16 @@ export default function ResourcesNodes({
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-3">
+    <div class名称="space-y-6">
+      <div class名称="grid gap-4 md:grid-cols-3">
         {/* Cluster CPU */}
-        <Card className="flex flex-col">
-          <CardHeader className="items-center pb-0">
+        <Card class名称="flex flex-col">
+          <CardHeader class名称="items-center pb-0">
             <CardTitle>Cluster CPU</CardTitle>
-            <CardDescription>Total Cores Usage</CardDescription>
+            <Card描述>Total Cores Usage</Card描述>
           </CardHeader>
-          <CardContent className="flex-1 pb-0">
-            <ChartContainer config={pieChartConfig} className="mx-auto aspect-square max-h-[250px]">
+          <CardContent class名称="flex-1 pb-0">
+            <ChartContainer config={pieChartConfig} class名称="mx-auto aspect-square max-h-[250px]">
               <PieChart>
                 <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                 <Pie data={getChartData(clusterStats.cpuUsage, clusterStats.cpuCapacity)} dataKey="value" nameKey="status" innerRadius={60} strokeWidth={5}>
@@ -161,10 +161,10 @@ export default function ResourcesNodes({
                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                       return (
                         <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                          <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-3xl font-bold">
+                          <tspan x={viewBox.cx} y={viewBox.cy} class名称="fill-foreground text-3xl font-bold">
                             {((clusterStats.cpuUsage / clusterStats.cpuCapacity) * 100).toFixed(0)}%
                           </tspan>
-                          <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
+                          <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} class名称="fill-muted-foreground">
                             Used
                           </tspan>
                         </text>
@@ -178,13 +178,13 @@ export default function ResourcesNodes({
         </Card>
 
         {/* Cluster RAM */}
-        <Card className="flex flex-col">
-          <CardHeader className="items-center pb-0">
+        <Card class名称="flex flex-col">
+          <CardHeader class名称="items-center pb-0">
             <CardTitle>Cluster RAM</CardTitle>
-            <CardDescription>Total Memory Usage</CardDescription>
+            <Card描述>Total Memory Usage</Card描述>
           </CardHeader>
-          <CardContent className="flex-1 pb-0">
-            <ChartContainer config={pieChartConfig} className="mx-auto aspect-square max-h-[250px]">
+          <CardContent class名称="flex-1 pb-0">
+            <ChartContainer config={pieChartConfig} class名称="mx-auto aspect-square max-h-[250px]">
               <PieChart>
                 <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel formatter={(value) => KubeSizeConverter.convertBytesToReadableSize(value as number)} />} />
                 <Pie data={getChartData(clusterStats.ramUsage, clusterStats.ramCapacity)} dataKey="value" nameKey="status" innerRadius={60} strokeWidth={5}>
@@ -192,10 +192,10 @@ export default function ResourcesNodes({
                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                       return (
                         <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                          <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-3xl font-bold">
+                          <tspan x={viewBox.cx} y={viewBox.cy} class名称="fill-foreground text-3xl font-bold">
                             {((clusterStats.ramUsage / clusterStats.ramCapacity) * 100).toFixed(0)}%
                           </tspan>
-                          <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
+                          <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} class名称="fill-muted-foreground">
                             Used
                           </tspan>
                         </text>
@@ -209,13 +209,13 @@ export default function ResourcesNodes({
         </Card>
 
         {/* Cluster Storage */}
-        <Card className="flex flex-col">
-          <CardHeader className="items-center pb-0">
+        <Card class名称="flex flex-col">
+          <CardHeader class名称="items-center pb-0">
             <CardTitle>Cluster Storage</CardTitle>
-            <CardDescription>Total Disk Usage</CardDescription>
+            <Card描述>Total Disk Usage</Card描述>
           </CardHeader>
-          <CardContent className="flex-1 pb-0">
-            <ChartContainer config={storagePieChartConfig} className="mx-auto aspect-square max-h-[250px]">
+          <CardContent class名称="flex-1 pb-0">
+            <ChartContainer config={storagePieChartConfig} class名称="mx-auto aspect-square max-h-[250px]">
               <PieChart>
                 <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel formatter={(value) => {
                   if (value === clusterStats.diskUsageAbsolut) {
@@ -231,10 +231,10 @@ export default function ResourcesNodes({
                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                       return (
                         <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                          <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-3xl font-bold">
+                          <tspan x={viewBox.cx} y={viewBox.cy} class名称="fill-foreground text-3xl font-bold">
                             {toPercent(clusterStats.diskUsageAbsolut + clusterStats.diskUsageReserved, clusterStats.diskCapacity).toFixed(0)}%
                           </tspan>
-                          <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
+                          <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} class名称="fill-muted-foreground">
                             Used
                           </tspan>
                         </text>
@@ -251,43 +251,43 @@ export default function ResourcesNodes({
       <Card>
         <CardHeader>
           <CardTitle>Node Resources</CardTitle>
-          <CardDescription>Overview of all nodes in the cluster</CardDescription>
+          <Card描述>概览 of all nodes in the cluster</Card描述>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Node Name</TableHead>
+                <TableHead>Node 名称</TableHead>
                 <TableHead>CPU</TableHead>
                 <TableHead>RAM</TableHead>
                 <TableHead>Storage</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead class名称="text-right">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {updatedNodeRessources.map((node) => (
                 <TableRow key={node.name}>
-                  <TableCell className="font-medium">{node.name}</TableCell>
-                  <TableCell className="w-[25%]">
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-xs text-muted-foreground">
+                  <TableCell class名称="font-medium">{node.name}</TableCell>
+                  <TableCell class名称="w-[25%]">
+                    <div class名称="space-y-1">
+                      <div class名称="flex justify-between text-xs text-muted-foreground">
                         <span>{((node.cpuUsage / node.cpuCapacity) * 100).toFixed(0)}%</span>
                         <span>{node.cpuUsage.toFixed(2)} / {node.cpuCapacity} Cores</span>
                       </div>
-                      <Progress value={(node.cpuUsage / node.cpuCapacity) * 100} className="h-2" />
+                      <Progress value={(node.cpuUsage / node.cpuCapacity) * 100} class名称="h-2" />
                     </div>
                   </TableCell>
-                  <TableCell className="w-[25%]">
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-xs text-muted-foreground">
+                  <TableCell class名称="w-[25%]">
+                    <div class名称="space-y-1">
+                      <div class名称="flex justify-between text-xs text-muted-foreground">
                         <span>{((node.ramUsage / node.ramCapacity) * 100).toFixed(0)}%</span>
                         <span>{KubeSizeConverter.convertBytesToReadableSize(node.ramUsage)} / {KubeSizeConverter.convertBytesToReadableSize(node.ramCapacity)}</span>
                       </div>
-                      <Progress value={(node.ramUsage / node.ramCapacity) * 100} className="h-2" />
+                      <Progress value={(node.ramUsage / node.ramCapacity) * 100} class名称="h-2" />
                     </div>
                   </TableCell>
-                  <TableCell className="w-[25%]">
-                    <div className="space-y-1">
+                  <TableCell class名称="w-[25%]">
+                    <div class名称="space-y-1">
                       {(() => {
                         const diskUsed = getDiskUsageAbsolut(node);
                         const diskReserved = getDiskUsageReserved(node);
@@ -296,17 +296,17 @@ export default function ResourcesNodes({
                         const diskPercent = toPercent(diskUsedAndReserved, diskCapacity);
                         return (
                           <>
-                            <div className="flex justify-between text-xs text-muted-foreground">
+                            <div class名称="flex justify-between text-xs text-muted-foreground">
                               <span>{diskPercent.toFixed(0)}%</span>
                               <span>{KubeSizeConverter.convertBytesToReadableSize(diskUsedAndReserved)} / {KubeSizeConverter.convertBytesToReadableSize(diskCapacity)}</span>
                             </div>
-                            <Progress value={diskPercent} className="h-2" />
+                            <Progress value={diskPercent} class名称="h-2" />
                           </>
                         );
                       })()}
                     </div>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell class名称="text-right">
                     <NodeDetailsSheet node={node} />
                   </TableCell>
                 </TableRow>
@@ -339,29 +339,29 @@ function NodeDetailsSheet({ node }: { node: NodeResourceModel }) {
       <SheetTrigger asChild>
         <Button variant="outline" size="sm">View Details</Button>
       </SheetTrigger>
-      <SheetContent className="overflow-y-auto sm:max-w-xl">
+      <SheetContent class名称="overflow-y-auto sm:max-w-xl">
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5" />
+          <SheetTitle class名称="flex items-center gap-2">
+            <Activity class名称="h-5 w-5" />
             {node.name}
           </SheetTitle>
-          <SheetDescription>
+          <Sheet描述>
             Detailed resource usage metrics
-          </SheetDescription>
+          </Sheet描述>
         </SheetHeader>
 
-        <div className="grid gap-6 py-6">
+        <div class名称="grid gap-6 py-6">
           {/* CPU Chart */}
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Cpu className="h-4 w-4" /> CPU Usage
+            <CardHeader class名称="pb-2">
+              <CardTitle class名称="text-sm font-medium flex items-center gap-2">
+                <Cpu class名称="h-4 w-4" /> CPU Usage
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ChartContainer
                 config={chartConfig}
-                className="mx-auto aspect-square max-h-[250px]"
+                class名称="mx-auto aspect-square max-h-[250px]"
               >
                 <RadialBarChart
                   data={chartData}
@@ -374,7 +374,7 @@ function NodeDetailsSheet({ node }: { node: NodeResourceModel }) {
                     gridType="circle"
                     radialLines={false}
                     stroke="none"
-                    className="first:fill-muted last:fill-background"
+                    class名称="first:fill-muted last:fill-background"
                     polarRadius={[86, 74]}
                   />
                   <RadialBar
@@ -400,21 +400,21 @@ function NodeDetailsSheet({ node }: { node: NodeResourceModel }) {
                               <tspan
                                 x={viewBox.cx}
                                 y={(viewBox.cy || 0) - 10}
-                                className="fill-foreground text-4xl font-bold"
+                                class名称="fill-foreground text-4xl font-bold"
                               >
                                 {(node.cpuUsage / node.cpuCapacity * 100).toFixed(0)}%
                               </tspan>
                               <tspan
                                 x={viewBox.cx}
                                 y={(viewBox.cy || 0) + 14}
-                                className="fill-muted-foreground"
+                                class名称="fill-muted-foreground"
                               >
                                 CPU
                               </tspan>
                               <tspan
                                 x={viewBox.cx}
                                 y={(viewBox.cy || 0) + 30}
-                                className="fill-muted-foreground"
+                                class名称="fill-muted-foreground"
                               >
                                 Load: {(node.cpuUsage).toFixed(2)}
                               </tspan>
@@ -431,15 +431,15 @@ function NodeDetailsSheet({ node }: { node: NodeResourceModel }) {
 
           {/* RAM Chart */}
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <MemoryStick className="h-4 w-4" /> Memory Usage
+            <CardHeader class名称="pb-2">
+              <CardTitle class名称="text-sm font-medium flex items-center gap-2">
+                <MemoryStick class名称="h-4 w-4" /> Memory Usage
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ChartContainer
                 config={chartConfig}
-                className="mx-auto aspect-square max-h-[250px]"
+                class名称="mx-auto aspect-square max-h-[250px]"
               >
                 <RadialBarChart
                   data={chartData}
@@ -452,7 +452,7 @@ function NodeDetailsSheet({ node }: { node: NodeResourceModel }) {
                     gridType="circle"
                     radialLines={false}
                     stroke="none"
-                    className="first:fill-muted last:fill-background"
+                    class名称="first:fill-muted last:fill-background"
                     polarRadius={[86, 74]}
                   />
                   <RadialBar
@@ -478,21 +478,21 @@ function NodeDetailsSheet({ node }: { node: NodeResourceModel }) {
                               <tspan
                                 x={viewBox.cx}
                                 y={(viewBox.cy || 0) - 10}
-                                className="fill-foreground text-4xl font-bold"
+                                class名称="fill-foreground text-4xl font-bold"
                               >
                                 {(node.ramUsage / node.ramCapacity * 100).toFixed(0)}%
                               </tspan>
                               <tspan
                                 x={viewBox.cx}
                                 y={(viewBox.cy || 0) + 14}
-                                className="fill-muted-foreground"
+                                class名称="fill-muted-foreground"
                               >
                                 RAM
                               </tspan>
                               <tspan
                                 x={viewBox.cx}
                                 y={(viewBox.cy || 0) + 30}
-                                className="fill-muted-foreground"
+                                class名称="fill-muted-foreground"
                               >
                                 {(node.ramUsage / (1024 * 1024 * 1024)).toFixed(2)} / {KubeSizeConverter.convertBytesToReadableSize(node.ramCapacity)}
                               </tspan>
@@ -509,9 +509,9 @@ function NodeDetailsSheet({ node }: { node: NodeResourceModel }) {
 
           {/* Disk Chart */}
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <HardDrive className="h-4 w-4" /> Storage Usage
+            <CardHeader class名称="pb-2">
+              <CardTitle class名称="text-sm font-medium flex items-center gap-2">
+                <HardDrive class名称="h-4 w-4" /> Storage Usage
               </CardTitle>
             </CardHeader>
             <CardContent>

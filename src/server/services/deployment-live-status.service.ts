@@ -3,15 +3,15 @@ import deploymentService from "@/server/services/deployment.service";
 import { UserGroupUtils } from "@/shared/utils/role.utils";
 import { UserSession } from "@/shared/model/sim-session.model";
 import { V1Deployment } from "@kubernetes/client-node";
-import { AppPodsStatusModel } from "@/shared/model/app-pod-status.model";
+import { AppPods状态Model } from "@/shared/model/app-pod-status.model";
 
 export interface AppLookupInfo {
-    appName: string;
+    app名称: string;
     projectId: string;
-    projectName: string;
+    project名称: string;
 }
 
-class DeploymentLiveStatusService {
+class DeploymentLive状态Service {
 
     async getAppLookup(session?: UserSession): Promise<Map<string, AppLookupInfo>> {
         const projects = await projectService.getAllProjects();
@@ -25,51 +25,51 @@ class DeploymentLiveStatusService {
                     }
                 }
                 appLookup.set(app.id, {
-                    appName: app.name,
+                    app名称: app.name,
                     projectId: project.id,
-                    projectName: project.name
+                    project名称: project.name
                 });
             }
         }
         return appLookup;
     }
 
-    async getInitialStatus(appLookup: Map<string, AppLookupInfo>): Promise<AppPodsStatusModel[]> {
+    async getInitial状态(appLookup: Map<string, AppLookupInfo>): Promise<AppPods状态Model[]> {
         const allDeployments = await deploymentService.getAllDeployments();
-        const initialStatus: AppPodsStatusModel[] = [];
+        const initial状态: AppPods状态Model[] = [];
 
         // Iterate over all known apps to ensure we send status for everything (even SHUTDOWN)
         for (const [appId, info] of Array.from(appLookup.entries())) {
             const deployment = allDeployments.find(d => d.metadata?.name === appId && d.metadata?.namespace === info.projectId);
-            initialStatus.push(this.mapDeploymentToStatus(appId, info, deployment));
+            initial状态.push(this.mapDeploymentTo状态(appId, info, deployment));
         }
-        return initialStatus;
+        return initial状态;
     }
 
-    mapDeploymentToStatus(appId: string, appInfo: AppLookupInfo, deployment?: V1Deployment): AppPodsStatusModel {
+    mapDeploymentTo状态(appId: string, appInfo: AppLookupInfo, deployment?: V1Deployment): AppPods状态Model {
         if (deployment) {
             return {
                 appId: appId,
-                appName: appInfo.appName,
+                app名称: appInfo.app名称,
                 projectId: appInfo.projectId,
-                projectName: appInfo.projectName,
+                project名称: appInfo.project名称,
                 replicas: deployment.status?.replicas,
                 readyReplicas: deployment.status?.readyReplicas,
-                deploymentStatus: deploymentService.mapReplicasetToStatus(deployment)
+                deployment状态: deploymentService.mapReplicasetTo状态(deployment)
             };
         } else {
             return {
                 appId: appId,
-                appName: appInfo.appName,
+                app名称: appInfo.app名称,
                 projectId: appInfo.projectId,
-                projectName: appInfo.projectName,
+                project名称: appInfo.project名称,
                 replicas: undefined,
                 readyReplicas: undefined,
-                deploymentStatus: 'SHUTDOWN'
+                deployment状态: 'SHUTDOWN'
             };
         }
     }
 }
 
-const deploymentLiveStatusService = new DeploymentLiveStatusService();
-export default deploymentLiveStatusService;
+const deploymentLive状态Service = new DeploymentLive状态Service();
+export default deploymentLive状态Service;

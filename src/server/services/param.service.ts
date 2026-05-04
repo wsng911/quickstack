@@ -11,7 +11,7 @@ export class ParamService {
     static readonly LETS_ENCRYPT_MAIL = 'letsEncryptMail';
     static readonly USE_CANARY_CHANNEL = 'useCanaryChannel';
     static readonly REGISTRY_SOTRAGE_LOCATION = 'registryStorageLocation';
-    static readonly PUBLIC_IPV4_ADDRESS = 'publicIpv4Address';
+    static readonly PUBLIC_IPV4_ADDRESS = 'publicIpv4添加ress';
     static readonly QS_SYSTEM_BACKUP_LOCATION = Constants.QS_SYSTEM_BACKUP_LOCATION_PARAM_KEY;
     static readonly K3S_JOIN_TOKEN = Constants.K3S_JOIN_TOKEN;
     static readonly BUILD_MEMORY_LIMIT = 'buildMemoryLimit';
@@ -45,7 +45,7 @@ export class ParamService {
         });
     }
 
-    async getOrCreate(name: string, defaultValue: string) {
+    async getOr创建(name: string, defaultValue: string) {
         let param: Parameter;
         try {
             param = await dataAccess.client.parameter.upsert({
@@ -117,7 +117,7 @@ export class ParamService {
         return undefined;
     }
 
-    async deleteByName(name: string) {
+    async deleteBy名称(name: string) {
         const existingParam = await this.get(name);
         if (!existingParam) {
             return;
@@ -133,7 +133,7 @@ export class ParamService {
         }
     }
 
-    async deleteByNameIfExists(name: string) {
+    async deleteBy名称IfExists(name: string) {
         const existingParam = await this.getOrUndefined(name);
         if (!existingParam) {
             return;
@@ -158,14 +158,14 @@ export class ParamService {
     }
 
 
-    async save(item: Prisma.ParameterUncheckedCreateInput | Prisma.ParameterUncheckedUpdateInput) {
+    async save(item: Prisma.ParameterUnchecked创建Input | Prisma.ParameterUncheckedUpdateInput) {
         let savedItem: Parameter;
         try {
             savedItem = await dataAccess.client.parameter.upsert({
                 where: {
                     name: item.name as string
                 },
-                create: item as Prisma.ParameterUncheckedCreateInput,
+                create: item as Prisma.ParameterUnchecked创建Input,
                 update: {
                     value: item.value
                 } as Prisma.ParameterUncheckedUpdateInput

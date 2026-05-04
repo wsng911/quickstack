@@ -3,7 +3,7 @@
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, Card描述, CardContent, CardFooter } from "@/components/ui/card";
 import { Form, FormField, FormItem, FormControl, FormMessage, FormLabel } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
@@ -16,12 +16,12 @@ import { useFormState } from "react-dom";
 import { saveHealthCheck } from "./actions";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { FormUtils } from "@/frontend/utils/form.utilts";
 import { HealthCheckModel, healthCheckZodModel } from "./health-check.model";
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model";
 
-export default function HealthCheckSettings({ app, readonly }: { app: AppExtendedModel, readonly: boolean }) {
+export default function HealthCheck设置({ app, readonly }: { app: AppExtendedModel, readonly: boolean }) {
 
     const defaultHeaders = app.healthCheckHttpHeadersJson
         ? JSON.parse(app.healthCheckHttpHeadersJson)
@@ -65,7 +65,7 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
 
     useEffect(() => {
         if (state.status === 'success') {
-            toast.success('Health Check Settings Saved');
+            toast.success('Health Check 设置 保存d');
         }
         FormUtils.mapValidationErrorsToForm<typeof healthCheckZodModel>(state, form);
     }, [state]);
@@ -73,22 +73,22 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Health Check Settings</CardTitle>
-                <CardDescription>
+                <CardTitle>Health Check 设置</CardTitle>
+                <Card描述>
                     Configure healthchecks so that k3s can automatically monitor when your application is fully started up and ready to receive traffic (In kubernetes terms, startup, readiness and liveness probes).
-                </CardDescription>
+                </Card描述>
             </CardHeader>
             <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                     formAction(data);
                 })()}>
-                    <CardContent className="space-y-6">
+                    <CardContent class名称="space-y-6">
                         <FormField
                             control={form.control}
                             name="enabled"
                             render={({ field }) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                                    <div className="space-y-0.5">
+                                <FormItem class名称="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                    <div class名称="space-y-0.5">
                                         <FormLabel>Enable Health Check</FormLabel>
                                     </div>
                                     <FormControl>
@@ -104,14 +104,14 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
 
                         {enabled && (
                             <>
-                                <Tabs value={probeTypeWatch} onValueChange={(value) => form.setValue('probeType', value as "HTTP" | "TCP")} className="w-full">
-                                    <TabsList className="mb-2">
+                                <Tabs value={probeTypeWatch} onValueChange={(value) => form.setValue('probeType', value as "HTTP" | "TCP")} class名称="w-full">
+                                    <TabsList class名称="mb-2">
                                         <TabsTrigger value="HTTP">HTTP Probe</TabsTrigger>
                                         <TabsTrigger value="TCP">TCP Probe</TabsTrigger>
                                     </TabsList>
 
-                                    <TabsContent value="HTTP" className="space-y-4 mt-4">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <TabsContent value="HTTP" class名称="space-y-4 mt-4">
+                                        <div class名称="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <FormField
                                                 control={form.control}
                                                 name="path"
@@ -132,7 +132,7 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                                                 name="httpPort"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabelWithQuestion hint="Name or number of the port to access on the container.">
+                                                        <FormLabelWithQuestion hint="名称 or number of the port to access on the container.">
                                                             HTTP Port
                                                         </FormLabelWithQuestion>
                                                         <FormControl>
@@ -151,7 +151,7 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                                                             <div>
                                                                 <p>Scheme to use for connecting to the container. Defaults to HTTP.</p>
                                                                 <p>Possible enum values:</p>
-                                                                <ul className="list-disc pl-4">
+                                                                <ul class名称="list-disc pl-4">
                                                                     <li>&quot;HTTP&quot; means that the scheme used will be http://</li>
                                                                     <li>&quot;HTTPS&quot; means that the scheme used will be https://</li>
                                                                 </ul>
@@ -184,16 +184,16 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                                             }>
                                                 HTTP Headers
                                             </FormLabelWithQuestion>
-                                            <div className="space-y-2 mt-2">
+                                            <div class名称="space-y-2 mt-2">
                                                 {fields.map((item, index) => (
-                                                    <div key={item.id} className="flex gap-2 items-start">
+                                                    <div key={item.id} class名称="flex gap-2 items-start">
                                                         <FormField
                                                             control={form.control}
                                                             name={`headers.${index}.name`}
                                                             render={({ field }) => (
-                                                                <FormItem className="flex-1">
-                                                                    {index === 0 && <div className="flex items-center gap-1 mb-1">
-                                                                        <FormLabel className="text-xs text-muted-foreground">Name</FormLabel>
+                                                                <FormItem class名称="flex-1">
+                                                                    {index === 0 && <div class名称="flex items-center gap-1 mb-1">
+                                                                        <FormLabel class名称="text-xs text-muted-foreground">名称</FormLabel>
                                                                         <FormLabelWithQuestion hint="The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.">
                                                                             {''}
                                                                         </FormLabelWithQuestion>
@@ -209,9 +209,9 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                                                             control={form.control}
                                                             name={`headers.${index}.value`}
                                                             render={({ field }) => (
-                                                                <FormItem className="flex-1">
-                                                                    {index === 0 && <div className="flex items-center gap-1 mb-1">
-                                                                        <FormLabel className="text-xs text-muted-foreground">Value</FormLabel>
+                                                                <FormItem class名称="flex-1">
+                                                                    {index === 0 && <div class名称="flex items-center gap-1 mb-1">
+                                                                        <FormLabel class名称="text-xs text-muted-foreground">Value</FormLabel>
                                                                         <FormLabelWithQuestion hint="The header field value">
                                                                             {''}
                                                                         </FormLabelWithQuestion>
@@ -229,9 +229,9 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                                                             size="icon"
                                                             disabled={readonly}
                                                             onClick={() => remove(index)}
-                                                            className={index === 0 ? 'mt-7' : ''}
+                                                            class名称={index === 0 ? 'mt-7' : ''}
                                                         >
-                                                            <Trash className="h-4 w-4" />
+                                                            <Trash class名称="h-4 w-4" />
                                                         </Button>
                                                     </div>
                                                 ))}
@@ -242,14 +242,14 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                                                     disabled={readonly}
                                                     onClick={() => append({ name: '', value: '' })}
                                                 >
-                                                    <Plus className="mr-2 h-4 w-4" />
-                                                    Add Header
+                                                    <Plus class名称="mr-2 h-4 w-4" />
+                                                    添加 Header
                                                 </Button>
                                             </div>
                                         </div>
                                     </TabsContent>
 
-                                    <TabsContent value="TCP" className="space-y-4 mt-4">
+                                    <TabsContent value="TCP" class名称="space-y-4 mt-4">
                                         <FormField
                                             control={form.control}
                                             name="tcpPort"
@@ -268,7 +268,7 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                                     </TabsContent>
                                 </Tabs>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class名称="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <FormField
                                         control={form.control}
                                         name="periodSeconds"
@@ -323,7 +323,7 @@ export default function HealthCheckSettings({ app, readonly }: { app: AppExtende
                         )}
                     </CardContent>
                     <CardFooter>
-                        <SubmitButton>Save</SubmitButton>
+                        <提交Button>保存</提交Button>
                     </CardFooter>
                 </form>
             </Form>

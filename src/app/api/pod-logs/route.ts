@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 const zodInputModel = z.object({
     namespace: z.string().optional(),
-    podName: z.string().optional(),
+    pod名称: z.string().optional(),
     linesCount: z.number().optional().default(100),
 });
 
@@ -20,12 +20,12 @@ export async function POST(request: Request) {
         const input = await request.json();
 
         const podInfo = zodInputModel.parse(input);
-        let { namespace, podName, linesCount } = podInfo;
+        let { namespace, pod名称, linesCount } = podInfo;
         let pod;
         let streamKey;
-        if (namespace && podName) {
-            pod = await podService.getPodInfoByName(namespace, podName);
-            streamKey = `${namespace}_${podName}`;
+        if (namespace && pod名称) {
+            pod = await podService.getPodInfoBy名称(namespace, pod名称);
+            streamKey = `${namespace}_${pod名称}`;
 
         } else {
             console.error('Invalid pod info for streaming logs', podInfo);
@@ -43,11 +43,11 @@ export async function POST(request: Request) {
                     console.log(`[CONNECT] Client joined log stream for ${streamKey}`);
                     controller.enqueue(encoder.encode('Stream opened, loading pod logs...\n'));
 
-                    await podService.waitUntilPodIsRunningFailedOrSucceded(namespace, pod.podName); // has timeout configured
+                    await podService.waitUntilPodIsRunningFailedOrSucceded(namespace, pod.pod名称); // has timeout configured
 
                     logStream = new stream.PassThrough();
 
-                    k3sStreamRequest = await k3s.log.log(namespace, pod.podName, pod.containerName, logStream, {
+                    k3sStreamRequest = await k3s.log.log(namespace, pod.pod名称, pod.container名称, logStream, {
                         follow: true,
                         tailLines: linesCount,
                         timestamps: true,

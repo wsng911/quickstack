@@ -1,5 +1,5 @@
 import { ServiceException } from "@/shared/model/service.exception.model";
-import { KubeObjectNameUtils } from "../../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../../utils/kube-object-name.utils";
 import { randomBytes } from "crypto";
 import { V1Deployment, V1EnvVar } from "@kubernetes/client-node";
 import { Constants } from "@/shared/utils/constants";
@@ -15,7 +15,7 @@ class PgAdminService extends BaseDbToolService {
     readonly pgAdminConfigPath = '/pgadmin-config/servers.json';
 
     constructor() {
-        super((app) => KubeObjectNameUtils.toPgAdminId(app));
+        super((app) => KubeObject名称Utils.toPgAdminId(app));
     }
 
     async getLoginCredentialsForRunningDbGate(appId: string) {
@@ -31,8 +31,8 @@ class PgAdminService extends BaseDbToolService {
 
     async deleteToolForAppIfExists(appId: string) {
         const app = await appService.getExtendedById(appId);
-        await configMapService.deleteConfigMapIfExists(app.projectId, KubeObjectNameUtils.getConfigMapName(this.appIdToToolNameConverter(app.id)));
-        await configMapService.deleteConfigMapIfExists(app.projectId, 'pgpass-' + this.appIdToToolNameConverter(app.id));
+        await configMapService.deleteConfigMapIfExists(app.projectId, KubeObject名称Utils.getConfigMap名称(this.appIdToTool名称Converter(app.id)));
+        await configMapService.deleteConfigMapIfExists(app.projectId, 'pgpass-' + this.appIdToTool名称Converter(app.id));
         await super.deleteToolForAppIfExists(appId);
     }
 
@@ -40,29 +40,29 @@ class PgAdminService extends BaseDbToolService {
         await this.deployToolForDatabase(appId, 80, async (app) => {
 
             const projectId = app.projectId;
-            const appName = this.appIdToToolNameConverter(app.id);
-            const configMapName = KubeObjectNameUtils.getConfigMapName(appName);
+            const app名称 = this.appIdToTool名称Converter(app.id);
+            const configMap名称 = KubeObject名称Utils.getConfigMap名称(app名称);
 
-            const volumeConfigServerJsonFile = await this.createServerJsonConfigMap(configMapName, app);
-            const volumeConfigPgPassFile = await this.createPgPassConfigMap(appName, app);
+            const volumeConfigServerJsonFile = await this.createServerJsonConfigMap(configMap名称, app);
+            const volumeConfigPgPassFile = await this.createPgPassConfigMap(app名称, app);
 
-            const authPassword = randomBytes(15).toString('hex');
+            const auth密码 = randomBytes(15).toString('hex');
 
             const body: V1Deployment = {
                 metadata: {
-                    name: appName
+                    name: app名称
                 },
                 spec: {
                     replicas: 1,
                     selector: {
                         matchLabels: {
-                            app: appName
+                            app: app名称
                         }
                     },
                     template: {
                         metadata: {
                             labels: {
-                                app: appName,
+                                app: app名称,
                                 [Constants.QS_ANNOTATION_CONTAINER_TYPE]: Constants.QS_ANNOTATION_CONTAINER_TYPE_DB_TOOL
                             },
                             annotations: {
@@ -75,7 +75,7 @@ class PgAdminService extends BaseDbToolService {
                         spec: {
                             containers: [
                                 {
-                                    name: appName,
+                                    name: app名称,
                                     image: 'dpage/pgadmin4:latest',
                                     imagePullPolicy: 'Always',
                                     env: [
@@ -85,7 +85,7 @@ class PgAdminService extends BaseDbToolService {
                                         },
                                         {
                                             name: 'PGADMIN_DEFAULT_PASSWORD',
-                                            value: authPassword
+                                            value: auth密码
                                         },
                                         {
                                             name: 'PGADMIN_SERVER_JSON_FILE',
@@ -117,27 +117,27 @@ class PgAdminService extends BaseDbToolService {
         });
     }
 
-    private async createServerJsonConfigMap(configMapName: string, app: AppExtendedModel) {
+    private async createServerJsonConfigMap(configMap名称: string, app: AppExtendedModel) {
         const dbCredentials = AppTemplateUtils.getDatabaseModelFromApp(app);
         const configMapManifest = {
             apiVersion: 'v1',
             kind: 'ConfigMap',
             metadata: {
-                name: configMapName,
+                name: configMap名称,
                 namespace: app.projectId,
             },
             data: {
                 'servers.json': JSON.stringify({
                     "Servers": {
                         "1": {
-                            "Name": app.name,
+                            "名称": app.name,
                             "Group": "Servers",
                             "Host": dbCredentials.hostname,
                             "Port": dbCredentials.port,
                             "MaintenanceDB": 'postgres',
-                            "Username": dbCredentials.username,
+                            "用户名": dbCredentials.username,
                             "SSLMode": "prefer",
-                            "PasswordExecCommand": `echo '${dbCredentials.password}'`, // todo does not work?!
+                            "密码ExecCommand": `echo '${dbCredentials.password}'`, // todo does not work?!
                         }
                     }
                 })
@@ -145,18 +145,18 @@ class PgAdminService extends BaseDbToolService {
         };
 
         await configMapService.createOrUpdateConfigMap(app.projectId, configMapManifest);
-        const volumeConfigServerJsonFile = configMapService.createFileVolumeConfig(configMapName, this.pgAdminConfigPath, 'servers.json');
+        const volumeConfigServerJsonFile = configMapService.createFileVolumeConfig(configMap名称, this.pgAdminConfigPath, 'servers.json');
         return volumeConfigServerJsonFile;
     }
 
-    private async createPgPassConfigMap(appName: string, app: AppExtendedModel) {
+    private async createPgPassConfigMap(app名称: string, app: AppExtendedModel) {
         const dbCredentials = AppTemplateUtils.getDatabaseModelFromApp(app);
-        const pgPassConfigMapName = 'pgpass-' + appName;
+        const pgPassConfigMap名称 = 'pgpass-' + app名称;
         const configMapManifestPgPass = {
             apiVersion: 'v1',
             kind: 'ConfigMap',
             metadata: {
-                name: pgPassConfigMapName,
+                name: pgPassConfigMap名称,
                 namespace: app.projectId,
             },
             data: {
@@ -164,7 +164,7 @@ class PgAdminService extends BaseDbToolService {
             },
         };
         await configMapService.createOrUpdateConfigMap(app.projectId, configMapManifestPgPass);
-        const volumeConfigPgPassFile = configMapService.createFileVolumeConfig(pgPassConfigMapName, this.pgPassPath, 'pgpass');
+        const volumeConfigPgPassFile = configMapService.createFileVolumeConfig(pgPassConfigMap名称, this.pgPassPath, 'pgpass');
         return volumeConfigPgPassFile;
     }
 }

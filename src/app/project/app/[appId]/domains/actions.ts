@@ -1,8 +1,8 @@
 'use server'
 
 import { AppPortModel, appPortZodModel } from "@/shared/model/default-port.model";
-import { appDomainEditZodModel } from "@/shared/model/domain-edit.model";
-import { nodePortEditZodModel } from "@/shared/model/node-port-edit.model";
+import { appDomain编辑ZodModel } from "@/shared/model/domain-edit.model";
+import { nodePort编辑ZodModel } from "@/shared/model/node-port-edit.model";
 import { SuccessActionResult } from "@/shared/model/server-action-error-return.model";
 import appService from "@/server/services/app.service";
 import { getAuthUserSession, isAuthorizedWriteForApp, saveFormAction, simpleAction } from "@/server/utils/action-wrapper.utils";
@@ -11,13 +11,13 @@ import { HostnameDnsProviderUtils } from "@/shared/utils/domain-dns-provider.uti
 import { ServiceException } from "@/shared/model/service.exception.model";
 import paramService, { ParamService } from "@/server/services/param.service";
 
-const actionAppDomainEditZodModel = appDomainEditZodModel.merge(z.object({
+const actionAppDomain编辑ZodModel = appDomain编辑ZodModel.merge(z.object({
     appId: z.string(),
     id: z.string().nullish()
 }));
 
-export const saveDomain = async (prevState: any, inputData: z.infer<typeof actionAppDomainEditZodModel>) =>
-    saveFormAction(inputData, actionAppDomainEditZodModel, async (validatedData) => {
+export const saveDomain = async (prevState: any, inputData: z.infer<typeof actionAppDomain编辑ZodModel>) =>
+    saveFormAction(inputData, actionAppDomain编辑ZodModel, async (validatedData) => {
         await isAuthorizedWriteForApp(validatedData.appId);
 
         if (validatedData.hostname.includes('://')) {
@@ -67,16 +67,16 @@ export const getQuickstackDomainSuffix = async () => simpleAction(async () => {
     if (!publicIpv4) {
         throw new ServiceException('Please set the main public IPv4 address in the QuickStack settings first.');
     }
-    return HostnameDnsProviderUtils.getHexHostnameForIpAddress(publicIpv4);
+    return HostnameDnsProviderUtils.getHexHostnameForIp添加ress(publicIpv4);
 });
 
-const actionNodePortEditZodModel = nodePortEditZodModel.extend({
+const actionNodePort编辑ZodModel = nodePort编辑ZodModel.extend({
     appId: z.string(),
     id: z.string().nullish(),
 });
 
-export const saveNodePort = async (prevState: any, inputData: z.infer<typeof actionNodePortEditZodModel>) =>
-    saveFormAction(inputData, actionNodePortEditZodModel, async (validatedData) => {
+export const saveNodePort = async (prevState: any, inputData: z.infer<typeof actionNodePort编辑ZodModel>) =>
+    saveFormAction(inputData, actionNodePort编辑ZodModel, async (validatedData) => {
         await isAuthorizedWriteForApp(validatedData.appId);
         await appService.saveNodePort({
             ...validatedData,

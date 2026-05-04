@@ -7,7 +7,7 @@ import paramService, { ParamService } from "@/server/services/param.service";
 import quickStackService from "@/server/services/qs.service";
 import userService from "@/server/services/user.service";
 import { saveFormAction } from "@/server/utils/action-wrapper.utils";
-import ipAddressFinderAdapter from "@/server/adapter/ip-adress-finder.adapter";
+import ip添加ressFinderAdapter from "@/server/adapter/ip-adress-finder.adapter";
 import userGroupService from "@/server/services/user-group.service";
 
 
@@ -17,12 +17,12 @@ export const registerUser = async (prevState: any, inputData: RegisterFormInputS
         if (allUsers.length !== 0) {
             throw new ServiceException("User registration is currently not possible");
         }
-        const adminRole = await userGroupService.getOrCreateAdminRole();
+        const adminRole = await userGroupService.getOr创建AdminRole();
         await userService.registerUser(validatedData.email, validatedData.password, adminRole.id);
         await quickStackService.createOrUpdateCertIssuer(validatedData.email);
 
         try {
-            await paramService.getString(ParamService.PUBLIC_IPV4_ADDRESS, await ipAddressFinderAdapter.getPublicIpOfServer());
+            await paramService.getString(ParamService.PUBLIC_IPV4_ADDRESS, await ip添加ressFinderAdapter.getPublicIpOfServer());
         } catch (e) {
             // ignore
             console.error('Failes to evaluate public ip address', e);
@@ -47,7 +47,7 @@ export const authUser = async (inputData: AuthFormInputSchema) =>
             password: validatedData.password
         });
         if (!authResult) {
-            throw new ServiceException('Username or password is incorrect');
+            throw new ServiceException('用户名 or password is incorrect');
         }
         return authResult;
     });

@@ -4,10 +4,10 @@ import { mariadbAppTemplate } from "../databases/mariadb.template";
 
 export const wordpressAppTemplate: AppTemplateModel = {
     name: "WordPress",
-    iconName: 'wordpress.png',
+    icon名称: 'wordpress.png',
     templates: [{
         // MariaDB
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -24,7 +24,7 @@ export const wordpressAppTemplate: AppTemplateModel = {
             },
             {
                 key: "MYSQL_ROOT_PASSWORD",
-                label: "Root Password",
+                label: "Root 密码",
                 value: "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
@@ -51,7 +51,7 @@ MYSQL_USER=wordpress
             size: 500,
             containerMountPath: '/var/lib/mysql',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -59,9 +59,9 @@ MYSQL_USER=wordpress
             port: 3306,
         }]
     },
-    // WordPress Backend
+    // WordPress 返回end
     {
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -79,7 +79,7 @@ MYSQL_USER=wordpress
             ingressNetworkPolicy: Constants.DEFAULT_INGRESS_NETWORK_POLICY_APPS,
             egressNetworkPolicy: Constants.DEFAULT_EGRESS_NETWORK_POLICY_APPS,
             envVars: `WORDPRESS_DB_HOST={hostname}:{port}
-WORDPRESS_DB_NAME={databaseName}
+WORDPRESS_DB_NAME={database名称}
 WORDPRESS_DB_USER={username}
 WORDPRESS_DB_PASSWORD={password}
 WORDPRESS_TABLE_PREFIX=wp_
@@ -94,7 +94,7 @@ WORDPRESS_TABLE_PREFIX=wp_
             size: 500,
             containerMountPath: '/var/www/html',
             accessMode: 'ReadWriteMany',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [{

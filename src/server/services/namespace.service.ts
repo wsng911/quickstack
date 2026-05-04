@@ -3,28 +3,28 @@ import k3s from "../adapter/kubernetes-api.adapter";
 import { V1Deployment, V1Ingress, V1PersistentVolumeClaim } from "@kubernetes/client-node";
 import buildService from "./build.service";
 import { ListUtils } from "../../shared/utils/list.utils";
-import { DeploymentInfoModel, DeploymentStatus } from "@/shared/model/deployment-info.model";
-import { BuildJobStatus } from "@/shared/model/build-job";
+import { DeploymentInfoModel, Deployment状态 } from "@/shared/model/deployment-info.model";
+import { BuildJob状态 } from "@/shared/model/build-job";
 import { ServiceException } from "@/shared/model/service.exception.model";
 import { PodsInfoModel } from "@/shared/model/pods-info.model";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import pvcService from "./pvc.service";
 import ingressService from "./ingress.service";
 import { Constants } from "../../shared/utils/constants";
 
-class NamespaceService {
+class 名称spaceService {
 
-    async getNamespaces() {
-        const k3sResponse = await k3s.core.listNamespace();
+    async get名称spaces() {
+        const k3sResponse = await k3s.core.list名称space();
         return k3sResponse.body.items.map((item) => item.metadata?.name).filter((name) => !!name);
     }
 
-    async createNamespaceIfNotExists(namespace: string) {
-        const existingNamespaces = await this.getNamespaces();
-        if (existingNamespaces.includes(namespace)) {
+    async create名称spaceIfNotExists(namespace: string) {
+        const existing名称spaces = await this.get名称spaces();
+        if (existing名称spaces.includes(namespace)) {
             return;
         }
-        await k3s.core.createNamespace({
+        await k3s.core.create名称space({
             metadata: {
                 name: namespace,
                 annotations: {
@@ -34,15 +34,15 @@ class NamespaceService {
         });
     }
 
-    async deleteNamespace(namespace: string) {
-        const nameSpaces = await this.getNamespaces();
+    async delete名称space(namespace: string) {
+        const nameSpaces = await this.get名称spaces();
         if (nameSpaces.includes(namespace)) {
-            await k3s.core.deleteNamespace(namespace);
+            await k3s.core.delete名称space(namespace);
         }
     }
 
 
 }
 
-const namespaceService = new NamespaceService();
+const namespaceService = new 名称spaceService();
 export default namespaceService;

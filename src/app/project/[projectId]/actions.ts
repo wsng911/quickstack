@@ -14,19 +14,19 @@ import pgAdminService from "@/server/services/db-tool-services/pgadmin.service";
 import { UserGroupUtils } from "@/shared/utils/role.utils";
 
 const createAppSchema = z.object({
-    appName: z.string().min(1)
+    app名称: z.string().min(1)
 });
 
-export const createApp = async (appName: string, projectId: string, appId?: string) =>
-    saveFormAction({ appName }, createAppSchema, async (validatedData) => {
+export const createApp = async (app名称: string, projectId: string, appId?: string) =>
+    saveFormAction({ app名称 }, createAppSchema, async (validatedData) => {
         const session = await getAuthUserSession();
-        if (!UserGroupUtils.sessionCanCreateNewAppsForProject(session, projectId)) {
+        if (!UserGroupUtils.sessionCan创建NewAppsForProject(session, projectId)) {
             throw new ServiceException("You are not allowed to create new apps.");
         }
 
         const returnData = await appService.save({
             id: appId ?? undefined,
-            name: validatedData.appName,
+            name: validatedData.app名称,
             projectId
         });
 
@@ -36,10 +36,10 @@ export const createApp = async (appName: string, projectId: string, appId?: stri
 export const createAppFromTemplate = async (prevState: any, inputData: AppTemplateModel, projectId: string) =>
     saveFormAction(inputData, appTemplateZodModel, async (validatedData) => {
         const session = await getAuthUserSession();
-        if (!UserGroupUtils.sessionCanCreateNewAppsForProject(session, projectId)) {
+        if (!UserGroupUtils.sessionCan创建NewAppsForProject(session, projectId)) {
             throw new ServiceException("You are not allowed to create new apps.");
         }
-        if (validatedData.templates.some(x => x.inputSettings.some(y => !y.randomGeneratedIfEmpty && !y.value))) {
+        if (validatedData.templates.some(x => x.input设置.some(y => !y.randomGeneratedIfEmpty && !y.value))) {
             throw new ServiceException('Please fill out all required fields.');
         }
         await appTemplateService.createAppFromTemplate(projectId, validatedData);
@@ -50,7 +50,7 @@ export const deleteApp = async (appId: string) =>
     simpleAction(async () => {
         const session = await getAuthUserSession();
         const app = await appService.getExtendedById(appId);
-        if (!UserGroupUtils.sessionCanDeleteAppsForProject(session, app.projectId)) {
+        if (!UserGroupUtils.sessionCan删除AppsForProject(session, app.projectId)) {
             throw new ServiceException("You are not allowed to delete apps in this project.");
         }
         // First delete external services wich might be running

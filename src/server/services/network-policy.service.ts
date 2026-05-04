@@ -1,14 +1,14 @@
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import k3s from "../adapter/kubernetes-api.adapter";
 import { V1NetworkPolicy, V1NetworkPolicyEgressRule, V1NetworkPolicyIngressRule, V1NetworkPolicyPeer } from "@kubernetes/client-node";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import { Constants } from "../../shared/utils/constants";
 import { appNetworkPolicy, AppNetworkPolicyType } from "@/shared/model/network-policy.model";
 
 class NetworkPolicyService {
 
     async reconcileNetworkPolicy(app: AppExtendedModel) {
-        const policyName = KubeObjectNameUtils.toNetworkPolicyName(app.id);
+        const policy名称 = KubeObject名称Utils.toNetworkPolicy名称(app.id);
         const namespace = app.projectId;
 
         // If network policies are disabled, delete existing policy if any and return
@@ -24,7 +24,7 @@ class NetworkPolicyService {
             apiVersion: "networking.k8s.io/v1",
             kind: "NetworkPolicy",
             metadata: {
-                name: policyName,
+                name: policy名称,
                 namespace: namespace,
                 labels: {
                     app: app.id
@@ -45,7 +45,7 @@ class NetworkPolicyService {
                 egress: this.getEgressRules(egressPolicy)
             }
         };
-        await this.applyNetworkPolicy(namespace, policyName, policy);
+        await this.applyNetworkPolicy(namespace, policy名称, policy);
     }
 
     private normalizePolicy(raw: string): AppNetworkPolicyType {
@@ -198,7 +198,7 @@ class NetworkPolicyService {
         };
 
         if (policyType === 'ALLOW_ALL') {
-            // Allow Internet + Local Namespace, Block other namespaces (Private IPs)
+            // Allow Internet + Local 名称space, Block other namespaces (Private IPs)
             rules.push(dnsRuleAllow);
             rules.push({
                 to: [
@@ -248,40 +248,40 @@ class NetworkPolicyService {
     }
 
     async deleteNetworkPolicy(appId: string, projectId: string) {
-        const policyName = KubeObjectNameUtils.toNetworkPolicyName(appId);
-        const existingNetworkPolicy = await this.getExistingNetworkPolicy(projectId, policyName);
+        const policy名称 = KubeObject名称Utils.toNetworkPolicy名称(appId);
+        const existingNetworkPolicy = await this.getExistingNetworkPolicy(projectId, policy名称);
         if (!existingNetworkPolicy) {
             return;
         }
-        await k3s.network.deleteNamespacedNetworkPolicy(policyName, projectId);
+        await k3s.network.delete名称spacedNetworkPolicy(policy名称, projectId);
     }
 
-    private async applyNetworkPolicy(namespace: string, policyName: string, body: V1NetworkPolicy) {
-        const existing = await this.getExistingNetworkPolicy(namespace, policyName);
+    private async applyNetworkPolicy(namespace: string, policy名称: string, body: V1NetworkPolicy) {
+        const existing = await this.getExistingNetworkPolicy(namespace, policy名称);
         if (existing) {
-            await k3s.network.replaceNamespacedNetworkPolicy(policyName, namespace, body);
+            await k3s.network.replace名称spacedNetworkPolicy(policy名称, namespace, body);
         } else {
-            await k3s.network.createNamespacedNetworkPolicy(namespace, body);
+            await k3s.network.create名称spacedNetworkPolicy(namespace, body);
         }
     }
 
-    private async getExistingNetworkPolicy(namespace: string, policyName: string) {
-        const allPolicies = await k3s.network.listNamespacedNetworkPolicy(namespace);
-        return allPolicies.body.items.find(np => np.metadata?.name === policyName);
+    private async getExistingNetworkPolicy(namespace: string, policy名称: string) {
+        const allPolicies = await k3s.network.list名称spacedNetworkPolicy(namespace);
+        return allPolicies.body.items.find(np => np.metadata?.name === policy名称);
     }
 
-    async reconcileDbToolNetworkPolicy(dbToolAppName: string, dbAppId: string, projectId: string) {
-        const policyName = KubeObjectNameUtils.toNetworkPolicyName(dbToolAppName);
+    async reconcileDbToolNetworkPolicy(dbToolApp名称: string, dbAppId: string, projectId: string) {
+        const policy名称 = KubeObject名称Utils.toNetworkPolicy名称(dbToolApp名称);
         const namespace = projectId;
 
         const policy: V1NetworkPolicy = {
             apiVersion: "networking.k8s.io/v1",
             kind: "NetworkPolicy",
             metadata: {
-                name: policyName,
+                name: policy名称,
                 namespace: namespace,
                 labels: {
-                    app: dbToolAppName,
+                    app: dbToolApp名称,
                     'db-tool': 'true'
                 },
                 annotations: {
@@ -292,7 +292,7 @@ class NetworkPolicyService {
             spec: {
                 podSelector: {
                     matchLabels: {
-                        app: dbToolAppName
+                        app: dbToolApp名称
                     }
                 },
                 policyTypes: ["Ingress", "Egress"],
@@ -365,30 +365,30 @@ class NetworkPolicyService {
             }
         };
         console.log('Creating DB Tool Network Policy:', JSON.stringify(policy, null, 2));
-        await this.applyNetworkPolicy(namespace, policyName, policy);
+        await this.applyNetworkPolicy(namespace, policy名称, policy);
     }
 
-    async deleteDbToolNetworkPolicy(dbToolAppName: string, projectId: string) {
-        const policyName = KubeObjectNameUtils.toNetworkPolicyName(dbToolAppName);
-        const existingNetworkPolicy = await this.getExistingNetworkPolicy(projectId, policyName);
+    async deleteDbToolNetworkPolicy(dbToolApp名称: string, projectId: string) {
+        const policy名称 = KubeObject名称Utils.toNetworkPolicy名称(dbToolApp名称);
+        const existingNetworkPolicy = await this.getExistingNetworkPolicy(projectId, policy名称);
         if (!existingNetworkPolicy) {
             return;
         }
-        await k3s.network.deleteNamespacedNetworkPolicy(policyName, projectId);
+        await k3s.network.delete名称spacedNetworkPolicy(policy名称, projectId);
     }
 
-    async reconcileFileBrowserNetworkPolicy(fileBrowserAppName: string, projectId: string) {
-        const policyName = KubeObjectNameUtils.toNetworkPolicyName(fileBrowserAppName);
+    async reconcileFileBrowserNetworkPolicy(fileBrowserApp名称: string, projectId: string) {
+        const policy名称 = KubeObject名称Utils.toNetworkPolicy名称(fileBrowserApp名称);
         const namespace = projectId;
 
         const policy: V1NetworkPolicy = {
             apiVersion: "networking.k8s.io/v1",
             kind: "NetworkPolicy",
             metadata: {
-                name: policyName,
+                name: policy名称,
                 namespace: namespace,
                 labels: {
-                    app: fileBrowserAppName,
+                    app: fileBrowserApp名称,
                     'file-browser': 'true'
                 },
                 annotations: {
@@ -398,7 +398,7 @@ class NetworkPolicyService {
             spec: {
                 podSelector: {
                     matchLabels: {
-                        app: fileBrowserAppName
+                        app: fileBrowserApp名称
                     }
                 },
                 policyTypes: ["Ingress", "Egress"],
@@ -425,20 +425,20 @@ class NetworkPolicyService {
             }
         };
         console.log('Creating FileBrowser Network Policy:', JSON.stringify(policy, null, 2));
-        await this.applyNetworkPolicy(namespace, policyName, policy);
+        await this.applyNetworkPolicy(namespace, policy名称, policy);
     }
 
-    async deleteFileBrowserNetworkPolicy(fileBrowserAppName: string, projectId: string) {
-        const policyName = KubeObjectNameUtils.toNetworkPolicyName(fileBrowserAppName);
-        const existingNetworkPolicy = await this.getExistingNetworkPolicy(projectId, policyName);
+    async deleteFileBrowserNetworkPolicy(fileBrowserApp名称: string, projectId: string) {
+        const policy名称 = KubeObject名称Utils.toNetworkPolicy名称(fileBrowserApp名称);
+        const existingNetworkPolicy = await this.getExistingNetworkPolicy(projectId, policy名称);
         if (!existingNetworkPolicy) {
             return;
         }
-        await k3s.network.deleteNamespacedNetworkPolicy(policyName, projectId);
+        await k3s.network.delete名称spacedNetworkPolicy(policy名称, projectId);
     }
 
     async deleteAllNetworkPolicies() {
-        const namespaces = await k3s.core.listNamespace();
+        const namespaces = await k3s.core.list名称space();
         let deletedCount = 0;
 
         for (const ns of namespaces.body.items) {
@@ -446,11 +446,11 @@ class NetworkPolicyService {
             if (!namespace) continue;
 
             try {
-                const policies = await k3s.network.listNamespacedNetworkPolicy(namespace);
+                const policies = await k3s.network.list名称spacedNetworkPolicy(namespace);
                 for (const policy of policies.body.items) {
-                    const policyName = policy.metadata?.name;
-                    if (policyName) {
-                        await k3s.network.deleteNamespacedNetworkPolicy(policyName, namespace);
+                    const policy名称 = policy.metadata?.name;
+                    if (policy名称) {
+                        await k3s.network.delete名称spacedNetworkPolicy(policy名称, namespace);
                         deletedCount++;
                     }
                 }

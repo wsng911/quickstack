@@ -10,7 +10,7 @@ export interface UserSession {
 export type UserGroupExtended = {
     name: string;
     id: string;
-    canAccessBackups: boolean;
+    canAccess返回ups: boolean;
     roleProjectPermissions: {
         projectId: string;
         project: {

@@ -1,16 +1,16 @@
 'use client'
 
-import { BuildJobStatus } from "@/shared/model/build-job";
+import { BuildJob状态 } from "@/shared/model/build-job";
 
-export default function BuildStatusBadge({ children }: { children: BuildJobStatus }) {
+export default function Build状态Badge({ children }: { children: BuildJob状态 }) {
     return (
-        <span className={`px-2 py-1 rounded-lg text-sm font-semibold ${getBackgroundColor(children)} ${getTextColor(children)}`}>
+        <span class名称={`px-2 py-1 rounded-lg text-sm font-semibold ${get返回groundColor(children)} ${getTextColor(children)}`}>
             {getLabel(children)}
         </span>
     );
 }
 
-function getLabel(status: BuildJobStatus) {
+function getLabel(status: BuildJob状态) {
     switch (status) {
         case 'RUNNING': return 'Running';
         case 'PENDING': return 'Pending';
@@ -20,7 +20,7 @@ function getLabel(status: BuildJobStatus) {
     }
 }
 
-function getBackgroundColor(status: BuildJobStatus) {
+function get返回groundColor(status: BuildJob状态) {
     switch (status) {
         case 'RUNNING': return 'bg-blue-100';
         case 'PENDING': return 'bg-yellow-100';
@@ -30,7 +30,7 @@ function getBackgroundColor(status: BuildJobStatus) {
     }
 }
 
-function getTextColor(status: BuildJobStatus) {
+function getTextColor(status: BuildJob状态) {
     switch (status) {
         case 'RUNNING': return 'text-blue-800';
         case 'PENDING': return 'text-yellow-800';

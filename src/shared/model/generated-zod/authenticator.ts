@@ -9,7 +9,7 @@ export const AuthenticatorModel = z.object({
   credentialPublicKey: z.string(),
   counter: z.number().int(),
   credentialDeviceType: z.string(),
-  credentialBackedUp: z.boolean(),
+  credential返回edUp: z.boolean(),
   transports: z.string().nullish(),
 })
 

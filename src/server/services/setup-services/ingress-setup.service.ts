@@ -1,14 +1,14 @@
 import k3s from "../../adapter/kubernetes-api.adapter";
 
-const traefikNamespace = 'kube-system';
+const traefik名称space = 'kube-system';
 
 class IngressSetupService {
 
     async checkIfTraefikRedirectMiddlewareExists() {
-        const res = await k3s.customObjects.listNamespacedCustomObject(
+        const res = await k3s.customObjects.list名称spacedCustomObject(
             'traefik.io',            // group
             'v1alpha1',              // version
-            traefikNamespace,        // namespace
+            traefik名称space,        // namespace
             'middlewares'            // plural name of the custom resource
         );
         return (res.body as any) && (res.body as any)?.items && (res.body as any)?.items?.length > 0;
@@ -24,7 +24,7 @@ class IngressSetupService {
             kind: 'Middleware',
             metadata: {
                 name: 'redirect-to-https',
-                namespace: traefikNamespace,
+                namespace: traefik名称space,
             },
             spec: {
                 redirectScheme: {
@@ -34,10 +34,10 @@ class IngressSetupService {
             },
         };
 
-        await k3s.customObjects.createNamespacedCustomObject(
+        await k3s.customObjects.create名称spacedCustomObject(
             'traefik.io',           // group
             'v1alpha1',             // version
-            traefikNamespace,       // namespace
+            traefik名称space,       // namespace
             'middlewares',          // plural name of the custom resource
             middlewareManifest      // object manifest
         );

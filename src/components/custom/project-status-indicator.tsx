@@ -1,15 +1,15 @@
 'use client'
 
-import { usePodsStatus } from '@/frontend/states/zustand.states';
+import { usePods状态 } from '@/frontend/states/zustand.states';
 import { Spinner } from "@/components/ui/spinner"
 import { useMemo, useState } from 'react';
 import { MultiStateProgress } from './multi-state-progress';
 
-interface ProjectStatusIndicatorProps {
+interface Project状态IndicatorProps {
     projectId: string;
 }
 
-interface ProjectStatus {
+interface Project状态 {
     runningAppsPercent: number;
     shutdownAppsPercent: number;
     errorAndDeployingAppsPercent: number;
@@ -17,17 +17,17 @@ interface ProjectStatus {
     appCount?: number;
 }
 
-export default function ProjectStatusIndicator({ projectId }: ProjectStatusIndicatorProps) {
-    const { podsStatus, isLoading } = usePodsStatus();
+export default function Project状态Indicator({ projectId }: Project状态IndicatorProps) {
+    const { pods状态, isLoading } = usePods状态();
 
-    const projectStatus = useMemo(() => {
-        if (podsStatus) {
-            const projectAppStatus = Array.from(podsStatus.values()).filter(status => status.projectId === projectId);
-            if (projectAppStatus.length > 0) {
-                const totalApps = projectAppStatus.length;
-                const runningApps = projectAppStatus.filter(status => status.deploymentStatus === 'DEPLOYED').length;
-                const shutdownApps = projectAppStatus.filter(status => status.deploymentStatus === 'SHUTDOWN').length;
-                const errorAndDeployingApps = projectAppStatus.filter(status => ['UNKNOWN', 'ERROR', 'DEPLOYING', 'BUILDING', 'SHUTTING_DOWN'].includes(status.deploymentStatus)).length;
+    const project状态 = useMemo(() => {
+        if (pods状态) {
+            const projectApp状态 = Array.from(pods状态.values()).filter(status => status.projectId === projectId);
+            if (projectApp状态.length > 0) {
+                const totalApps = projectApp状态.length;
+                const runningApps = projectApp状态.filter(status => status.deployment状态 === 'DEPLOYED').length;
+                const shutdownApps = projectApp状态.filter(status => status.deployment状态 === 'SHUTDOWN').length;
+                const errorAndDeployingApps = projectApp状态.filter(status => ['UNKNOWN', 'ERROR', 'DEPLOYING', 'BUILDING', 'SHUTTING_DOWN'].includes(status.deployment状态)).length;
                 return {
                     runningAppsPercent: (runningApps / totalApps) * 100,
                     shutdownAppsPercent: (shutdownApps / totalApps) * 100,
@@ -42,29 +42,29 @@ export default function ProjectStatusIndicator({ projectId }: ProjectStatusIndic
                 errorAndDeployingAppsPercent: 0
             };
         }
-    }, [podsStatus, projectId]);
+    }, [pods状态, projectId]);
 
-    if (isLoading || !projectStatus) {
+    if (isLoading || !project状态) {
         return (
-            <div className="flex items-center gap-2">
-                <Spinner className="size-3" />
+            <div class名称="flex items-center gap-2">
+                <Spinner class名称="size-3" />
             </div>
         );
     }
 
     return (
 
-        <div className="space-y-1 pr-12">
-            <div className="flex justify-between text-xs text-muted-foreground">
-                <span>{projectStatus.appCount && projectStatus.runningAppsCount && <>{projectStatus.runningAppsCount} / {projectStatus.appCount} apps running</>}</span>
+        <div class名称="space-y-1 pr-12">
+            <div class名称="flex justify-between text-xs text-muted-foreground">
+                <span>{project状态.appCount && project状态.runningAppsCount && <>{project状态.runningAppsCount} / {project状态.appCount} apps running</>}</span>
             </div>
             <MultiStateProgress
                 segments={[
-                    { value: projectStatus.runningAppsPercent, color: 'green' },
-                    { value: projectStatus.errorAndDeployingAppsPercent, color: 'orange' },
-                    { value: projectStatus.shutdownAppsPercent, color: 'gray' }
+                    { value: project状态.runningAppsPercent, color: 'green' },
+                    { value: project状态.errorAndDeployingAppsPercent, color: 'orange' },
+                    { value: project状态.shutdownAppsPercent, color: 'gray' }
                 ]}
-                className="h-2"
+                class名称="h-2"
             />
         </div>
     );

@@ -6,26 +6,26 @@ import Link from "next/link";
 import { SimpleDataTable } from "@/components/custom/simple-data-table";
 import { formatDateTime } from "@/frontend/utils/format.utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Edit2, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { 编辑2, Eye, MoreHorizontal, Trash } from "lucide-react";
 import { Toast } from "@/frontend/utils/toast.utils";
 import { Project } from "@prisma/client";
 import { deleteProject } from "./actions";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
-import { EditProjectDialog } from "./edit-project-dialog";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
+import { 编辑ProjectDialog } from "./edit-project-dialog";
 import { UserSession } from "@/shared/model/sim-session.model";
 import { UserGroupUtils } from "@/shared/utils/role.utils";
-import ProjectStatusIndicator from "@/components/custom/project-status-indicator";
+import Project状态Indicator from "@/components/custom/project-status-indicator";
 
 
 export default function ProjectsTable({ data, session }: { data: Project[]; session: UserSession; }) {
 
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
 
-    const asyncDeleteProject = async (domainId: string) => {
+    const async删除Project = async (domainId: string) => {
         const confirm = await openDialog({
-            title: "Delete Project",
+            title: "删除 Project",
             description: "Are you sure you want to delete this project? All data (apps, deployments, volumes, domains) will be lost and this action cannot be undone. Running apps will be stopped and removed.",
-            okButton: "Delete Project"
+            okButton: "删除 Project"
         });
         if (confirm) {
             await Toast.fromAction(() => deleteProject(domainId));
@@ -35,26 +35,26 @@ export default function ProjectsTable({ data, session }: { data: Project[]; sess
     return <>
         <SimpleDataTable columns={[
             ['id', 'ID', false],
-            ['name', 'Name', true],
-            ['status', 'Status', true, (item) => <ProjectStatusIndicator projectId={item.id} />],
-            ["createdAt", "Created At", true, (item) => formatDateTime(item.createdAt)],
+            ['name', '名称', true],
+            ['status', '状态', true, (item) => <Project状态Indicator projectId={item.id} />],
+            ["createdAt", "创建d At", true, (item) => formatDateTime(item.createdAt)],
             ["updatedAt", "Updated At", false, (item) => formatDateTime(item.updatedAt)],
         ]}
             data={data}
             onItemClickLink={(item) => `/project/${item.id}`}
             actionCol={(item) =>
                 <>
-                    <div className="flex">
-                        <div className="flex-1"></div>
+                    <div class名称="flex">
+                        <div class名称="flex-1"></div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                    <span className="sr-only">Open menu</span>
-                                    <MoreHorizontal className="h-4 w-4" />
+                                <Button variant="ghost" class名称="h-8 w-8 p-0">
+                                    <span class名称="sr-only">Open menu</span>
+                                    <MoreHorizontal class名称="h-4 w-4" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuLabel>操作</DropdownMenuLabel>
                                 <Link href={`/project/${item.id}`}>
                                     <DropdownMenuItem>
                                         <Eye /> <span>Show Apps of Project</span>
@@ -62,13 +62,13 @@ export default function ProjectsTable({ data, session }: { data: Project[]; sess
                                 </Link>
                                 <DropdownMenuSeparator />
                                 {UserGroupUtils.isAdmin(session) && <>
-                                    <EditProjectDialog existingItem={item}>
+                                    <编辑ProjectDialog existingItem={item}>
                                         <DropdownMenuItem>
-                                            <Edit2 /> <span>Edit Project Name</span>
+                                            <编辑2 /> <span>编辑 Project 名称</span>
                                         </DropdownMenuItem>
-                                    </EditProjectDialog>
-                                    <DropdownMenuItem className="text-red-500" onClick={() => asyncDeleteProject(item.id)}>
-                                        <Trash /> <span >Delete Project</span>
+                                    </编辑ProjectDialog>
+                                    <DropdownMenuItem class名称="text-red-500" onClick={() => async删除Project(item.id)}>
+                                        <Trash /> <span >删除 Project</span>
                                     </DropdownMenuItem>
                                 </>}
                             </DropdownMenuContent>

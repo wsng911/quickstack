@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const nextcloudAppTemplate: AppTemplateModel = {
     name: "Nextcloud",
-    iconName: 'https://avatars.githubusercontent.com/u/19211038',
+    icon名称: 'https://avatars.githubusercontent.com/u/19211038',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -15,14 +15,14 @@ export const nextcloudAppTemplate: AppTemplateModel = {
             },
             {
                 key: "NEXTCLOUD_ADMIN_USER",
-                label: "Admin Username",
+                label: "Admin 用户名",
                 value: "admin",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "NEXTCLOUD_ADMIN_PASSWORD",
-                label: "Admin Password",
+                label: "Admin 密码",
                 value: "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
@@ -48,7 +48,7 @@ export const nextcloudAppTemplate: AppTemplateModel = {
             size: 5000,
             containerMountPath: '/var/www/html',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

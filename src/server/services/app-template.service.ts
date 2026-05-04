@@ -1,7 +1,7 @@
-import { AppTemplateContentModel, AppTemplateInputSettingsModel, AppTemplateModel } from "@/shared/model/app-template.model";
+import { AppTemplateContentModel, AppTemplateInput设置Model, AppTemplateModel } from "@/shared/model/app-template.model";
 import { ServiceException } from "@/shared/model/service.exception.model";
 import appService from "./app.service";
-import { allTemplates, postCreateTemplateFunctions } from "@/shared/templates/all.templates";
+import { allTemplates, post创建TemplateFunctions } from "@/shared/templates/all.templates";
 import { AppTemplateUtils } from "../utils/app-template.utils";
 import { DatabaseTemplateInfoModel } from "@/shared/model/database-template-info.model";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
@@ -21,7 +21,7 @@ class AppTemplateService {
             const createdTemplates: AppExtendedModel[] = [];
 
             for (const tmpl of template.templates) {
-                const createdAppId = await this.createAppFromTemplateContent(projectId, tmpl, tmpl.inputSettings, tx);
+                const createdAppId = await this.createAppFromTemplateContent(projectId, tmpl, tmpl.input设置, tx);
                 let extendedApp = await appService.getExtendedById(createdAppId, false, tx);
 
                 // used for templates with multiple apps and a database
@@ -40,7 +40,7 @@ class AppTemplateService {
             }
 
             // run post create function if exists for this template
-            const postFunctionForTempalte = postCreateTemplateFunctions.get(template.name);
+            const postFunctionForTempalte = post创建TemplateFunctions.get(template.name);
             if (postFunctionForTempalte) {
                 const updatedApps = await postFunctionForTempalte(createdTemplates);
                 // save updated apps todo
@@ -52,7 +52,7 @@ class AppTemplateService {
     }
 
     private async createAppFromTemplateContent(projectId: string, template: AppTemplateContentModel,
-        inputValues: AppTemplateInputSettingsModel[], tx: Prisma.TransactionClient) {
+        inputValues: AppTemplateInput设置Model[], tx: Prisma.TransactionClient) {
 
         const mappedApp = AppTemplateUtils.mapTemplateInputValuesToApp(template, inputValues);
         const createdApp = await appService.save({

@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const minioAppTemplate: AppTemplateModel = {
     name: "MinIO",
-    iconName: 'https://raw.githubusercontent.com/minio/minio/master/.github/logo.svg',
+    icon名称: 'https://raw.githubusercontent.com/minio/minio/master/.github/logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -15,14 +15,14 @@ export const minioAppTemplate: AppTemplateModel = {
             },
             {
                 key: "MINIO_ROOT_USER",
-                label: "Root Username",
+                label: "Root 用户名",
                 value: "minioadmin",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "MINIO_ROOT_PASSWORD",
-                label: "Root Password",
+                label: "Root 密码",
                 value: "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
@@ -49,7 +49,7 @@ export const minioAppTemplate: AppTemplateModel = {
             size: 5000,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

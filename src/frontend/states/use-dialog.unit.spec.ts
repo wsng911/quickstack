@@ -38,7 +38,7 @@ describe('useDialog hook', () => {
     expect(result.current.content).toBe(testContent);
     expect(result.current.resolvePromise).toBeTruthy();
 
-    // Close the dialog with a result
+    // 关闭 the dialog with a result
     act(() => {
       result.current.closeDialog('test-result');
     });
@@ -63,7 +63,7 @@ describe('useDialog hook', () => {
 
     expect(result.current.isDialogOpen).toBe(true);
 
-    // Close without result
+    // 关闭 without result
     act(() => {
       result.current.closeDialog();
     });

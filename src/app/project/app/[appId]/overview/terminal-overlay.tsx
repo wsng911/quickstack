@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  Dialog描述,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -31,11 +31,11 @@ export function TerminalDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[1300px]">
+      <DialogContent class名称="sm:max-w-[1300px]">
         <DialogHeader>
           <DialogTitle>Terminal</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
+        <div class名称="space-y-4">
           {terminalInfo ? <TerminalStreamed terminalInfo={terminalInfo} /> : 'Currently there is no Terminal available'}
         </div>
       </DialogContent>

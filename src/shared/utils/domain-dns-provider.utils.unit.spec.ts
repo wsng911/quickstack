@@ -45,17 +45,17 @@ describe('DomainDnsProviderUtils', () => {
         });
     });
 
-    describe('getHostnameForIpAddress', () => {
+    describe('getHostnameForIp添加ress', () => {
         it('should convert IP address to hostname with hex format', () => {
-            expect(HostnameDnsProviderUtils.getHexHostnameForIpAddress('192.168.1.1')).toBe('c0a80101.quickstack.me');
+            expect(HostnameDnsProviderUtils.getHexHostnameForIp添加ress('192.168.1.1')).toBe('c0a80101.quickstack.me');
         });
 
         it('should handle another IP address format', () => {
-            expect(HostnameDnsProviderUtils.getHexHostnameForIpAddress('10.0.0.1')).toBe('0a000001.quickstack.me');
+            expect(HostnameDnsProviderUtils.getHexHostnameForIp添加ress('10.0.0.1')).toBe('0a000001.quickstack.me');
         });
 
         it('should handle localhost IP', () => {
-            expect(HostnameDnsProviderUtils.getHexHostnameForIpAddress('127.0.0.1')).toBe('7f000001.quickstack.me');
+            expect(HostnameDnsProviderUtils.getHexHostnameForIp添加ress('127.0.0.1')).toBe('7f000001.quickstack.me');
         });
     });
 

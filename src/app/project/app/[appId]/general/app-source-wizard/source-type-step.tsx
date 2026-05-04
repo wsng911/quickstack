@@ -15,7 +15,7 @@ export function SourceTypeStep({ value, canUseGitSources, onChange }: {
     ];
 
     return (
-        <div className="grid gap-3 md:grid-cols-3">
+        <div class名称="grid gap-3 md:grid-cols-3">
             {options.map((option) => (
                 <Button
                     key={option.value}
@@ -23,19 +23,19 @@ export function SourceTypeStep({ value, canUseGitSources, onChange }: {
                     variant="outline"
                     disabled={option.disabled}
                     onClick={() => onChange(option.value)}
-                    className={cn(
+                    class名称={cn(
                         "flex h-auto min-h-32 flex-col items-start gap-3 p-4 text-left transition-colors",
                         value === option.value ? "border-primary bg-primary/5" : "hover:bg-muted/50",
                         option.disabled && "cursor-not-allowed opacity-50 hover:bg-transparent"
                     )}
                 >
-                    <span className="flex w-full items-center justify-between">
-                        <option.icon className="h-5 w-5 text-muted-foreground" />
-                        {value === option.value && <Check className="h-4 w-4 text-primary" />}
+                    <span class名称="flex w-full items-center justify-between">
+                        <option.icon class名称="h-5 w-5 text-muted-foreground" />
+                        {value === option.value && <Check class名称="h-4 w-4 text-primary" />}
                     </span>
                     <span>
-                        <span className="block font-medium">{option.label}</span>
-                        <span className="mt-1 block whitespace-normal text-sm font-normal text-muted-foreground">{option.description}</span>
+                        <span class名称="block font-medium">{option.label}</span>
+                        <span class名称="mt-1 block whitespace-normal text-sm font-normal text-muted-foreground">{option.description}</span>
                     </span>
                 </Button>
             ))}

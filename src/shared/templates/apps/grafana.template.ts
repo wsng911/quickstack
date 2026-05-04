@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const grafanaAppTemplate: AppTemplateModel = {
     name: "Grafana",
-    iconName: 'https://raw.githubusercontent.com/grafana/grafana/main/public/img/grafana_icon.svg',
+    icon名称: 'https://raw.githubusercontent.com/grafana/grafana/main/public/img/grafana_icon.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -15,14 +15,14 @@ export const grafanaAppTemplate: AppTemplateModel = {
             },
             {
                 key: "GF_SECURITY_ADMIN_USER",
-                label: "Admin Username",
+                label: "Admin 用户名",
                 value: "admin",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "GF_SECURITY_ADMIN_PASSWORD",
-                label: "Admin Password",
+                label: "Admin 密码",
                 value: "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
@@ -47,7 +47,7 @@ export const grafanaAppTemplate: AppTemplateModel = {
             size: 200,
             containerMountPath: '/var/lib/grafana',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

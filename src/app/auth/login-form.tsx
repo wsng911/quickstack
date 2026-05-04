@@ -17,7 +17,7 @@ import { authUser } from "./actions"
 import { signIn } from "next-auth/react";
 import LoadingSpinner from "@/components/ui/loading-spinner"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import TwoFaAuthForm from "./two-fa-auth"
 import { redirect } from "next/navigation"
 
@@ -42,14 +42,14 @@ export default function UserLoginForm() {
         setLoading(true);
         setErrorMessages(undefined);
         try {
-            const authStatusResponse = await authUser(data);
-            if (authStatusResponse.status !== 'success') {
-                throw new Error(authStatusResponse.message);
+            const auth状态Response = await authUser(data);
+            if (auth状态Response.status !== 'success') {
+                throw new Error(auth状态Response.message);
             }
-            if (!authStatusResponse.data) {
+            if (!auth状态Response.data) {
                 throw new Error("Unknown error occured");
             }
-            const authData = authStatusResponse.data as { email: string, twoFaEnabled: boolean };
+            const authData = auth状态Response.data as { email: string, twoFaEnabled: boolean };
             if (!authData.twoFaEnabled) {
                 await signIn("credentials", {
                     username: data.email,
@@ -73,20 +73,20 @@ export default function UserLoginForm() {
     }
 
     return (
-        <Card className="w-[350px] mx-auto">
+        <Card class名称="w-[350px] mx-auto">
             <CardHeader>
                 <CardTitle>Sign In</CardTitle>
-                <CardDescription>Enter your email and password to access your account.</CardDescription>
+                <Card描述>Enter your email and password to access your account.</Card描述>
             </CardHeader>
             <Form {...form}>
-                <form onSubmit={async (e) => {
+                <form on提交={async (e) => {
                     e.preventDefault();
-                    return form.handleSubmit(async (data) => {
+                    return form.handle提交(async (data) => {
                         await login(data);
                     })();
-                }} className="space-y-8">
+                }} class名称="space-y-8">
 
-                    <CardContent className="space-y-4">
+                    <CardContent class名称="space-y-4">
                         <FormField
                             control={form.control}
                             name="email"
@@ -106,7 +106,7 @@ export default function UserLoginForm() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>密码</FormLabel>
                                     <FormControl>
                                         <Input type="password" {...field} value={field.value as string | number | readonly string[] | undefined} />
                                     </FormControl>
@@ -116,8 +116,8 @@ export default function UserLoginForm() {
                         />
                     </CardContent>
                     <CardFooter>
-                        <p className="text-red-500">{errorMessages}</p>
-                        <Button type="submit" className="w-full" disabled={loading}>{loading ? <LoadingSpinner></LoadingSpinner> : 'Login'}</Button>
+                        <p class名称="text-red-500">{errorMessages}</p>
+                        <Button type="submit" class名称="w-full" disabled={loading}>{loading ? <LoadingSpinner></LoadingSpinner> : 'Login'}</Button>
                     </CardFooter>
                 </form>
             </Form>

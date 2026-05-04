@@ -9,21 +9,21 @@ import { getRedisAppTemplate } from "../databases/redis.template";
 
 export const libredeskAppTemplate: AppTemplateModel = {
     name: "Libredesk",
-    iconName: 'libredesk.png',
+    icon名称: 'libredesk.png',
     templates: [
         // PostgreSQL Database
         getPostgresAppTemplate({
-            appName: 'Libredesk PostgreSQL',
-            dbName: 'libredesk',
-            dbUsername: 'libredesk'
+            app名称: 'Libredesk PostgreSQL',
+            db名称: 'libredesk',
+            db用户名: 'libredesk'
         }),
         // Redis
         getRedisAppTemplate({
-            appName: 'Libredesk Redis'
+            app名称: 'Libredesk Redis'
         }),
         // LibreDesk App
         {
-            inputSettings: [
+            input设置: [
                 {
                     key: "containerImageSource",
                     label: "Container Image",
@@ -53,7 +53,7 @@ export const libredeskAppTemplate: AppTemplateModel = {
                 size: 500,
                 containerMountPath: '/libredesk/uploads',
                 accessMode: 'ReadWriteOnce',
-                storageClassName: 'longhorn',
+                storageClass名称: 'longhorn',
                 shareWithOtherApps: false,
             }],
             appFileMounts: [],
@@ -64,13 +64,13 @@ export const libredeskAppTemplate: AppTemplateModel = {
     ]
 };
 
-export const postCreateLibredeskAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
+export const post创建LibredeskAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
     const postgresApp = createdApps[0];
     const redisApp = createdApps[1];
     const libredeskApp = createdApps[2];
 
     if (!postgresApp || !redisApp || !libredeskApp) {
-        throw new Error('Created templates for LibreDesk (PostgreSQL, Redis, or App) not found.');
+        throw new Error('创建d templates for LibreDesk (PostgreSQL, Redis, or App) not found.');
     }
 
     // Extract PostgreSQL credentials from environment variables
@@ -92,7 +92,7 @@ encryption_key = "${encryptionKey}"
 
 # HTTP server.
 [app.server]
-# Address to bind the HTTP server to.
+# 添加ress to bind the HTTP server to.
 address = "0.0.0.0:9000"
 # Unix socket path (leave empty to use TCP address instead)
 socket = ""
@@ -148,7 +148,7 @@ port = ${dbModelOfProstgres.port}
 # Update the following values with your database credentials.
 user = "${dbModelOfProstgres.username}"
 password = "${dbModelOfProstgres.password}"
-database = "${dbModelOfProstgres.databaseName}"
+database = "${dbModelOfProstgres.database名称}"
 ssl_mode = "disable"
 # Maximum number of open database connections
 max_open = 30
@@ -206,7 +206,7 @@ unsnooze_interval = "5m"
 # How often to evaluate SLA compliance for conversations
 evaluation_interval = "5m"`;
 
-    const fileMount: Prisma.AppFileMountUncheckedCreateInput = {
+    const fileMount: Prisma.AppFileMountUnchecked创建Input = {
         containerMountPath: '/libredesk/config.toml',
         content: configToml,
         appId: libredeskApp.id,
@@ -214,8 +214,8 @@ evaluation_interval = "5m"`;
     libredeskApp.appFileMounts.push(fileMount as any);
 
     // strong password generator for system user
-    const systemUserPassword = AppTemplateUtils.generateStrongPasswort(52);
-    libredeskApp.envVars += `LIBREDESK_SYSTEM_USER_PASSWORD=${systemUserPassword}
+    const systemUser密码 = AppTemplateUtils.generateStrongPasswort(52);
+    libredeskApp.envVars += `LIBREDESK_SYSTEM_USER_PASSWORD=${systemUser密码}
 `;
     return [postgresApp, redisApp, libredeskApp];
 };

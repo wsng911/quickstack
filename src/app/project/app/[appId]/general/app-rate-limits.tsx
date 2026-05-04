@@ -1,7 +1,7 @@
 'use client';
 
-import { SubmitButton } from "@/components/custom/submit-button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { 提交Button } from "@/components/custom/submit-button";
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FormUtils } from "@/frontend/utils/form.utilts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,12 +31,12 @@ export default function GeneralAppRateLimits({ app, readonly }: {
         disabled: readonly
     });
 
-    const [monitoringData, setMonitoringData] = useState<PodsResourceInfoModel | undefined>(undefined);
+    const [monitoringData, set监控ingData] = useState<PodsResourceInfoModel | undefined>(undefined);
 
     useEffect(() => {
         getRessourceDataApp(app.projectId, app.id).then((res) => {
             if (res.status === 'success' && res.data) {
-                setMonitoringData(res.data);
+                set监控ingData(res.data);
             }
         }).catch(() => { /* pod may not be running, silently ignore */ });
     }, [app.id, app.projectId]);
@@ -51,7 +51,7 @@ export default function GeneralAppRateLimits({ app, readonly }: {
     const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppRateLimitsModel) => saveGeneralAppRateLimits(state, payload, app.id), FormUtils.getInitialFormState<typeof appRateLimitsZodModel>());
     useEffect(() => {
         if (state.status === 'success') {
-            toast.success('Rate Limits Saved', {
+            toast.success('Rate Limits 保存d', {
                 description: "Click \"deploy\" to apply the changes to your app.",
             });
         }
@@ -62,14 +62,14 @@ export default function GeneralAppRateLimits({ app, readonly }: {
         <Card>
             <CardHeader>
                 <CardTitle>Container Rate Limits</CardTitle>
-                <CardDescription>Provide optional rate Limits per running container instance.</CardDescription>
+                <Card描述>Provide optional rate Limits per running container instance.</Card描述>
             </CardHeader>
             <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                     return formAction(data);
                 })()}>
-                    <CardContent className="space-y-4">
-                        <div className={cn('grid grid-cols-2 gap-4 ', app.appType !== 'APP' && 'hidden')}>
+                    <CardContent class名称="space-y-4">
+                        <div class名称={cn('grid grid-cols-2 gap-4 ', app.appType !== 'APP' && 'hidden')}>
 
                             <FormField
                                 control={form.control}
@@ -85,7 +85,7 @@ export default function GeneralAppRateLimits({ app, readonly }: {
                                 )}
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div class名称="grid grid-cols-2 gap-4">
 
                             <FormField
                                 control={form.control}
@@ -116,7 +116,7 @@ export default function GeneralAppRateLimits({ app, readonly }: {
                                                 <Tooltip delayDuration={200}>
                                                     <TooltipTrigger asChild>
                                                         <span
-                                                            className="inline-flex cursor-pointer items-center rounded-full border border-blue-300 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900"
+                                                            class名称="inline-flex cursor-pointer items-center rounded-full border border-blue-300 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900"
                                                             onClick={() => form.setValue('memoryReservation', suggestedMemoryMb)}
                                                         >
                                                             ~ {suggestedMemoryMb} MB
@@ -161,7 +161,7 @@ export default function GeneralAppRateLimits({ app, readonly }: {
                                                 <Tooltip delayDuration={200}>
                                                     <TooltipTrigger asChild>
                                                         <span
-                                                            className="inline-flex cursor-pointer items-center rounded-full border border-blue-300 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900"
+                                                            class名称="inline-flex cursor-pointer items-center rounded-full border border-blue-300 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900"
                                                             onClick={() => form.setValue('cpuReservation', suggestedCpuMillicores)}
                                                         >
                                                             ~ {suggestedCpuMillicores} m
@@ -178,9 +178,9 @@ export default function GeneralAppRateLimits({ app, readonly }: {
                             />
                         </div>
                     </CardContent>
-                    {!readonly && <CardFooter className="gap-4">
-                        <SubmitButton>Save</SubmitButton>
-                        <p className="text-red-500">{state?.message}</p>
+                    {!readonly && <CardFooter class名称="gap-4">
+                        <提交Button>保存</提交Button>
+                        <p class名称="text-red-500">{state?.message}</p>
                     </CardFooter>}
                 </form>
             </Form >

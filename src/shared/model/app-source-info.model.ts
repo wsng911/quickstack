@@ -22,7 +22,7 @@ const gitSshUrlValidation = (val: string) => gitSshScpUrlRegex.test(val) || gitS
 export const appSourceInfoGitZodModel = z.object({
   gitUrl: z.string().trim().refine(gitUrlValidation, gitUrlValidationMessage),
   gitBranch: z.string().trim().min(1, gitBranchValidationMessage),
-  gitUsername: z.string().trim().nullish(),
+  git用户名: z.string().trim().nullish(),
   gitToken: z.string().trim().nullish(),
   buildMethod: appBuildMethodZodModel.default("RAILPACK"),
   dockerfilePath: z.string().trim().nullish(),
@@ -41,7 +41,7 @@ export const appGitBranchesLookupZodModel = z.discriminatedUnion('sourceType', [
   z.object({
     sourceType: z.literal('GIT'),
     gitUrl: z.string().trim().refine(gitUrlValidation, gitUrlValidationMessage),
-    gitUsername: z.string().trim().nullish(),
+    git用户名: z.string().trim().nullish(),
     gitToken: z.string().trim().nullish(),
   }),
   z.object({
@@ -56,7 +56,7 @@ export const appDockerfileDetectionZodModel = z.discriminatedUnion('sourceType',
     sourceType: z.literal('GIT'),
     gitUrl: z.string().trim().refine(gitUrlValidation, gitUrlValidationMessage),
     gitBranch: z.string().trim().min(1, gitBranchValidationMessage),
-    gitUsername: z.string().trim().nullish(),
+    git用户名: z.string().trim().nullish(),
     gitToken: z.string().trim().nullish(),
   }),
   z.object({
@@ -69,8 +69,8 @@ export type AppDockerfileDetectionModel = z.infer<typeof appDockerfileDetectionZ
 
 export const appSourceInfoContainerZodModel = z.object({
   containerImageSource: z.string().trim(),
-  containerRegistryUsername: z.string().trim().nullish(),
-  containerRegistryPassword: z.string().trim().nullish(),
+  containerRegistry用户名: z.string().trim().nullish(),
+  containerRegistry密码: z.string().trim().nullish(),
 });
 export type AppSourceInfoContainerModel = z.infer<typeof appSourceInfoContainerZodModel>;
 
@@ -78,12 +78,12 @@ export const appSourceInfoInputZodModel = z.object({
   sourceType: appSourceTypeZodModel,
   buildMethod: appBuildMethodZodModel.default("RAILPACK"),
   containerImageSource: z.string().nullish(),
-  containerRegistryUsername: z.string().nullish(),
-  containerRegistryPassword: z.string().nullish(),
+  containerRegistry用户名: z.string().nullish(),
+  containerRegistry密码: z.string().nullish(),
 
   gitUrl: z.string().trim().nullish(),
   gitBranch: z.string().trim().nullish(),
-  gitUsername: z.string().trim().nullish(),
+  git用户名: z.string().trim().nullish(),
   gitToken: z.string().trim().nullish(),
   dockerfilePath: z.string().trim().nullish(),
 }).superRefine((val, ctx) => {

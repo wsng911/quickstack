@@ -10,13 +10,13 @@ import { ServiceException } from "../../../../shared/model/service.exception.mod
 export const BACKUP_NAMESPACE = Constants.QS_NAMESPACE;
 export const s3BucketPrefix = 'quickstack-backups';
 
-class SharedBackupService {
+class Shared返回upService {
 
-    folderPathForVolumeBackup(appId: string, backupVolumeId: string) {
+    folderPathForVolume返回up(appId: string, backupVolumeId: string) {
         return `${s3BucketPrefix}/${appId}/${backupVolumeId}`;
     }
 
-    async deleteOldBackupsBasedOnRetention(
+    async deleteOld返回upsBasedOnRetention(
         s3Target: S3Target,
         appId: string,
         backupVolumeId: string,
@@ -26,32 +26,32 @@ class SharedBackupService {
         console.log(`Deleting old backups`);
         const files = await s3Service.listFiles(s3Target);
 
-        const filesFromThisBackup = files
-            .filter(f => f.Key?.startsWith(`${this.folderPathForVolumeBackup(appId, backupVolumeId)}/`))
+        const filesFromThis返回up = files
+            .filter(f => f.Key?.startsWith(`${this.folderPathForVolume返回up(appId, backupVolumeId)}/`))
             .map(f => ({
                 date: new Date((f.Key ?? '')
-                    .replace(`${this.folderPathForVolumeBackup(appId, backupVolumeId)}/`, '')
+                    .replace(`${this.folderPathForVolume返回up(appId, backupVolumeId)}/`, '')
                     .replace(fileExtension, '')),
                 key: f.Key
             }))
             .filter(f => !isNaN(f.date.getTime()) && !!f.key);
 
-        filesFromThisBackup.sort((a, b) => a.date.getTime() - b.date.getTime());
+        filesFromThis返回up.sort((a, b) => a.date.getTime() - b.date.getTime());
 
-        const filesToDelete = filesFromThisBackup.slice(0, -retention);
-        for (const file of filesToDelete) {
+        const filesTo删除 = filesFromThis返回up.slice(0, -retention);
+        for (const file of filesTo删除) {
             console.log(`Deleting backup ${file.key}`);
             await s3Service.deleteFile(s3Target, file.key!);
         }
     }
 
-    async logDatabaseBackupOutput(jobName: string, namespace?: string): Promise<void> {
-        const pod = await this.getPodForBackupJob(jobName, namespace);
-        await podService.waitUntilPodIsRunningFailedOrSucceded(namespace || BACKUP_NAMESPACE, pod.podName);
+    async logDatabase返回upOutput(job名称: string, namespace?: string): Promise<void> {
+        const pod = await this.getPodFor返回upJob(job名称, namespace);
+        await podService.waitUntilPodIsRunningFailedOrSucceded(namespace || BACKUP_NAMESPACE, pod.pod名称);
 
         const logStream = new stream.PassThrough();
 
-        const k3sStreamRequest = await k3s.log.log(namespace || BACKUP_NAMESPACE, pod.podName, pod.containerName, logStream, {
+        const k3sStreamRequest = await k3s.log.log(namespace || BACKUP_NAMESPACE, pod.pod名称, pod.container名称, logStream, {
             follow: true,
             tailLines: undefined,
             timestamps: true,
@@ -69,38 +69,38 @@ class SharedBackupService {
         });
 
         logStream.on('end', async () => {
-            console.log(`[END] Log stream ended for backup job: ${jobName}`);
+            console.log(`[END] Log stream ended for backup job: ${job名称}`);
         });
     }
 
-    async getPodForBackupJob(jobName: string, namespace?: string): Promise<PodsInfoModel> {
-        const res = await k3s.core.listNamespacedPod(namespace || BACKUP_NAMESPACE, undefined, undefined, undefined, undefined, `job-name=${jobName}`);
+    async getPodFor返回upJob(job名称: string, namespace?: string): Promise<PodsInfoModel> {
+        const res = await k3s.core.list名称spacedPod(namespace || BACKUP_NAMESPACE, undefined, undefined, undefined, undefined, `job-name=${job名称}`);
         const pods = res.body.items;
         if (pods.length === 0) {
-            throw new ServiceException(`No pod found for backup job ${jobName}`);
+            throw new ServiceException(`No pod found for backup job ${job名称}`);
         }
         const pod = pods[0];
         return {
-            podName: pod.metadata?.name!,
-            containerName: pod.spec?.containers?.[0].name!
+            pod名称: pod.metadata?.name!,
+            container名称: pod.spec?.containers?.[0].name!
         } as PodsInfoModel;
     }
 
-    async waitForBackupJobCompletion(jobName: string, namespace?: string): Promise<void> {
+    async waitFor返回upJobCompletion(job名称: string, namespace?: string): Promise<void> {
         const POLL_INTERVAL = 10000; // 10 seconds
         return await new Promise<void>((resolve, reject) => {
             const intervalId = setInterval(async () => {
                 try {
-                    const job = await k3s.batch.readNamespacedJob(jobName, namespace || BACKUP_NAMESPACE);
+                    const job = await k3s.batch.read名称spacedJob(job名称, namespace || BACKUP_NAMESPACE);
                     const status = job.body.status;
 
                     if ((status?.succeeded ?? 0) > 0) {
                         clearInterval(intervalId);
-                        console.log(`Backup job ${jobName} completed successfully`);
+                        console.log(`返回up job ${job名称} completed successfully`);
                         resolve();
                     } else if ((status?.failed ?? 0) > 0) {
                         clearInterval(intervalId);
-                        const errorMessage = `Backup job ${jobName} failed`;
+                        const errorMessage = `返回up job ${job名称} failed`;
                         console.error(errorMessage);
                         reject(new ServiceException(errorMessage));
                     }
@@ -114,5 +114,5 @@ class SharedBackupService {
     }
 }
 
-const sharedBackupService = new SharedBackupService();
-export default sharedBackupService;
+const shared返回upService = new Shared返回upService();
+export default shared返回upService;

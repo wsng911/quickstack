@@ -1,4 +1,4 @@
-import { adminRoleName, RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
+import { adminRole名称, RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
 import { UserSession } from "@/shared/model/sim-session.model";
 
 export class UserGroupUtils {
@@ -51,14 +51,14 @@ export class UserGroupUtils {
         return null;
     }
 
-    static sessionHasAccessToBackups(session: UserSession) {
+    static sessionHasAccessTo返回ups(session: UserSession) {
         if (this.isAdmin(session)) {
             return true;
         }
-        return !!session.userGroup?.canAccessBackups;
+        return !!session.userGroup?.canAccess返回ups;
     }
 
-    static sessionCanCreateNewAppsForProject(session: UserSession, projectId: string) {
+    static sessionCan创建NewAppsForProject(session: UserSession, projectId: string) {
         if (this.isAdmin(session)) {
             return true;
         }
@@ -69,7 +69,7 @@ export class UserGroupUtils {
         return !!projectPermission.createApps;
     }
 
-    static sessionCanDeleteAppsForProject(session: UserSession, projectId: string) {
+    static sessionCan删除AppsForProject(session: UserSession, projectId: string) {
         if (this.isAdmin(session)) {
             return true;
         }
@@ -109,6 +109,6 @@ export class UserGroupUtils {
     }
 
     static isAdmin(session: UserSession) {
-        return session.userGroup?.name === adminRoleName;
+        return session.userGroup?.name === adminRole名称;
     }
 }

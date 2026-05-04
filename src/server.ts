@@ -62,7 +62,7 @@ async function initializeNextJs() {
         }
     }
 
-    await backupService.registerAllBackups();
+    await backupService.registerAll返回ups();
     maintenanceService.configureMaintenanceCronJobs();
     appLogsService.configureCronJobs();
 
@@ -95,7 +95,7 @@ async function initializeNextJs() {
 if (process.env.NODE_ENV === 'production' && process.env.START_MODE === 'setup') {
     setupQuickStack();
 } else if (process.env.NODE_ENV === 'production' && process.env.START_MODE === 'reset-password') {
-    passwordChangeService.changeAdminPasswordAndPrintNewPassword();
+    passwordChangeService.changeAdmin密码AndPrintNew密码();
 } else {
     initializeNextJs();
 }

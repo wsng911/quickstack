@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const huginnAppTemplate: AppTemplateModel = {
     name: "Huginn",
-    iconName: 'https://raw.githubusercontent.com/huginn/huginn/master/public/favicon.ico',
+    icon名称: 'https://raw.githubusercontent.com/huginn/huginn/master/public/favicon.ico',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -48,7 +48,7 @@ export const huginnAppTemplate: AppTemplateModel = {
             size: 500,
             containerMountPath: '/var/lib/mysql',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

@@ -2,13 +2,13 @@ import { Constants } from "@/shared/utils/constants";
 import { AppTemplateContentModel, AppTemplateModel } from "../../model/app-template.model";
 
 export function getMongodbAppTemplate(config?: {
-    appName?: string,
-    dbName?: string,
-    dbUsername?: string,
-    dbPassword?: string
+    app名称?: string,
+    db名称?: string,
+    db用户名?: string,
+    db密码?: string
 }): AppTemplateContentModel {
     return {
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -18,28 +18,28 @@ export function getMongodbAppTemplate(config?: {
             },
             {
                 key: "MONGO_INITDB_DATABASE",
-                label: "Database Name",
-                value: config?.dbName || "mongodb",
+                label: "Database 名称",
+                value: config?.db名称 || "mongodb",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "MONGO_INITDB_ROOT_USERNAME",
-                label: "Username",
-                value: config?.dbUsername || "mongodbuser",
+                label: "用户名",
+                value: config?.db用户名 || "mongodbuser",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "MONGO_INITDB_ROOT_PASSWORD",
-                label: "Password",
-                value: config?.dbPassword || "",
+                label: "密码",
+                value: config?.db密码 || "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
             },
         ],
         appModel: {
-            name: config?.appName || "MongoDB",
+            name: config?.app名称 || "MongoDB",
             appType: 'MONGODB',
             sourceType: 'CONTAINER',
             containerImageSource: "",
@@ -57,7 +57,7 @@ export function getMongodbAppTemplate(config?: {
             size: 500,
             containerMountPath: '/data/db',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -69,7 +69,7 @@ export function getMongodbAppTemplate(config?: {
 
 export const mongodbAppTemplate: AppTemplateModel = {
     name: "MongoDB",
-    iconName: 'mongodb.svg',
+    icon名称: 'mongodb.svg',
     templates: [
         getMongodbAppTemplate()
     ],

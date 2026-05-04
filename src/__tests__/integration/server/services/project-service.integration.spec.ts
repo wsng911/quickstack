@@ -38,11 +38,11 @@ describe('project.service', () => {
         });
 
         it('creates a new namespace in k3s cluster', async () => {
-            const projectName = 'Test Project 2';
-            const savedProject = await projectService.save({ name: projectName });
+            const project名称 = 'Test Project 2';
+            const savedProject = await projectService.save({ name: project名称 });
 
-            const allNamespaces = await namespaceService.getNamespaces();
-            expect(allNamespaces.find(namespace => namespace === savedProject.id)).toBeTruthy();
+            const all名称spaces = await namespaceService.get名称spaces();
+            expect(all名称spaces.find(namespace => namespace === savedProject.id)).toBeTruthy();
         });
 
         it('updates an existing project', async () => {
@@ -60,8 +60,8 @@ describe('project.service', () => {
                 where: { id: created.id },
             });
             expect(saved.name).toBe('Updated Project');
-            const allNamespaces = await namespaceService.getNamespaces();
-            expect(allNamespaces.find(namespace => namespace === created.id)).toBeTruthy(); // kubernetes namespace does not change
+            const all名称spaces = await namespaceService.get名称spaces();
+            expect(all名称spaces.find(namespace => namespace === created.id)).toBeTruthy(); // kubernetes namespace does not change
             expect(revalidateTag).toHaveBeenCalledWith(Tags.projects());
         });
     });
@@ -96,7 +96,7 @@ describe('project.service', () => {
 
     describe('deleteById', () => {
         it('deletes existing project and triggers side effects', async () => {
-            const created = await projectService.save({ name: 'Project To Delete' });
+            const created = await projectService.save({ name: 'Project To 删除' });
 
             await projectService.deleteById(created.id);
 
@@ -104,10 +104,10 @@ describe('project.service', () => {
             await new Promise((resolve) => setTimeout(resolve, 3000));
 
             const projects = await dbCtx.getDataAccess().client.project.findMany();
-            const allNamespaces = await namespaceService.getNamespaces();
+            const all名称spaces = await namespaceService.get名称spaces();
 
             expect(projects).toHaveLength(0);
-            // expect(allNamespaces.find(namespace => namespace === created.id)).toBeFalsy();
+            // expect(all名称spaces.find(namespace => namespace === created.id)).toBeFalsy();
             expect(revalidateTag).toHaveBeenCalledWith(Tags.projects());
             expect(revalidateTag).toHaveBeenCalledWith(Tags.userGroups());
             expect(revalidateTag).toHaveBeenCalledWith(Tags.users());

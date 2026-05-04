@@ -6,7 +6,7 @@ import Link from "next/link";
 import { getAuthUserSession, getUserSession } from "@/server/utils/action-wrapper.utils";
 import projectService from "@/server/services/project.service";
 import ProjectsTable from "./projects-table";
-import { EditProjectDialog } from "./edit-project-dialog";
+import { 编辑ProjectDialog } from "./edit-project-dialog";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -28,12 +28,12 @@ export default async function ProjectPage() {
         UserGroupUtils.sessionHasReadAccessToProject(session, project.id));
 
     return (
-        <div className="flex-1 space-y-4 pt-6">
-            <div className="flex gap-4">
-                <h2 className="text-3xl font-bold tracking-tight flex-1">Projects</h2>
-                {UserGroupUtils.isAdmin(session) && <EditProjectDialog>
-                    <Button><Plus /> Create Project</Button>
-                </EditProjectDialog>}
+        <div class名称="flex-1 space-y-4 pt-6">
+            <div class名称="flex gap-4">
+                <h2 class名称="text-3xl font-bold tracking-tight flex-1">Projects</h2>
+                {UserGroupUtils.isAdmin(session) && <编辑ProjectDialog>
+                    <Button><Plus /> 创建 Project</Button>
+                </编辑ProjectDialog>}
             </div>
             <ProjectsTable session={session} data={relevantProjectsForUser} />
             <ProjectsBreadcrumbs />

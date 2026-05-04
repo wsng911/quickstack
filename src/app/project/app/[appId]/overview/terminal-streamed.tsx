@@ -28,14 +28,14 @@ export default function TerminalStreamed({
         if (!terminalInfo || !terminalWindow || !terminalWindow.current) {
             return;
         }
-        const terminalSessionKey = `${terminalInfo.namespace}-${terminalInfo.podName}-${terminalInfo.containerName}-${terminalType}-${new Date().getTime()}`;
+        const terminalSessionKey = `${terminalInfo.namespace}-${terminalInfo.pod名称}-${terminalInfo.container名称}-${terminalType}-${new Date().getTime()}`;
         const termInfo = {
             ...terminalInfo,
             terminalSessionKey,
             terminalType,
         };
-        const terminalInputKey = StreamUtils.getInputStreamName(termInfo);
-        const terminalOutputKey = StreamUtils.getOutputStreamName(termInfo);
+        const terminalInputKey = StreamUtils.getInputStream名称(termInfo);
+        const terminalOutputKey = StreamUtils.getOutputStream名称(termInfo);
         console.log(`InputKey ${terminalInputKey}`);
         console.log(`OutputKey ${terminalOutputKey}`);
 
@@ -63,15 +63,15 @@ export default function TerminalStreamed({
 
 
     return <>
-        <div className="space-y-4">
+        <div class名称="space-y-4">
             {!sessionTerminalInfo ? <>
-                <div className="flex gap-4">
+                <div class名称="flex gap-4">
                     <Button variant="secondary" onClick={() => startTerminalSession('sh')}>Start sh</Button>
                     <Button variant="secondary" onClick={() => startTerminalSession('bash')}>Start bash</Button>
                 </div>
             </> : <Button variant="secondary" onClick={() => disconnectTerminalSession()}>Disconnect Session</Button>}
 
-            <div className={sessionTerminalInfo ? 'px-4 py-4 bg-black rounded-lg' : ''}>
+            <div class名称={sessionTerminalInfo ? 'px-4 py-4 bg-black rounded-lg' : ''}>
                 <div ref={terminalWindow}></div>
             </div>
         </div>

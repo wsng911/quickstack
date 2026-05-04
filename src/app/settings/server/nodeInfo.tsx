@@ -1,117 +1,117 @@
 'use client'
 
 import { NodeInfoModel } from "@/shared/model/node-info.model";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code } from "@/components/custom/code";
 import { Toast } from "@/frontend/utils/toast.utils";
 import { Button } from "@/components/ui/button";
-import { useBreadcrumbs, useConfirmDialog } from "@/frontend/states/zustand.states";
+import { useBreadcrumbs, use确认Dialog } from "@/frontend/states/zustand.states";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useEffect } from "react";
-import { setNodeStatus } from "./actions";
-import AddClusterNodeDialog from "./add-cluster-node-dialog";
+import { setNode状态 } from "./actions";
+import 添加ClusterNodeDialog from "./add-cluster-node-dialog";
 
 export default function NodeInfo({ nodeInfos, clusterJoinToken }: { nodeInfos: NodeInfoModel[]; clusterJoinToken?: string; }) {
 
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
 
-    const setNodeStatusClick = async (nodeName: string, schedulable: boolean) => {
+    const setNode状态Click = async (node名称: string, schedulable: boolean) => {
         const confirmation = await openDialog({
-            title: 'Update Node Status',
-            description: `Do you really want to ${schedulable ? 'activate' : 'deactivate'} Node ${nodeName}? ${!schedulable ? 'This will stop all running containers on this node and moves the workload to the other nodes. Future workloads won\'t be scheduled on this node.' : ''}`,
+            title: 'Update Node 状态',
+            description: `Do you really want to ${schedulable ? 'activate' : 'deactivate'} Node ${node名称}? ${!schedulable ? 'This will stop all running containers on this node and moves the workload to the other nodes. Future workloads won\'t be scheduled on this node.' : ''}`,
             okButton: 'Yes',
             cancelButton: 'cancel'
         });
         if (confirmation) {
-            Toast.fromAction(() => setNodeStatus(nodeName, schedulable));
+            Toast.fromAction(() => setNode状态(node名称, schedulable));
         }
     }
 
     return (
         <Card>
-            <CardHeader className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <CardHeader class名称="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                 <div>
                     <CardTitle>Nodes</CardTitle>
-                    <CardDescription>Overview of all Nodes in your Cluster</CardDescription>
+                    <Card描述>概览 of all Nodes in your Cluster</Card描述>
                 </div>
-                <div className="flex justify-end">
-                    <AddClusterNodeDialog clusterJoinToken={clusterJoinToken}>
-                        <Button>Add Cluster Node</Button>
-                    </AddClusterNodeDialog>
+                <div class名称="flex justify-end">
+                    <添加ClusterNodeDialog clusterJoinToken={clusterJoinToken}>
+                        <Button>添加 Cluster Node</Button>
+                    </添加ClusterNodeDialog>
                 </div>
             </CardHeader>
             <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class名称="grid grid-cols-1 md:grid-cols-3 gap-8">
 
                     {nodeInfos.map((nodeInfo, index) => (
-                        <div key={index} className="space-y-4 rounded-lg border">
-                            <h3 className={(nodeInfo.status && nodeInfo.schedulable ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' p-4 rounded-t-lg font-semibold text-xl text-center'}>
+                        <div key={index} class名称="space-y-4 rounded-lg border">
+                            <h3 class名称={(nodeInfo.status && nodeInfo.schedulable ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' p-4 rounded-t-lg font-semibold text-xl text-center'}>
                                 Node {index + 1}
                             </h3>
-                            <div className="space-y-2 px-4 pb-2">
-                                <div className="flex justify-center gap-4">
+                            <div class名称="space-y-2 px-4 pb-2">
+                                <div class名称="flex justify-center gap-4">
                                     <TooltipProvider>
                                         <Tooltip>
-                                            <TooltipTrigger asChild><div className={(nodeInfo.pidOk ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' px-3 py-1.5 rounded cursor-pointer'}>CPU</div></TooltipTrigger>
+                                            <TooltipTrigger asChild><div class名称={(nodeInfo.pidOk ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' px-3 py-1.5 rounded cursor-pointer'}>CPU</div></TooltipTrigger>
                                             <TooltipContent>
-                                                <p className="max-w-[350px]">{nodeInfo.pidStatusText}</p>
+                                                <p class名称="max-w-[350px]">{nodeInfo.pid状态Text}</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <div className={(nodeInfo.memoryOk ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' px-3 py-1.5 rounded cursor-pointer'}>RAM</div>
+                                                <div class名称={(nodeInfo.memoryOk ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' px-3 py-1.5 rounded cursor-pointer'}>RAM</div>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p className="max-w-[350px]">{nodeInfo.memoryStatusText}</p>
+                                                <p class名称="max-w-[350px]">{nodeInfo.memory状态Text}</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <div className={(nodeInfo.diskOk ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' px-3 py-1.5 rounded cursor-pointer'}>Disk</div>
+                                                <div class名称={(nodeInfo.diskOk ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700') + ' px-3 py-1.5 rounded cursor-pointer'}>Disk</div>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p className="max-w-[350px]">{nodeInfo.diskStatusText}</p>
+                                                <p class名称="max-w-[350px]">{nodeInfo.disk状态Text}</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
 
 
                                 </div>
-                                <div className="pt-2">
-                                    <span className="font-semibold">Name:</span> <Code>{nodeInfo.name}</Code>
+                                <div class名称="pt-2">
+                                    <span class名称="font-semibold">名称:</span> <Code>{nodeInfo.name}</Code>
                                 </div>
                                 <div>
-                                    <span className="font-semibold">Schedulable:</span>
+                                    <span class名称="font-semibold">Schedulable:</span>
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <span className={nodeInfo.schedulable ? 'text-green-500 font-semibold' : 'text-red-500 font-semibold'}> {nodeInfo.schedulable ? 'Yes' : 'No'}</span>
+                                                <span class名称={nodeInfo.schedulable ? 'text-green-500 font-semibold' : 'text-red-500 font-semibold'}> {nodeInfo.schedulable ? 'Yes' : 'No'}</span>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p className="max-w-[350px]">{nodeInfo.schedulable ? 'Node is ready to run containers.' : 'Node ist deactivated. All containers will be scheduled on other nodes.'}</p>
+                                                <p class名称="max-w-[350px]">{nodeInfo.schedulable ? 'Node is ready to run containers.' : 'Node ist deactivated. All containers will be scheduled on other nodes.'}</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 </div>
                                 <div>
-                                    <span className="font-semibold">IP:</span> <Code>{nodeInfo.ip}</Code>
+                                    <span class名称="font-semibold">IP:</span> <Code>{nodeInfo.ip}</Code>
                                 </div>
-                                <div className="text-xs text-slate-500 pt-2">
-                                    <span className="font-semibold">Master Node:</span> {nodeInfo.isMasterNode ? 'Yes' : 'No'}<br />
-                                    <span className="font-semibold">Spec:</span> {nodeInfo.cpuCapacity} CPU Cores, {nodeInfo.ramCapacity} Memory<br />
-                                    <span className="font-semibold">OS:</span> {nodeInfo.os} | {nodeInfo.architecture}<br />
-                                    <span className="font-semibold">Kernel Version:</span> {nodeInfo.kernelVersion}<br />
-                                    <span className="font-semibold">Container Runtime Version:</span> {nodeInfo.containerRuntimeVersion}<br />
-                                    <span className="font-semibold">Kube Proxy Version:</span> {nodeInfo.kubeProxyVersion}<br />
-                                    <span className="font-semibold">Kubelet Version:</span> {nodeInfo.kubeletVersion}
+                                <div class名称="text-xs text-slate-500 pt-2">
+                                    <span class名称="font-semibold">Master Node:</span> {nodeInfo.isMasterNode ? 'Yes' : 'No'}<br />
+                                    <span class名称="font-semibold">Spec:</span> {nodeInfo.cpuCapacity} CPU Cores, {nodeInfo.ramCapacity} Memory<br />
+                                    <span class名称="font-semibold">OS:</span> {nodeInfo.os} | {nodeInfo.architecture}<br />
+                                    <span class名称="font-semibold">Kernel Version:</span> {nodeInfo.kernelVersion}<br />
+                                    <span class名称="font-semibold">Container Runtime Version:</span> {nodeInfo.containerRuntimeVersion}<br />
+                                    <span class名称="font-semibold">Kube Proxy Version:</span> {nodeInfo.kubeProxyVersion}<br />
+                                    <span class名称="font-semibold">Kubelet Version:</span> {nodeInfo.kubeletVersion}
                                 </div>
                             </div>
-                            {index !== 0 && <div className="flex px-4 pb-4 gap-4">
-                                <Button onClick={() => setNodeStatusClick(nodeInfo.name, !nodeInfo.schedulable)} variant="outline">{nodeInfo.schedulable ? 'Deactivate' : 'Activate'} Node</Button>
+                            {index !== 0 && <div class名称="flex px-4 pb-4 gap-4">
+                                <Button onClick={() => setNode状态Click(nodeInfo.name, !nodeInfo.schedulable)} variant="outline">{nodeInfo.schedulable ? 'Deactivate' : 'Activate'} Node</Button>
                             </div>}
                         </div>
                     ))}

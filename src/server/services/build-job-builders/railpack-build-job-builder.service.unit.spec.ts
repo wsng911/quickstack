@@ -11,19 +11,19 @@ describe('RailpackBuildJobBuilder', () => {
                 gitUrl: 'https://github.com/example/repo.git',
                 gitBranch: 'main',
             } as any,
-            buildName: 'build-1',
+            build名称: 'build-1',
             deploymentId: 'deployment-1',
             latestRemoteGitHash: 'abc123',
             latestRemoteGitCommitMessage: 'feat: test',
             queuedAt: '123',
         });
 
-        const initContainers = job.spec?.template?.spec?.initContainers ?? [];
+        const init容器 = job.spec?.template?.spec?.init容器 ?? [];
         const buildContainer = job.spec?.template?.spec?.containers[0]!;
 
         expect(job.metadata?.annotations?.['qs-build-method']).toBe('RAILPACK');
         expect(job.spec?.template?.metadata?.annotations?.['qs-deplyoment-id']).toBe('deployment-1');
-        expect(initContainers.map((container) => container.name)).toEqual([
+        expect(init容器.map((container) => container.name)).toEqual([
             'build-queue-init',
             'build-git-init',
             'railpack-prepare-init',
@@ -41,7 +41,7 @@ describe('RailpackBuildJobBuilder', () => {
             'dockerfile=/workspace/plan',
         ]));
 
-        const prepareContainer = initContainers.find((container) => container.name === 'railpack-prepare-init')!;
+        const prepareContainer = init容器.find((container) => container.name === 'railpack-prepare-init')!;
         expect(prepareContainer.env?.map((entry) => entry.name)).not.toContain('GIT_URL');
         expect(prepareContainer.args?.[0]).not.toContain('git clone');
     });

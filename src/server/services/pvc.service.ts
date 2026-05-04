@@ -2,7 +2,7 @@ import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import k3s from "../adapter/kubernetes-api.adapter";
 import { V1PersistentVolumeClaim } from "@kubernetes/client-node";
 import { ServiceException } from "@/shared/model/service.exception.model";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import { Constants } from "../../shared/utils/constants";
 import { FsUtils } from "../utils/fs.utils";
 import { PathUtils } from "../utils/path.utils";
@@ -39,21 +39,21 @@ class PvcService {
         await FsUtils.createDirIfNotExistsAsync(PathUtils.tempVolumeDownloadPath, true);
         await FsUtils.deleteDirIfExistsAsync(downloadPath, true);
 
-        console.log(`Downloading data from pod ${firstPod.podName} ${volume.containerMountPath} to ${downloadPath}`);
-        await podService.cpFromPod(volume.app.projectId, firstPod.podName, firstPod.containerName, volume.containerMountPath, downloadPath);
+        console.log(`Downloading data from pod ${firstPod.pod名称} ${volume.containerMountPath} to ${downloadPath}`);
+        await podService.cpFromPod(volume.app.projectId, firstPod.pod名称, firstPod.container名称, volume.containerMountPath, downloadPath);
 
-        const fileName = path.basename(downloadPath);
-        return fileName;
+        const file名称 = path.basename(downloadPath);
+        return file名称;
     }
 
     async doesAppConfigurationIncreaseAnyPvcSize(app: AppExtendedModel) {
-        const existingPvcsResponse = await k3s.core.listNamespacedPersistentVolumeClaim(app.projectId);
+        const existingPvcsResponse = await k3s.core.list名称spacedPersistentVolumeClaim(app.projectId);
         const existingPvcs = existingPvcsResponse.body.items;
         const baseVolumes = await this.getBaseVolumes(app);
 
         for (const appVolume of baseVolumes) {
-            const pvcName = KubeObjectNameUtils.toPvcName(appVolume.id);
-            const existingPvc = existingPvcs.find(pvc => pvc.metadata?.name === pvcName);
+            const pvc名称 = KubeObject名称Utils.toPvc名称(appVolume.id);
+            const existingPvc = existingPvcs.find(pvc => pvc.metadata?.name === pvc名称);
             if (existingPvc && existingPvc.spec!.resources!.requests!.storage !== KubeSizeConverter.megabytesToKubeFormat(appVolume.size)) {
                 return true;
             }
@@ -63,17 +63,17 @@ class PvcService {
     }
 
     async getAllPvcForApp(projectId: string, appId: string) {
-        const res = await k3s.core.listNamespacedPersistentVolumeClaim(projectId);
+        const res = await k3s.core.list名称spacedPersistentVolumeClaim(projectId);
         return res.body.items.filter((item) => item.metadata?.annotations?.[Constants.QS_ANNOTATION_APP_ID] === appId);
     }
 
     async getExistingPvcByVolumeId(namespace: string, volumeId: string) {
-        const allVolumes = await k3s.core.listNamespacedPersistentVolumeClaim(namespace);
-        return allVolumes.body.items.find(pvc => pvc.metadata?.name === KubeObjectNameUtils.toPvcName(volumeId));
+        const allVolumes = await k3s.core.list名称spacedPersistentVolumeClaim(namespace);
+        return allVolumes.body.items.find(pvc => pvc.metadata?.name === KubeObject名称Utils.toPvc名称(volumeId));
     }
 
     async getAllPvc() {
-        const res = await k3s.core.listPersistentVolumeClaimForAllNamespaces();
+        const res = await k3s.core.listPersistentVolumeClaimForAll名称spaces();
         return res.body.items;
     }
 
@@ -85,8 +85,8 @@ class PvcService {
                 continue;
             }
 
-            await k3s.core.deleteNamespacedPersistentVolumeClaim(pvc.metadata!.name!, app.projectId);
-            console.log(`Deleted PVC ${pvc.metadata!.name!} for app ${app.id}`);
+            await k3s.core.delete名称spacedPersistentVolumeClaim(pvc.metadata!.name!, app.projectId);
+            console.log(`删除d PVC ${pvc.metadata!.name!} for app ${app.id}`);
         }
     }
 
@@ -94,8 +94,8 @@ class PvcService {
         const existingPvc = await this.getAllPvcForApp(projectId, appId);
 
         for (const pvc of existingPvc) {
-            await k3s.core.deleteNamespacedPersistentVolumeClaim(pvc.metadata!.name!, projectId);
-            console.log(`Deleted PVC ${pvc.metadata!.name!} for app ${appId}`);
+            await k3s.core.delete名称spacedPersistentVolumeClaim(pvc.metadata!.name!, projectId);
+            console.log(`删除d PVC ${pvc.metadata!.name!} for app ${appId}`);
         }
     }
 
@@ -105,63 +105,63 @@ class PvcService {
                 id: app.sharedVolumeId
             }
         }) : app;
-        const pvcName = KubeObjectNameUtils.toPvcName(baseVolume.id);
+        const pvc名称 = KubeObject名称Utils.toPvc名称(baseVolume.id);
         const existingPvc = await this.getExistingPvcByVolumeId(projectId, baseVolume.id);
 
         if (existingPvc) {
-            console.log(`PVC ${pvcName} for app ${app.id} already exists, no need to create it`);
+            console.log(`PVC ${pvc名称} for app ${app.id} already exists, no need to create it`);
             return;
         }
 
         const pvcDefinition = this.mapVolumeToPvcDefinition(projectId, baseVolume);
-        await k3s.core.createNamespacedPersistentVolumeClaim(projectId, pvcDefinition);
-        console.log(`Created PVC ${pvcName} for app ${app.id}`);
+        await k3s.core.create名称spacedPersistentVolumeClaim(projectId, pvcDefinition);
+        console.log(`创建d PVC ${pvc名称} for app ${app.id}`);
     }
 
     async createOrUpdatePvc(app: AppExtendedModel) {
-        const existingPvcsResponse = await k3s.core.listNamespacedPersistentVolumeClaim(app.projectId);
+        const existingPvcsResponse = await k3s.core.list名称spacedPersistentVolumeClaim(app.projectId);
         const existingPvcs = existingPvcsResponse.body.items;
         const baseVolumes = await this.getBaseVolumes(app);
 
         for (const appVolume of baseVolumes) {
-            const pvcName = KubeObjectNameUtils.toPvcName(appVolume.id);
+            const pvc名称 = KubeObject名称Utils.toPvc名称(appVolume.id);
             const pvcDefinition = this.mapVolumeToPvcDefinition(app.projectId, appVolume);
-            const desiredStorageClassName = appVolume.storageClassName ?? 'longhorn';
+            const desiredStorageClass名称 = appVolume.storageClass名称 ?? 'longhorn';
 
-            const existingPvc = existingPvcs.find(pvc => pvc.metadata?.name === pvcName);
+            const existingPvc = existingPvcs.find(pvc => pvc.metadata?.name === pvc名称);
             if (existingPvc) {
-                if (existingPvc.spec?.storageClassName && existingPvc.spec.storageClassName !== desiredStorageClassName) {
-                    console.warn(`PVC ${pvcName} storageClassName differs from requested value (${existingPvc.spec.storageClassName} vs ${desiredStorageClassName}). Storage class changes are not applied automatically.`);
+                if (existingPvc.spec?.storageClass名称 && existingPvc.spec.storageClass名称 !== desiredStorageClass名称) {
+                    console.warn(`PVC ${pvc名称} storageClass名称 differs from requested value (${existingPvc.spec.storageClass名称} vs ${desiredStorageClass名称}). Storage class changes are not applied automatically.`);
                 }
                 if (existingPvc.spec!.resources!.requests!.storage === KubeSizeConverter.megabytesToKubeFormat(appVolume.size)) {
-                    console.log(`PVC ${pvcName} for app ${app.id} already exists with the same size`);
+                    console.log(`PVC ${pvc名称} for app ${app.id} already exists with the same size`);
                     continue;
                 }
                 // Only the Size of PVC can be updated, so we need to delete and recreate the PVC
                 // update PVC size
                 existingPvc.spec!.resources!.requests!.storage = KubeSizeConverter.megabytesToKubeFormat(appVolume.size);
-                await k3s.core.replaceNamespacedPersistentVolumeClaim(pvcName, app.projectId, existingPvc);
-                console.log(`Updated PVC ${pvcName} for app ${app.id}`);
+                await k3s.core.replace名称spacedPersistentVolumeClaim(pvc名称, app.projectId, existingPvc);
+                console.log(`Updated PVC ${pvc名称} for app ${app.id}`);
 
                 // wait until persisten volume ist resized
-                console.log(`Waiting for PV ${existingPvc.spec!.volumeName} to be resized to ${existingPvc.spec!.resources!.requests!.storage}...`);
+                console.log(`Waiting for PV ${existingPvc.spec!.volume名称} to be resized to ${existingPvc.spec!.resources!.requests!.storage}...`);
 
-                await this.waitUntilPvResized(existingPvc.spec!.volumeName!, appVolume.size);
-                console.log(`PV ${existingPvc.spec!.volumeName} resized to ${KubeSizeConverter.megabytesToKubeFormat(appVolume.size)}`);
+                await this.waitUntilPvResized(existingPvc.spec!.volume名称!, appVolume.size);
+                console.log(`PV ${existingPvc.spec!.volume名称} resized to ${KubeSizeConverter.megabytesToKubeFormat(appVolume.size)}`);
             } else {
-                await k3s.core.createNamespacedPersistentVolumeClaim(app.projectId, pvcDefinition);
-                console.log(`Created PVC ${pvcName} for app ${app.id}`);
+                await k3s.core.create名称spacedPersistentVolumeClaim(app.projectId, pvcDefinition);
+                console.log(`创建d PVC ${pvc名称} for app ${app.id}`);
             }
         }
 
-        const volumesMap = new Map<string, { name: string; persistentVolumeClaim: { claimName: string } }>();
+        const volumesMap = new Map<string, { name: string; persistentVolumeClaim: { claim名称: string } }>();
         for (const pvcObj of app.appVolumes) {
             const baseVolumeId = pvcObj.sharedVolumeId ?? pvcObj.id;
             if (!volumesMap.has(baseVolumeId)) {
                 volumesMap.set(baseVolumeId, {
-                    name: KubeObjectNameUtils.toPvcName(baseVolumeId),
+                    name: KubeObject名称Utils.toPvc名称(baseVolumeId),
                     persistentVolumeClaim: {
-                        claimName: KubeObjectNameUtils.toPvcName(baseVolumeId)
+                        claim名称: KubeObject名称Utils.toPvc名称(baseVolumeId)
                     },
                 });
             }
@@ -169,7 +169,7 @@ class PvcService {
         const volumes = Array.from(volumesMap.values());
 
         const volumeMounts = app.appVolumes.map(pvcObj => ({
-            name: KubeObjectNameUtils.toPvcName(pvcObj.sharedVolumeId ?? pvcObj.id),
+            name: KubeObject名称Utils.toPvc名称(pvcObj.sharedVolumeId ?? pvcObj.id),
             mountPath: pvcObj.containerMountPath,
         }));
 
@@ -177,12 +177,12 @@ class PvcService {
     }
 
     private mapVolumeToPvcDefinition(projectId: string, appVolume: AppVolume): V1PersistentVolumeClaim {
-        const storageClassName = appVolume.storageClassName ?? 'longhorn';
+        const storageClass名称 = appVolume.storageClass名称 ?? 'longhorn';
         return {
             apiVersion: 'v1',
             kind: 'PersistentVolumeClaim',
             metadata: {
-                name: KubeObjectNameUtils.toPvcName(appVolume.id),
+                name: KubeObject名称Utils.toPvc名称(appVolume.id),
                 namespace: projectId,
                 annotations: {
                     [Constants.QS_ANNOTATION_APP_ID]: appVolume.appId,
@@ -192,7 +192,7 @@ class PvcService {
             },
             spec: {
                 accessModes: [appVolume.accessMode],
-                storageClassName,
+                storageClass名称,
                 resources: {
                     requests: {
                         storage: KubeSizeConverter.megabytesToKubeFormat(appVolume.size),
@@ -202,16 +202,16 @@ class PvcService {
         };
     }
 
-    private async waitUntilPvResized(persistentVolumeName: string, size: number) {
+    private async waitUntilPvResized(persistentVolume名称: string, size: number) {
         let iterationCount = 0;
-        let pv = await k3s.core.readPersistentVolume(persistentVolumeName);
+        let pv = await k3s.core.readPersistentVolume(persistentVolume名称);
         while (pv.body.spec!.capacity!.storage !== KubeSizeConverter.megabytesToKubeFormat(size)) {
             if (iterationCount > 30) {
-                console.error(`Timeout: PV ${persistentVolumeName} not resized to ${KubeSizeConverter.megabytesToKubeFormat(size)}`);
+                console.error(`Timeout: PV ${persistentVolume名称} not resized to ${KubeSizeConverter.megabytesToKubeFormat(size)}`);
                 throw new ServiceException(`Timeout: Volume could not be resized to ${KubeSizeConverter.megabytesToKubeFormat(size)}`);
             }
             await new Promise(resolve => setTimeout(resolve, 3000)); // wait 5 Seconds, so that the PV is resized
-            pv = await k3s.core.readPersistentVolume(persistentVolumeName);
+            pv = await k3s.core.readPersistentVolume(persistentVolume名称);
             iterationCount++;
         }
     }

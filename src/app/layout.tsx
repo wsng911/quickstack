@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner"
 import "./globals.css";
 import { Suspense } from "react";
 import FullLoadingSpinner from "@/components/ui/full-loading-spinnter";
-import { ConfirmDialog } from "@/components/custom/confirm-dialog";
+import { 确认Dialog } from "@/components/custom/confirm-dialog";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./sidebar";
 import { cookies } from "next/headers";
@@ -13,7 +13,7 @@ import { BreadcrumbsGenerator } from "../components/custom/breadcrumbs-generator
 import { getUserSession } from "@/server/utils/action-wrapper.utils";
 import { InputDialog } from "@/components/custom/input-dialog";
 import userGroupService from "@/server/services/user-group.service";
-import PodsStatusPollingProvider from "@/components/custom/pods-status-polling-provider";
+import Pods状态PollingProvider from "@/components/custom/pods-status-polling-provider";
 import { GenericDialog } from "@/components/custom/generic-dialog";
 
 const inter = Inter({
@@ -47,15 +47,15 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(
+      <body class名称={cn(
         "min-h-screen bg-background font-sans antialiased",
         inter.variable
       )}>
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar />
-          <main className="flex w-full flex-col items-center">
-            <div className="w-full max-w-8xl px-2 lg:px-4">
-              <div className="flex-col md:flex p-6">
+          <main class名称="flex w-full flex-col items-center">
+            <div class名称="w-full max-w-8xl px-2 lg:px-4">
+              <div class名称="flex-col md:flex p-6">
                 {userIsLoggedIn && <BreadcrumbsGenerator />}
                 <Suspense fallback={<FullLoadingSpinner />}>
                   {children}
@@ -66,10 +66,10 @@ export default async function RootLayout({
         </SidebarProvider>
 
         <Toaster />
-        <ConfirmDialog />
+        <确认Dialog />
         <InputDialog />
         <GenericDialog />
-        {userIsLoggedIn && <PodsStatusPollingProvider />}
+        {userIsLoggedIn && <Pods状态PollingProvider />}
       </body>
     </html>
   );

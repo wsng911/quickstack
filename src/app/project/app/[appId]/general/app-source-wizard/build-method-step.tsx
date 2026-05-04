@@ -12,22 +12,22 @@ export function BuildMethodStep({ value, onChange }: {
     ];
 
     return (<div>
-        <Command className="rounded-md border">
+        <Command class名称="rounded-md border">
             <CommandList>
                 <CommandGroup>
                     {options.map((option) => (
                         <CommandItem
                             key={option.value}
                             value={option.value}
-                            className="cursor-pointer"
+                            class名称="cursor-pointer"
                             onSelect={() => onChange(option.value)}
                         >
-                            <option.icon className="mr-2 h-4 w-4" />
-                            <div className="min-w-0">
-                                <p className="font-medium">{option.label}</p>
-                                <p className="text-sm text-muted-foreground">{option.description}</p>
+                            <option.icon class名称="mr-2 h-4 w-4" />
+                            <div class名称="min-w-0">
+                                <p class名称="font-medium">{option.label}</p>
+                                <p class名称="text-sm text-muted-foreground">{option.description}</p>
                             </div>
-                            <Check className={value === option.value ? 'ml-auto h-4 w-4' : 'ml-auto h-4 w-4 opacity-0'} />
+                            <Check class名称={value === option.value ? 'ml-auto h-4 w-4' : 'ml-auto h-4 w-4 opacity-0'} />
                         </CommandItem>
                     ))}
                 </CommandGroup>

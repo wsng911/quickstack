@@ -41,9 +41,9 @@ class RegistryApiAdapter {
         return data?.repositories ?? [] as string[];
     }
 
-    async listTagsForImage(imageName: string) {
+    async listTagsForImage(image名称: string) {
 
-        const response = await fetch(`${this.registryBaseUrl}/v2/${imageName}/tags/list`, {
+        const response = await fetch(`${this.registryBaseUrl}/v2/${image名称}/tags/list`, {
             cache: 'no-cache',
             method: 'GET',
             headers: {

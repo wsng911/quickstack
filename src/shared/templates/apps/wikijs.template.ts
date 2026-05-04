@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const wikijsAppTemplate: AppTemplateModel = {
     name: "Wiki.js",
-    iconName: 'https://cdn.simpleicons.org/wiki.js',
+    icon名称: 'https://cdn.simpleicons.org/wiki.js',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -35,7 +35,7 @@ DB_FILEPATH=/wiki/data/database.sqlite
             size: 500,
             containerMountPath: '/wiki/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

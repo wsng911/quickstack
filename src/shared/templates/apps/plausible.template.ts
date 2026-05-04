@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const plausibleAppTemplate: AppTemplateModel = {
     name: "Plausible Analytics",
-    iconName: 'https://plausible.io/assets/images/icon/plausible_logo.svg',
+    icon名称: 'https://plausible.io/assets/images/icon/plausible_logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -48,7 +48,7 @@ export const plausibleAppTemplate: AppTemplateModel = {
             size: 500,
             containerMountPath: '/var/lib/plausible',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

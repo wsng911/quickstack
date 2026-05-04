@@ -88,9 +88,9 @@ class GitService {
         return git;
     }
 
-    private getGitUrl(app: Pick<AppExtendedModel, 'sourceType' | 'gitUrl' | 'gitUsername' | 'gitToken'>) {
-        if (app.sourceType !== 'GIT_SSH' && app.gitUsername && app.gitToken) {
-            return app.gitUrl!.replace('https://', `https://${app.gitUsername}:${app.gitToken}@`);
+    private getGitUrl(app: Pick<AppExtendedModel, 'sourceType' | 'gitUrl' | 'git用户名' | 'gitToken'>) {
+        if (app.sourceType !== 'GIT_SSH' && app.git用户名 && app.gitToken) {
+            return app.gitUrl!.replace('https://', `https://${app.git用户名}:${app.gitToken}@`);
         }
         return app.gitUrl!;
     }

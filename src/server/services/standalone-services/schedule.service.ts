@@ -18,17 +18,17 @@ class ScheduleService {
 
     schedule = globalThis.globalSchedule;
 
-    scheduleJob(jobName: string, cronExpression: string, callback: schedule.JobCallback) {
-        const job = new this.schedule.Job(jobName, callback);
+    scheduleJob(job名称: string, cronExpression: string, callback: schedule.JobCallback) {
+        const job = new this.schedule.Job(job名称, callback);
         job.schedule(cronExpression);
         console.log(`[${ScheduleService.name}] Job scheduled with cron ${cronExpression}`);
     }
 
-    cancelJob(jobName: string) {
-        const job = this.schedule.scheduledJobs[jobName];
+    cancelJob(job名称: string) {
+        const job = this.schedule.scheduledJobs[job名称];
         if (job) {
             job.cancel();
-            console.log(`[${ScheduleService.name}] Job ${jobName} cancelled`);
+            console.log(`[${ScheduleService.name}] Job ${job名称} cancelled`);
         }
     }
 

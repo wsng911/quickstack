@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { KubeSizeConverter } from "@/shared/utils/kubernetes-size-converter.utils";
 
-export default function MonitoringTab({
+export default function 监控ingTab({
     app
 }: {
     app: AppExtendedModel;
@@ -42,7 +42,7 @@ export default function MonitoringTab({
 
     return <>
         <Card>
-            <CardContent className="pb-0">
+            <CardContent class名称="pb-0">
                 {!selectedPod ? <FullLoadingSpinner /> :
                     <Table>
                         <TableHeader>
@@ -53,19 +53,19 @@ export default function MonitoringTab({
                         </TableHeader>
                         <TableBody>
                             <TableRow>
-                                <TableCell className="font-medium">
+                                <TableCell class名称="font-medium">
                                     <TooltipProvider>
                                         <Tooltip delayDuration={200}>
                                             <TooltipTrigger asChild>
-                                                <div className={'px-3 py-1.5 rounded cursor-pointer'}>{selectedPod?.cpuPercent.toFixed(2)}</div>
+                                                <div class名称={'px-3 py-1.5 rounded cursor-pointer'}>{selectedPod?.cpuPercent.toFixed(2)}</div>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p className="max-w-[350px]">{selectedPod?.cpuAbsolutCores.toFixed(10)} cores</p>
+                                                <p class名称="max-w-[350px]">{selectedPod?.cpuAbsolutCores.toFixed(10)} cores</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 </TableCell>
-                                <TableCell className="font-medium">{KubeSizeConverter.convertBytesToReadableSize(selectedPod?.ramAbsolutBytes)}</TableCell>
+                                <TableCell class名称="font-medium">{KubeSizeConverter.convertBytesToReadableSize(selectedPod?.ramAbsolutBytes)}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

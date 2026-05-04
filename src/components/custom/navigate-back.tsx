@@ -3,6 +3,6 @@
 import { ArrowLeft } from "lucide-react";
 import { Button } from "../ui/button";
 
-export default function NavigateBackButton() {
+export default function Navigate返回Button() {
     return <Button variant="ghost" onClick={() => window.history.back()}><ArrowLeft /></Button>;
 }

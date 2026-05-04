@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const uptimekumaAppTemplate: AppTemplateModel = {
     name: "Uptime Kuma",
-    iconName: 'https://raw.githubusercontent.com/louislam/uptime-kuma/master/public/icon.svg',
+    icon名称: 'https://raw.githubusercontent.com/louislam/uptime-kuma/master/public/icon.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -33,7 +33,7 @@ export const uptimekumaAppTemplate: AppTemplateModel = {
             size: 200,
             containerMountPath: '/app/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

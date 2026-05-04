@@ -13,7 +13,7 @@ export default async function AuthPage() {
     }
     const allUsers = await userService.getAllUsers();
     return (
-        <div className="flex items-center justify-center" style={{ height: '95vh' }}>
+        <div class名称="flex items-center justify-center" style={{ height: '95vh' }}>
             {allUsers.length === 0 ? <UserRegistrationForm /> : <UserLoginForm />}
         </div>
     )

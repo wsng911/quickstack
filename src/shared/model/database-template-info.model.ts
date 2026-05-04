@@ -8,7 +8,7 @@ export const databaseTemplateInfoZodModel = z.object({
     password: z.string(),
     port: z.number(),
     hostname: z.string(),
-    databaseName: z.string(),
+    database名称: z.string(),
     internalConnectionUrl: z.string(),
 });
 

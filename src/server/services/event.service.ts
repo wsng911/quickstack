@@ -23,11 +23,11 @@ class EventService {
         const returnVal: EventInfoModel[] = [];
         for (let podInfo of pods) {
             console.log(podInfo.uid)
-            const result = await k3s.core.listNamespacedEvent(projectId,
+            const result = await k3s.core.list名称spacedEvent(projectId,
                 undefined,
                 undefined,
                 undefined,
-                `involvedObject.namespace=${projectId},involvedObject.uid=${podInfo.uid},involvedObject.name=${podInfo.podName}`,
+                `involvedObject.namespace=${projectId},involvedObject.uid=${podInfo.uid},involvedObject.name=${podInfo.pod名称}`,
                 undefined,
                 50);
 
@@ -35,7 +35,7 @@ class EventService {
 
             const eventsForPod = events.map(event => {
                 return {
-                    podName: podInfo.podName,
+                    pod名称: podInfo.pod名称,
                     action: event.action,
                     eventTime: event.eventTime ?? event.lastTimestamp,
                     note: event.message,

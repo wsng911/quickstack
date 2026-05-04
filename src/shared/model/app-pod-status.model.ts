@@ -1,11 +1,11 @@
-import { DeploymentStatus } from "./deployment-info.model";
+import { Deployment状态 } from "./deployment-info.model";
 
-export interface AppPodsStatusModel {
+export interface AppPods状态Model {
     appId: string;
-    appName: string;
+    app名称: string;
     projectId: string;
-    projectName: string;
+    project名称: string;
     replicas?: number;
     readyReplicas?: number;
-    deploymentStatus: DeploymentStatus;
+    deployment状态: Deployment状态;
 }

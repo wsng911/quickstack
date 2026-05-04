@@ -2,7 +2,7 @@
 
 import { getAdminUserSession, getAuthUserSession } from "@/server/utils/action-wrapper.utils";
 import PageTitle from "@/components/custom/page-title";
-import S3TargetEditOverlay from "./user-edit-overlay";
+import S3Target编辑Overlay from "./user-edit-overlay";
 import { Button } from "@/components/ui/button";
 import BreadcrumbSetter from "@/components/breadcrumbs-setter";
 import UsersTable from "./users-table";
@@ -26,18 +26,18 @@ export default async function UsersAndGroupsPage() {
     const userGroups = await userGroupService.getAll();
     const allApps = await projectService.getAllProjects();
     return (
-        <div className="flex-1 space-y-4 pt-6">
+        <div class名称="flex-1 space-y-4 pt-6">
             <PageTitle
                 title={'Users & Groups'} >
             </PageTitle>
             <BreadcrumbSetter items={[
-                { name: "Settings", url: "/settings/profile" },
+                { name: "设置", url: "/settings/profile" },
                 { name: "Users & Groups" },
             ]} />
             <Tabs defaultValue="users" >
-                <TabsList className="">
-                    <TabsTrigger className="px-8 gap-1.5" value="users"><CircleUser className="w-3.5 h-3.5" /> Users</TabsTrigger>
-                    <TabsTrigger className="px-8 gap-1.5" value="groups"><UserRoundCog className="w-3.5 h-3.5" /> Groups</TabsTrigger>
+                <TabsList class名称="">
+                    <TabsTrigger class名称="px-8 gap-1.5" value="users"><CircleUser class名称="w-3.5 h-3.5" /> Users</TabsTrigger>
+                    <TabsTrigger class名称="px-8 gap-1.5" value="groups"><UserRoundCog class名称="w-3.5 h-3.5" /> Groups</TabsTrigger>
                 </TabsList>
                 <TabsContent value="users">
                     <UsersTable session={session} users={users} userGroups={userGroups} />

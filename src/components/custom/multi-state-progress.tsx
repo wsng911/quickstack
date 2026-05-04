@@ -7,10 +7,10 @@ interface MultiStateProgressProps {
     value: number;
     color: ProgressColor;
   }[];
-  className?: string;
+  class名称?: string;
 }
 
-export function MultiStateProgress({ segments, className }: MultiStateProgressProps) {
+export function MultiStateProgress({ segments, class名称 }: MultiStateProgressProps) {
     const colorClasses: Record<ProgressColor, string> = {
         green: "bg-teal-600",
         orange: "bg-orange-500",
@@ -20,15 +20,15 @@ export function MultiStateProgress({ segments, className }: MultiStateProgressPr
 
   return (
     <div
-      className={cn(
+      class名称={cn(
         "relative h-2 w-full overflow-hidden rounded-full bg-secondary flex",
-        className
+        class名称
       )}
     >
       {segments.map((segment, index) => (
         <div
           key={index}
-          className={cn("h-full transition-all", colorClasses[segment.color])}
+          class名称={cn("h-full transition-all", colorClasses[segment.color])}
           style={{ width: `${segment.value}%` }}
         />
       ))}

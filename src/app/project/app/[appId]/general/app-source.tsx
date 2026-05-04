@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDialog } from "@/frontend/states/zustand.states";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { AppBuildMethod } from "@/shared/model/app-source-info.model";
@@ -33,10 +33,10 @@ export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-start justify-between gap-4">
+            <CardHeader class名称="flex flex-row items-start justify-between gap-4">
                 <div>
                     <CardTitle>Source</CardTitle>
-                    <CardDescription>Connect the source QuickStack should build or run.</CardDescription>
+                    <Card描述>Connect the source QuickStack should build or run.</Card描述>
                 </div>
                 {!readonly && configured && (
                     <Button type="button" variant="secondary" onClick={openSourceWizard}>
@@ -57,17 +57,17 @@ export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
 
 function EmptySourceState({ readonly, onConnect }: { readonly: boolean; onConnect: () => void }) {
     return (
-        <div className="flex min-h-40 flex-col items-center justify-center gap-4 rounded-md border border-dashed p-6 text-center">
-            <div className="flex h-11 w-11 items-center justify-center rounded-md bg-muted">
-                <Server className="h-5 w-5 text-muted-foreground" />
+        <div class名称="flex min-h-40 flex-col items-center justify-center gap-4 rounded-md border border-dashed p-6 text-center">
+            <div class名称="flex h-11 w-11 items-center justify-center rounded-md bg-muted">
+                <Server class名称="h-5 w-5 text-muted-foreground" />
             </div>
-            <div className="space-y-1">
-                <p className="font-medium">No app source connected</p>
-                <p className="max-w-md text-sm text-muted-foreground">Connect a Git repository or container image before deploying this app.</p>
+            <div class名称="space-y-1">
+                <p class名称="font-medium">No app source connected</p>
+                <p class名称="max-w-md text-sm text-muted-foreground">Connect a Git repository or container image before deploying this app.</p>
             </div>
             {!readonly && (
                 <Button type="button" onClick={onConnect}>
-                    <LinkIcon className="h-4 w-4" />
+                    <LinkIcon class名称="h-4 w-4" />
                     Connect App Source
                 </Button>
             )}
@@ -82,26 +82,26 @@ function ConfiguredSourceSummary({ app, gitSshPublicKey }: { app: AppExtendedMod
     const Icon = sourceType === 'CONTAINER' ? Container : sourceType === 'GIT_SSH' ? KeyRound : GitBranch;
 
     return (
-        <div className="space-y-4">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
-                        <Icon className="h-5 w-5 text-muted-foreground" />
+        <div class名称="space-y-4">
+            <div class名称="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div class名称="flex min-w-0 items-center gap-3">
+                    <div class名称="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
+                        <Icon class名称="h-5 w-5 text-muted-foreground" />
                     </div>
-                    <div className="min-w-0">
-                        <p className="font-medium">{sourceTypeLabels[sourceType]}</p>
-                        <p className="truncate font-mono text-sm text-muted-foreground">
+                    <div class名称="min-w-0">
+                        <p class名称="font-medium">{sourceTypeLabels[sourceType]}</p>
+                        <p class名称="truncate font-mono text-sm text-muted-foreground">
                             {isGitSource ? app.gitUrl : app.containerImageSource}
                         </p>
                     </div>
                 </div>
             </div>
-            <div className="grid gap-3 md:grid-cols-2">
+            <div class名称="grid gap-3 md:grid-cols-2">
                 {isGitSource && (
                     <>
                         <ReadonlyInfo icon={GitBranch} label="Git Branch" value={app.gitBranch ?? 'Not configured'} />
                         {sourceType === 'GIT' && (
-                            <ReadonlyInfo icon={LockKeyhole} label="Git Credentials" value={app.gitUsername || app.gitToken ? 'Credentials configured' : 'No credentials'} />
+                            <ReadonlyInfo icon={LockKeyhole} label="Git Credentials" value={app.git用户名 || app.gitToken ? 'Credentials configured' : 'No credentials'} />
                         )}
                         {sourceType === 'GIT_SSH' && (
                             <ReadonlyInfo
@@ -128,8 +128,8 @@ function ConfiguredSourceSummary({ app, gitSshPublicKey }: { app: AppExtendedMod
                 )}
                 {sourceType === 'CONTAINER' && (
                     <>
-                        <ReadonlyInfo icon={Package} label="Image Name" value={app.containerImageSource ?? 'Not configured'} />
-                        <ReadonlyInfo icon={LockKeyhole} label="Registry Credentials" value={app.containerRegistryUsername || app.containerRegistryPassword ? 'Credentials configured' : 'No credentials'} />
+                        <ReadonlyInfo icon={Package} label="Image 名称" value={app.containerImageSource ?? 'Not configured'} />
+                        <ReadonlyInfo icon={LockKeyhole} label="Registry Credentials" value={app.containerRegistry用户名 || app.containerRegistry密码 ? 'Credentials configured' : 'No credentials'} />
                     </>
                 )}
             </div>

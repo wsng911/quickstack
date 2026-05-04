@@ -15,50 +15,50 @@ describe('Template Icons', () => {
         };
 
         const checkTemplateIcon = (template: AppTemplateModel) => {
-            const { name, iconName } = template;
+            const { name, icon名称 } = template;
 
-            // Check if iconName exists
-            expect(iconName).toBeDefined();
-            expect(typeof iconName).toBe('string');
+            // Check if icon名称 exists
+            expect(icon名称).toBeDefined();
+            expect(typeof icon名称).toBe('string');
 
-            if (!iconName) return;
+            if (!icon名称) return;
 
             // If it's a URL (starts with http:// or https://)
-            if (iconName.startsWith('http://') || iconName.startsWith('https://')) {
+            if (icon名称.startsWith('http://') || icon名称.startsWith('https://')) {
                 // Should be a valid URL
-                expect(isValidUrl(iconName)).toBe(true);
+                expect(isValidUrl(icon名称)).toBe(true);
 
                 // Should use https for security (warn if http)
-                if (iconName.startsWith('http://')) {
-                    console.warn(`⚠️  Template "${name}" uses HTTP instead of HTTPS: ${iconName}`);
+                if (icon名称.startsWith('http://')) {
+                    console.warn(`⚠️  Template "${name}" uses HTTP instead of HTTPS: ${icon名称}`);
                 }
 
                 // Should have a valid file extension for images or be from known CDN/repos
-                const hasValidExtension = /\.(svg|png|jpg|jpeg|gif|ico|webp)$/i.test(iconName);
+                const hasValidExtension = /\.(svg|png|jpg|jpeg|gif|ico|webp)$/i.test(icon名称);
                 const isFromTrustedSource = 
-                    iconName.includes('github.com') || 
-                    iconName.includes('githubusercontent.com') ||
-                    iconName.includes('raw.githubusercontent.com') ||
-                    iconName.includes('cdn.jsdelivr.net') ||
-                    iconName.includes('cdn.simpleicons.org') ||
-                    iconName.includes('codeberg.org') ||
-                    iconName.includes('hub.docker.com') ||
-                    iconName.includes('redis.io') ||
-                    iconName.includes('jenkins.io') ||
-                    iconName.includes('sonarsource.com') ||
-                    iconName.includes('nodered.org') ||
-                    iconName.includes('plausible.io') ||
-                    iconName.includes('www.adminer.org');
+                    icon名称.includes('github.com') || 
+                    icon名称.includes('githubusercontent.com') ||
+                    icon名称.includes('raw.githubusercontent.com') ||
+                    icon名称.includes('cdn.jsdelivr.net') ||
+                    icon名称.includes('cdn.simpleicons.org') ||
+                    icon名称.includes('codeberg.org') ||
+                    icon名称.includes('hub.docker.com') ||
+                    icon名称.includes('redis.io') ||
+                    icon名称.includes('jenkins.io') ||
+                    icon名称.includes('sonarsource.com') ||
+                    icon名称.includes('nodered.org') ||
+                    icon名称.includes('plausible.io') ||
+                    icon名称.includes('www.adminer.org');
 
                 if (!hasValidExtension && !isFromTrustedSource) {
-                    console.error(`❌ Template "${name}" has invalid icon URL: ${iconName}`);
+                    console.error(`❌ Template "${name}" has invalid icon URL: ${icon名称}`);
                 }
                 
                 expect(hasValidExtension || isFromTrustedSource).toBe(true);
             } else {
                 // If it's not a URL, it should be a filename
-                expect(iconName.length).toBeGreaterThan(0);
-                expect(iconName).toMatch(/\.(svg|png|jpg|jpeg|gif|ico|webp)$/i);
+                expect(icon名称.length).toBeGreaterThan(0);
+                expect(icon名称).toMatch(/\.(svg|png|jpg|jpeg|gif|ico|webp)$/i);
             }
         };
 
@@ -76,8 +76,8 @@ describe('Template Icons', () => {
 
         test('No duplicate template names', () => {
             const names = allTemplates.map(t => t.name);
-            const uniqueNames = new Set(names);
-            expect(names.length).toBe(uniqueNames.size);
+            const unique名称s = new Set(names);
+            expect(names.length).toBe(unique名称s.size);
         });
 
         test('All templates should have non-empty names', () => {
@@ -91,35 +91,35 @@ describe('Template Icons', () => {
     describe('URL Format Validation', () => {
         test('All URL-based icons should use valid protocols', () => {
             const urlTemplates = allTemplates.filter(t => 
-                t.iconName?.startsWith('http://') || t.iconName?.startsWith('https://')
+                t.icon名称?.startsWith('http://') || t.icon名称?.startsWith('https://')
             );
 
             urlTemplates.forEach(template => {
                 expect(
-                    template.iconName?.startsWith('http://') || 
-                    template.iconName?.startsWith('https://')
+                    template.icon名称?.startsWith('http://') || 
+                    template.icon名称?.startsWith('https://')
                 ).toBe(true);
             });
         });
 
         test('URL-based icons should not have spaces', () => {
             const urlTemplates = allTemplates.filter(t => 
-                t.iconName?.startsWith('http://') || t.iconName?.startsWith('https://')
+                t.icon名称?.startsWith('http://') || t.icon名称?.startsWith('https://')
             );
 
             urlTemplates.forEach(template => {
-                expect(template.iconName).not.toContain(' ');
+                expect(template.icon名称).not.toContain(' ');
             });
         });
 
         test('URL-based icons should not have line breaks', () => {
             const urlTemplates = allTemplates.filter(t => 
-                t.iconName?.startsWith('http://') || t.iconName?.startsWith('https://')
+                t.icon名称?.startsWith('http://') || t.icon名称?.startsWith('https://')
             );
 
             urlTemplates.forEach(template => {
-                expect(template.iconName).not.toContain('\n');
-                expect(template.iconName).not.toContain('\r');
+                expect(template.icon名称).not.toContain('\n');
+                expect(template.icon名称).not.toContain('\r');
             });
         });
     });
@@ -136,7 +136,7 @@ describe('Template Icons', () => {
         test('All template configurations should have required fields', () => {
             allTemplates.forEach(template => {
                 template.templates.forEach((config, index) => {
-                    expect(config.inputSettings).toBeDefined();
+                    expect(config.input设置).toBeDefined();
                     expect(config.appModel).toBeDefined();
                     expect(config.appDomains).toBeDefined();
                     expect(config.appVolumes).toBeDefined();
@@ -150,14 +150,14 @@ describe('Template Icons', () => {
     describe('Icon URL Accessibility Summary', () => {
         test('Generate summary of icon sources', () => {
             const urlTemplates = allTemplates.filter(t => 
-                t.iconName?.startsWith('http://') || t.iconName?.startsWith('https://')
+                t.icon名称?.startsWith('http://') || t.icon名称?.startsWith('https://')
             );
 
             const sources: { [key: string]: number } = {};
             
             urlTemplates.forEach(template => {
-                if (template.iconName) {
-                    const url = new URL(template.iconName);
+                if (template.icon名称) {
+                    const url = new URL(template.icon名称);
                     const hostname = url.hostname;
                     sources[hostname] = (sources[hostname] || 0) + 1;
                 }
@@ -181,7 +181,7 @@ describe('Template Icons', () => {
     describe('Icon URL Accessibility (HTTP Fetch)', () => {
         test('All URL-based icons should be accessible via HTTP', async () => {
             const urlTemplates = allTemplates.filter(t => 
-                t.iconName?.startsWith('http://') || t.iconName?.startsWith('https://')
+                t.icon名称?.startsWith('http://') || t.icon名称?.startsWith('https://')
             );
 
             const failedUrls: { name: string; url: string; error: string }[] = [];
@@ -224,18 +224,18 @@ describe('Template Icons', () => {
             };
 
             for (const template of urlTemplates) {
-                if (!template.iconName) continue;
+                if (!template.icon名称) continue;
 
                 try {
-                    const { statusCode, statusMessage } = await testUrl(template.iconName);
+                    const { statusCode, statusMessage } = await testUrl(template.icon名称);
 
                     if (statusCode >= 200 && statusCode < 400) {
-                        successfulUrls.push(template.iconName);
+                        successfulUrls.push(template.icon名称);
                         console.log(`   ✅ ${template.name}: ${statusCode}`);
                     } else {
                         failedUrls.push({
                             name: template.name,
-                            url: template.iconName,
+                            url: template.icon名称,
                             error: `HTTP ${statusCode} ${statusMessage}`
                         });
                         console.error(`   ❌ ${template.name}: ${statusCode} ${statusMessage}`);
@@ -244,13 +244,13 @@ describe('Template Icons', () => {
                     const errorMessage = error instanceof Error ? error.message : String(error);
                     failedUrls.push({
                         name: template.name,
-                        url: template.iconName,
+                        url: template.icon名称,
                         error: errorMessage
                     });
                     console.error(`   ❌ ${template.name}: ${errorMessage}`);
                 }
 
-                // Add a small delay to avoid rate limiting
+                // 添加 a small delay to avoid rate limiting
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
 

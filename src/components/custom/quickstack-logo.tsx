@@ -1,5 +1,5 @@
 
-const defaultLight = (className?: string) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none"
+const defaultLight = (class名称?: string) => <svg class名称={class名称} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none"
     stroke="#f9fafb" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="m17 16.5-5-3" />
     <path d="m7 16.5-4.74-2.85" />
@@ -20,7 +20,7 @@ const defaultLight = (className?: string) => <svg className={className} xmlns="h
         d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z" />
 </svg>;
 
-const defaultDark = (className?: string) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none"
+const defaultDark = (class名称?: string) => <svg class名称={class名称} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none"
     stroke="#444950" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="m17 16.5-5-3" />
     <path d="m7 16.5-4.74-2.85" />
@@ -41,7 +41,7 @@ const defaultDark = (className?: string) => <svg className={className} xmlns="ht
         d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z" />
 </svg>;
 
-const allLight = (className?: string) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none"
+const allLight = (class名称?: string) => <svg class名称={class名称} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none"
     stroke="#f9fafb" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="m17 16.5-5-3" />
     <path d="m7 16.5-4.74-2.85" />
@@ -64,19 +64,19 @@ const allLight = (className?: string) => <svg className={className} xmlns="http:
 
 export default function QuickStackLogo({
     color = "light",
-    className,
+    class名称,
 }: {
     color: "light" | "dark" | "light-all"
-    className?: string;
+    class名称?: string;
 }) {
     if (color === "light") {
-        return defaultLight(className);
+        return defaultLight(class名称);
     }
     if (color === "dark") {
-        return defaultDark(className);
+        return defaultDark(class名称);
     }
     if (color === "light-all") {
-        return allLight(className);
+        return allLight(class名称);
     }
     return null;
 }

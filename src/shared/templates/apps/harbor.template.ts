@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const harborAppTemplate: AppTemplateModel = {
     name: "Harbor Registry",
-    iconName: 'https://raw.githubusercontent.com/goharbor/harbor/main/src/portal/src/images/harbor-logo.svg',
+    icon名称: 'https://raw.githubusercontent.com/goharbor/harbor/main/src/portal/src/images/harbor-logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -15,7 +15,7 @@ export const harborAppTemplate: AppTemplateModel = {
             },
             {
                 key: "HARBOR_ADMIN_PASSWORD",
-                label: "Admin Password",
+                label: "Admin 密码",
                 value: "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
@@ -40,7 +40,7 @@ export const harborAppTemplate: AppTemplateModel = {
             size: 5000,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

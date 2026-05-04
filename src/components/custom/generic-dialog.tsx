@@ -24,7 +24,7 @@ export function GenericDialog() {
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={() => closeDialog()}>
-      <DialogContent className="h-auto" style={dialogStyle}>
+      <DialogContent class名称="h-auto" style={dialogStyle}>
         <DialogContext.Provider value={{ closeDialog }}>
           {content}
         </DialogContext.Provider>

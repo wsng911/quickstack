@@ -31,10 +31,10 @@ export class TerminalService {
                     console.warn('terminalSessionKey not provided. Setting as undefined.');
                 }
                 console.log(terminalInfo)
-                const streamInputKey = StreamUtils.getInputStreamName(terminalInfo);
-                const streamOutputKey = StreamUtils.getOutputStreamName(terminalInfo);
+                const streamInputKey = StreamUtils.getInputStream名称(terminalInfo);
+                const streamOutputKey = StreamUtils.getOutputStream名称(terminalInfo);
 
-                const podReachable = await standalonePodService.waitUntilPodIsRunningFailedOrSucceded(terminalInfo.namespace, terminalInfo.podName);
+                const podReachable = await standalonePodService.waitUntilPodIsRunningFailedOrSucceded(terminalInfo.namespace, terminalInfo.pod名称);
                 if (!podReachable) {
                     socket.emit(streamOutputKey, 'Pod is not reachable.');
                     return;
@@ -56,14 +56,14 @@ export class TerminalService {
 
                 const websocket = await exec.exec(
                     terminalInfo.namespace,
-                    terminalInfo.podName,
-                    terminalInfo.containerName,
+                    terminalInfo.pod名称,
+                    terminalInfo.container名称,
                     [terminalInfo.terminalType === 'sh' ? '/bin/sh' : '/bin/bash'],
                     stdoutStream,
                     stderrStream,
                     stdinStream,
                     true /* tty */,
-                    (status: k8s.V1Status) => {
+                    (status: k8s.V1状态) => {
                         console.log('[EXIT] Exited with status:');
                         console.log(JSON.stringify(status, null, 2));
                         if (status.status === 'Failure') {

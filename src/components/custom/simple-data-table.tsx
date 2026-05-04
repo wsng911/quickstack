@@ -16,7 +16,7 @@ export function SimpleDataTable<TData>({
     actionCol,
     onItemClick,
     onItemClickLink,
-    hideSearchBar = false,
+    hide搜索Bar = false,
     showSelectCheckbox = false,
     onRowSelectionUpdate,
     columnFilters,
@@ -24,7 +24,7 @@ export function SimpleDataTable<TData>({
     tableIdentifier?: string,
     columns: ([string, string, boolean, (item: TData) => ReactNode] | [string, string, boolean])[],
     data: TData[],
-    hideSearchBar?: boolean,
+    hide搜索Bar?: boolean,
     showSelectCheckbox?: boolean,
     onItemClick?: (selectedItem: TData) => void,
     onItemClickLink?: (selectedItem: TData) => string,
@@ -38,7 +38,7 @@ export function SimpleDataTable<TData>({
 }) {
 
     const router = useRouter();
-    const pathName = usePathname();
+    const path名称 = usePathname();
     const [columnInputData, setColumnInputData] = useState<TData[] | undefined>(undefined);
     const [initialTableState, setInitialTableState] = useState<Partial<TableState> | undefined>(undefined);
 
@@ -48,8 +48,8 @@ export function SimpleDataTable<TData>({
             sorting: newState.sorting,
             paginationPageSize: newState.pagination?.pageSize
         };
-        window.localStorage.setItem(`table-${tableIdentifier ?? pathName}`, JSON.stringify(tableState));
-        window.sessionStorage.setItem(`table-${tableIdentifier ?? pathName}`, JSON.stringify({
+        window.localStorage.setItem(`table-${tableIdentifier ?? path名称}`, JSON.stringify(tableState));
+        window.sessionStorage.setItem(`table-${tableIdentifier ?? path名称}`, JSON.stringify({
             globalFilter: newState.globalFilter,
             paginationPageIndex: newState.pagination?.pageIndex
         }));
@@ -57,7 +57,7 @@ export function SimpleDataTable<TData>({
 
     useEffect(() => {
         const outData = data.map((item) => {
-            for (const [accessorKey, headerName, isVisible, customRowDefinition] of columns) {
+            for (const [accessorKey, header名称, isVisible, customRowDefinition] of columns) {
                 if (!customRowDefinition) {
                     continue;
                 }
@@ -67,8 +67,8 @@ export function SimpleDataTable<TData>({
         });
         setColumnInputData(outData);
 
-        const configJsonFromLocalstorage = window.localStorage.getItem(`table-${tableIdentifier ?? pathName}`);
-        const configJsonFromSessionstorage = window.sessionStorage.getItem(`table-${tableIdentifier ?? pathName}`);
+        const configJsonFromLocalstorage = window.localStorage.getItem(`table-${tableIdentifier ?? path名称}`);
+        const configJsonFromSessionstorage = window.sessionStorage.getItem(`table-${tableIdentifier ?? path名称}`);
         const configFromLocalStorage = JSON.parse(configJsonFromLocalstorage ?? '{}');
         const configFromSessionStorage = JSON.parse(configJsonFromSessionstorage ?? '{}');
         const mergedConfig = {
@@ -88,14 +88,14 @@ export function SimpleDataTable<TData>({
         return <FullLoadingSpinner />;
     }
 
-    const globalFilterFn = (row: Row<TData>, columnHeaderNameNotWorking: string, searchTerm: string) => {
+    const globalFilterFn = (row: Row<TData>, columnHeader名称NotWorking: string, searchTerm: string) => {
         if (!searchTerm || Array.isArray(searchTerm)) {
             return true;
         }
         const allCellValues = row.getAllCells().map(cell => {
-            const headerName = cell.column.id;
+            const header名称 = cell.column.id;
             // if there is a custom column definition --> use it for filtering
-            const columnDefinitionForFilter = columns.find(col => col[0] === headerName);
+            const columnDefinitionForFilter = columns.find(col => col[0] === header名称);
             if (columnDefinitionForFilter && columnDefinitionForFilter[3]) {
                 const columnValue = columnDefinitionForFilter[3](row.original);
                 const text = ReactNodeUtils.getTextFromReactElement(columnValue);
@@ -117,8 +117,8 @@ export function SimpleDataTable<TData>({
         const dataCol = {
             accessorKey,
             isVisible,
-            headerName: header,
-            filterFn: (row, columnName, searchTerm) => {
+            header名称: header,
+            filterFn: (row, column名称, searchTerm) => {
                 if (searchTerm === undefined || searchTerm === null || searchTerm === '') {
                     return true;
                 }
@@ -154,7 +154,7 @@ export function SimpleDataTable<TData>({
             dataCol.cell = ({ row }) => {
                 const item = row.original;
                 return (
-                    <div className="cursor-pointer" onClick={() => onItemClick(item)}>
+                    <div class名称="cursor-pointer" onClick={() => onItemClick(item)}>
                         {customRowDefinition ? customRowDefinition(item) : (row.original as any)[accessorKey] as unknown as string}
                     </div>
                 );
@@ -165,7 +165,7 @@ export function SimpleDataTable<TData>({
             dataCol.cell = ({ row }) => {
                 const item = row.original;
                 return (
-                    <div className="cursor-pointer" onClick={() => router.push(onItemClickLink(item))}>
+                    <div class名称="cursor-pointer" onClick={() => router.push(onItemClickLink(item))}>
                         {customRowDefinition ? customRowDefinition(item) : (row.original as any)[accessorKey] as unknown as string}
                     </div>
                 );
@@ -219,6 +219,6 @@ export function SimpleDataTable<TData>({
         globalFilterFn={globalFilterFn}
         columns={finalCols}
         data={columnInputData}
-        hideSearchBar={hideSearchBar}
+        hide搜索Bar={hide搜索Bar}
         onRowSelectionUpdate={onRowSelectionUpdate} />
 }

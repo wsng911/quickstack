@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto';
 import k3s from '../adapter/kubernetes-api.adapter';
-import { KubeObjectNameUtils } from '../utils/kube-object-name.utils';
+import { KubeObject名称Utils } from '../utils/kube-object-name.utils';
 import ingressService from './ingress.service';
 import hostnameDnsProviderService from './hostname-dns-provider.service';
 import { V1Ingress } from '@kubernetes/client-node';
@@ -16,7 +16,7 @@ class LonghornUiService {
     private readonly USERNAME = 'quickstack';
 
     async isIngressActive(): Promise<boolean> {
-        const existing = await ingressService.getIngressByName(this.NAMESPACE, this.INGRESS_ID);
+        const existing = await ingressService.getIngressBy名称(this.NAMESPACE, this.INGRESS_ID);
         return !!existing;
     }
 
@@ -24,27 +24,27 @@ class LonghornUiService {
         const password = CryptoUtils.generateStrongPasswort(35);
         const hostname = await hostnameDnsProviderService.getHexDomainForApp(this.INGRESS_ID);
 
-        const basicAuthMiddlewareName = await ingressService.configureBasicAuthMiddleware(
+        const basicAuthMiddleware名称 = await ingressService.configureBasicAuthMiddleware(
             this.NAMESPACE,
             this.INGRESS_ID,
             [[this.USERNAME, password]],
             true  // store plaintext credentials in the secret
         );
 
-        const ingressName = KubeObjectNameUtils.getIngressName(this.INGRESS_ID);
+        const ingress名称 = KubeObject名称Utils.getIngress名称(this.INGRESS_ID);
         const ingressDefinition: V1Ingress = {
             apiVersion: 'networking.k8s.io/v1',
             kind: 'Ingress',
             metadata: {
-                name: ingressName,
+                name: ingress名称,
                 namespace: this.NAMESPACE,
                 annotations: {
                     'cert-manager.io/cluster-issuer': 'letsencrypt-production',
-                    'traefik.ingress.kubernetes.io/router.middlewares': basicAuthMiddlewareName,
+                    'traefik.ingress.kubernetes.io/router.middlewares': basicAuthMiddleware名称,
                 },
             },
             spec: {
-                ingressClassName: 'traefik',
+                ingressClass名称: 'traefik',
                 rules: [
                     {
                         host: hostname,
@@ -69,17 +69,17 @@ class LonghornUiService {
                 tls: [
                     {
                         hosts: [hostname],
-                        secretName: `secret-tls-${this.INGRESS_ID}`,
+                        secret名称: `secret-tls-${this.INGRESS_ID}`,
                     },
                 ],
             },
         };
 
-        const existingIngress = await ingressService.getIngressByName(this.NAMESPACE, this.INGRESS_ID);
+        const existingIngress = await ingressService.getIngressBy名称(this.NAMESPACE, this.INGRESS_ID);
         if (existingIngress) {
-            await k3s.network.replaceNamespacedIngress(ingressName, this.NAMESPACE, ingressDefinition);
+            await k3s.network.replace名称spacedIngress(ingress名称, this.NAMESPACE, ingressDefinition);
         } else {
-            await k3s.network.createNamespacedIngress(this.NAMESPACE, ingressDefinition);
+            await k3s.network.create名称spacedIngress(this.NAMESPACE, ingressDefinition);
         }
 
         return { url: `https://${hostname}`, username: this.USERNAME, password };
@@ -93,10 +93,10 @@ class LonghornUiService {
     }
 
     async disable(): Promise<void> {
-        const ingressName = KubeObjectNameUtils.getIngressName(this.INGRESS_ID);
-        const existingIngress = await ingressService.getIngressByName(this.NAMESPACE, this.INGRESS_ID);
+        const ingress名称 = KubeObject名称Utils.getIngress名称(this.INGRESS_ID);
+        const existingIngress = await ingressService.getIngressBy名称(this.NAMESPACE, this.INGRESS_ID);
         if (existingIngress) {
-            await k3s.network.deleteNamespacedIngress(ingressName, this.NAMESPACE);
+            await k3s.network.delete名称spacedIngress(ingress名称, this.NAMESPACE);
         }
         await ingressService.deleteUnusedBasicAuthMiddlewares(this.NAMESPACE, this.INGRESS_ID);
     }

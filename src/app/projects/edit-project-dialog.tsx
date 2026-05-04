@@ -8,15 +8,15 @@ import { useInputDialog } from "@/frontend/states/zustand.states";
 import { Project } from "@prisma/client";
 
 
-export function EditProjectDialog({ children, existingItem }: { children?: React.ReactNode, existingItem?: Project }) {
+export function 编辑ProjectDialog({ children, existingItem }: { children?: React.ReactNode, existingItem?: Project }) {
 
     const { openInputDialog } = useInputDialog();
     const createProj = async () => {
         const name = await openInputDialog({
-            title: "Create Project",
-            description: "Name your new project.",
-            fieldName: "Name",
-            okButton: "Create Project",
+            title: "创建 Project",
+            description: "名称 your new project.",
+            field名称: "名称",
+            okButton: "创建 Project",
             inputValue: existingItem?.name ?? ''
         })
         if (!name) { return; }

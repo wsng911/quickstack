@@ -52,15 +52,15 @@ class DeploymentEventWatchService {
         if (this.processedEvents.has(eventUid)) return;
         this.processedEvents.add(eventUid);
 
-        const podName = event.involvedObject.name;
+        const pod名称 = event.involvedObject.name;
         const namespace = event.involvedObject.namespace;
-        if (!podName || !namespace) return;
+        if (!pod名称 || !namespace) return;
 
-        const irrelevantNamespaces = ['kube-system', 'kube-public', 'longhorn-system', 'kube-node-lease', 'cert-manager', 'quickstack'];
-        if (irrelevantNamespaces.includes(namespace)) return;
+        const irrelevant名称spaces = ['kube-system', 'kube-public', 'longhorn-system', 'kube-node-lease', 'cert-manager', 'quickstack'];
+        if (irrelevant名称spaces.includes(namespace)) return;
 
         try {
-            const podResponse = await k3s.core.readNamespacedPod(podName, namespace);
+            const podResponse = await k3s.core.read名称spacedPod(pod名称, namespace);
             const pod = podResponse.body;
             const deploymentId = pod.metadata?.annotations?.[Constants.QS_ANNOTATION_DEPLOYMENT_ID];
             if (!deploymentId) return;

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { stringToNumber } from "@/shared/utils/zod.utils";
 
-export const nodePortEditZodModel = z.object({
+export const nodePort编辑ZodModel = z.object({
     port: stringToNumber.refine((val) => val >= 1 && val <= 65535, {
         message: 'Container port must be between 1 and 65535.',
     }),
@@ -11,4 +11,4 @@ export const nodePortEditZodModel = z.object({
     protocol: z.enum(['TCP', 'UDP']).default('TCP'),
 });
 
-export type NodePortEditModel = z.infer<typeof nodePortEditZodModel>;
+export type NodePort编辑Model = z.infer<typeof nodePort编辑ZodModel>;

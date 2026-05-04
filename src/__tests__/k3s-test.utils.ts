@@ -20,7 +20,7 @@ export interface K3sTestClients {
 }
 
 /**
- * Creates an isolated K3s test context for integration tests that need a real
+ * 创建s an isolated K3s test context for integration tests that need a real
  * Kubernetes cluster. Uses testcontainers (@testcontainers/k3s) to spin up a
  * lightweight k3s cluster in Docker.
  *
@@ -93,9 +93,9 @@ export function createK3sTestContext(image = DEFAULT_IMAGE) {
                     throw new Error('Invalid resource specification');
                 }
 
-                const targetNamespace = spec.metadata?.namespace || namespace;
-                if (!targetNamespace) {
-                    throw new Error('Namespace is required in resource metadata in method applyResource');
+                const target名称space = spec.metadata?.namespace || namespace;
+                if (!target名称space) {
+                    throw new Error('名称space is required in resource metadata in method applyResource');
                 }
 
                 const client = k8s.KubernetesObjectApi.makeApiClient(getKubeConfig());

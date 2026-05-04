@@ -3,13 +3,13 @@
 import { SuccessActionResult } from "@/shared/model/server-action-error-return.model";
 import appService from "@/server/services/app.service";
 import { isAuthorizedWriteForApp, saveFormAction, simpleAction } from "@/server/utils/action-wrapper.utils";
-import { BasicAuthEditModel, basicAuthEditZodModel } from "@/shared/model/basic-auth-edit.model";
+import { BasicAuth编辑Model, basicAuth编辑ZodModel } from "@/shared/model/basic-auth-edit.model";
 import { appNetworkPolicy } from "@/shared/model/network-policy.model";
 import { HealthCheckModel, healthCheckZodModel } from "./health-check.model";
 
 
-export const saveBasicAuth = async (prevState: any, inputData: BasicAuthEditModel) =>
-    saveFormAction(inputData, basicAuthEditZodModel, async (validatedData) => {
+export const saveBasicAuth = async (prevState: any, inputData: BasicAuth编辑Model) =>
+    saveFormAction(inputData, basicAuth编辑ZodModel, async (validatedData) => {
         await isAuthorizedWriteForApp(validatedData.appId);
 
         await appService.saveBasicAuth({

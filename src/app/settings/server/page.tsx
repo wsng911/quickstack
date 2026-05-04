@@ -3,24 +3,24 @@
 import { getAdminUserSession } from "@/server/utils/action-wrapper.utils";
 import PageTitle from "@/components/custom/page-title";
 import paramService, { ParamService } from "@/server/services/param.service";
-import QuickStackIngressSettings from "./qs-ingress-settings";
-import QuickStackLetsEncryptSettings from "./qs-letsencrypt-settings";
+import QuickStackIngress设置 from "./qs-ingress-settings";
+import QuickStackLetsEncrypt设置 from "./qs-letsencrypt-settings";
 import { Constants } from "@/shared/utils/constants";
-import QuickStackRegistrySettings from "./qs-registry-settings";
+import QuickStackRegistry设置 from "./qs-registry-settings";
 import s3TargetService from "@/server/services/s3-target.service";
-import QuickStackPublicIpSettings from "./qs-public-ip-settings";
-import QuickStackSystemBackupSettings from "./qs-system-backup-settings";
-import QuickStackTraefikSettings from "./qs-traefik-settings";
+import QuickStackPublicIp设置 from "./qs-public-ip-settings";
+import QuickStackSystem返回up设置 from "./qs-system-backup-settings";
+import QuickStackTraefik设置 from "./qs-traefik-settings";
 import BreadcrumbSetter from "@/components/breadcrumbs-setter";
 import traefikService from "@/server/services/traefik.service";
 import { Separator } from "@/components/ui/separator";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import QuickStackMaintenanceSettings from "./qs-maintenance-settings";
+import QuickStackMaintenance设置 from "./qs-maintenance-settings";
 import podService from "@/server/services/pod.service";
-import { ServerSettingsTabs } from "./server-settings-tabs";
-import { Settings, Network, HardDrive, Rocket, Wrench, Hammer } from "lucide-react";
-import QsBuildSettings from "./qs-build-settings";
-import { getBuildSettings } from "./actions";
+import { Server设置Tabs } from "./server-settings-tabs";
+import { 设置, Network, HardDrive, Rocket, Wrench, Hammer } from "lucide-react";
+import QsBuild设置 from "./qs-build-settings";
+import { getBuild设置 } from "./actions";
 import quickStackUpdateService from "@/server/services/qs-update.service";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import clusterService from "@/server/services/cluster.service";
@@ -41,8 +41,8 @@ export default async function ProjectPage({
         disableNodePortAccess,
         letsEncryptMail,
         regitryStorageLocation,
-        ipv4Address,
-        systemBackupLocation,
+        ipv4添加ress,
+        system返回upLocation,
         clusterJoinToken
     ] = await Promise.all([
         paramService.getString(ParamService.QS_SERVER_HOSTNAME, ''),
@@ -56,91 +56,91 @@ export default async function ProjectPage({
 
     const [
         s3Targets,
-        traefikStatus,
+        traefik状态,
         qsPodInfos,
         newVersionInfo,
         nodeInfo,
-        buildSettings
+        build设置
     ] = await Promise.all([
         s3TargetService.getAll(),
-        traefikService.getStatus(),
+        traefikService.get状态(),
         podService.getPodsForApp(Constants.QS_NAMESPACE, Constants.QS_APP_NAME),
         quickStackUpdateService.getNewVersionInfo(),
         clusterService.getNodeInfo(),
-        getBuildSettings()
+        getBuild设置()
     ]);
 
     const qsPodInfo = qsPodInfos.find(p => !!p);
     const defaultTab = typeof searchParams?.tab === 'string' ? searchParams.tab : 'general';
 
     return (
-        <div className="flex-1 space-y-6 pt-6  pb-16">
-            <div className="space-y-0.5">
+        <div class名称="flex-1 space-y-6 pt-6  pb-16">
+            <div class名称="space-y-0.5">
                 <PageTitle
-                    title={'QuickStack Settings'}
-                    subtitle={`View or edit Server Settings`}>
+                    title={'QuickStack 设置'}
+                    subtitle={`View or edit Server 设置`}>
                 </PageTitle>
             </div>
             <BreadcrumbSetter items={[
-                { name: "Settings", url: "/settings/profile" },
+                { name: "设置", url: "/settings/profile" },
                 { name: "QuickStack Server" },
             ]} />
 
-            <Separator className="my-6" />
+            <Separator class名称="my-6" />
 
-            <ServerSettingsTabs defaultTab={defaultTab}>
+            <Server设置Tabs defaultTab={defaultTab}>
                 <ScrollArea>
                     <TabsList>
-                        <TabsTrigger value="general"><Settings className="mr-2 h-4 w-4" />General</TabsTrigger>
-                        <TabsTrigger value="networking"><Network className="mr-2 h-4 w-4" />Networking / Traefik</TabsTrigger>
-                        <TabsTrigger value="storage"><HardDrive className="mr-2 h-4 w-4" />Storage & Backups</TabsTrigger>
-                        <TabsTrigger value="builds"><Hammer className="mr-2 h-4 w-4" />Builds</TabsTrigger>
-                        <TabsTrigger value="cluster"><Network className="mr-2 h-4 w-4" />Cluster</TabsTrigger>
-                        <TabsTrigger value="updates"><Rocket className="mr-2 h-4 w-4" />Updates {newVersionInfo && <div className="h-2 w-2 ml-2 rounded-full bg-orange-500 animate-pulse" />}</TabsTrigger>
-                        <TabsTrigger value="maintenance"><Wrench className="mr-2 h-4 w-4" />Maintenance</TabsTrigger>
+                        <TabsTrigger value="general"><设置 class名称="mr-2 h-4 w-4" />General</TabsTrigger>
+                        <TabsTrigger value="networking"><Network class名称="mr-2 h-4 w-4" />Networking / Traefik</TabsTrigger>
+                        <TabsTrigger value="storage"><HardDrive class名称="mr-2 h-4 w-4" />Storage & 返回ups</TabsTrigger>
+                        <TabsTrigger value="builds"><Hammer class名称="mr-2 h-4 w-4" />Builds</TabsTrigger>
+                        <TabsTrigger value="cluster"><Network class名称="mr-2 h-4 w-4" />Cluster</TabsTrigger>
+                        <TabsTrigger value="updates"><Rocket class名称="mr-2 h-4 w-4" />Updates {newVersionInfo && <div class名称="h-2 w-2 ml-2 rounded-full bg-orange-500 animate-pulse" />}</TabsTrigger>
+                        <TabsTrigger value="maintenance"><Wrench class名称="mr-2 h-4 w-4" />Maintenance</TabsTrigger>
                     </TabsList>
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
-                <TabsContent value="general" className="space-y-4">
-                    <div className="grid gap-6">
-                        <QuickStackIngressSettings disableNodePortAccess={disableNodePortAccess!} serverUrl={serverUrl!} />
-                        <QuickStackPublicIpSettings publicIpv4={ipv4Address} />
+                <TabsContent value="general" class名称="space-y-4">
+                    <div class名称="grid gap-6">
+                        <QuickStackIngress设置 disableNodePortAccess={disableNodePortAccess!} serverUrl={serverUrl!} />
+                        <QuickStackPublicIp设置 publicIpv4={ipv4添加ress} />
                     </div>
                 </TabsContent>
 
-                <TabsContent value="networking" className="space-y-4">
-                    <div className="grid gap-6">
-                        <QuickStackLetsEncryptSettings letsEncryptMail={letsEncryptMail!} />
-                        <QuickStackTraefikSettings initialStatus={traefikStatus} />
+                <TabsContent value="networking" class名称="space-y-4">
+                    <div class名称="grid gap-6">
+                        <QuickStackLetsEncrypt设置 letsEncryptMail={letsEncryptMail!} />
+                        <QuickStackTraefik设置 initial状态={traefik状态} />
                     </div>
                 </TabsContent>
 
-                <TabsContent value="storage" className="space-y-4">
-                    <div className="grid gap-6">
-                        <QuickStackRegistrySettings registryStorageLocation={regitryStorageLocation!} s3Targets={s3Targets} />
-                        <QuickStackSystemBackupSettings systemBackupLocation={systemBackupLocation!} s3Targets={s3Targets} />
+                <TabsContent value="storage" class名称="space-y-4">
+                    <div class名称="grid gap-6">
+                        <QuickStackRegistry设置 registryStorageLocation={regitryStorageLocation!} s3Targets={s3Targets} />
+                        <QuickStackSystem返回up设置 system返回upLocation={system返回upLocation!} s3Targets={s3Targets} />
                         <LonghornUiToggle />
                     </div>
                 </TabsContent>
 
-                <TabsContent value="builds" className="space-y-4">
-                    <div className="grid gap-6">
-                        <QsBuildSettings buildSettings={buildSettings} nodes={nodeInfo} />
+                <TabsContent value="builds" class名称="space-y-4">
+                    <div class名称="grid gap-6">
+                        <QsBuild设置 build设置={build设置} nodes={nodeInfo} />
                     </div>
                 </TabsContent>
 
-                <TabsContent value="cluster" className="space-y-4">
+                <TabsContent value="cluster" class名称="space-y-4">
                     <NodeInfo nodeInfos={nodeInfo} clusterJoinToken={clusterJoinToken} />
                 </TabsContent>
-                <TabsContent value="updates" className="space-y-4">
+                <TabsContent value="updates" class名称="space-y-4">
                     <UpdateInfoPage />
                 </TabsContent>
-                <TabsContent value="maintenance" className="space-y-4">
-                    <div className="grid gap-6">
-                        <QuickStackMaintenanceSettings qsPodName={qsPodInfo?.podName} />
+                <TabsContent value="maintenance" class名称="space-y-4">
+                    <div class名称="grid gap-6">
+                        <QuickStackMaintenance设置 qsPod名称={qsPodInfo?.pod名称} />
                     </div>
                 </TabsContent>
-            </ServerSettingsTabs>
+            </Server设置Tabs>
         </div>
     )
 }

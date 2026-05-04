@@ -20,7 +20,7 @@ class K3sUpdateService {
      */
     async isSystemUpgradeControllerPresent(): Promise<boolean> {
         try {
-            await k3s.apps.readNamespacedDeployment(
+            await k3s.apps.read名称spacedDeployment(
                 this.SYSTEM_UPGRADE_CONTROLLER_NAME,
                 this.SYSTEM_UPGRADE_NAMESPACE
             );
@@ -43,7 +43,7 @@ class K3sUpdateService {
             throw new ServiceException('System Upgrade Controller is already installed.');
         }
 
-        await namespaceService.createNamespaceIfNotExists(this.SYSTEM_UPGRADE_NAMESPACE);
+        await namespaceService.create名称spaceIfNotExists(this.SYSTEM_UPGRADE_NAMESPACE);
 
         console.log('Fetching and applying CRD manifest...');
         await this.applyManifestFromUrl(this.SYSTEM_UPGRADE_CRD_URL);
@@ -208,7 +208,7 @@ class K3sUpdateService {
     }
 
     /**
-     * Creates upgrade plans for control-plane and worker nodes to upgrade to the next available K3s version calculated by getNextAvailableK3sReleaseVersionInfo.
+     * 创建s upgrade plans for control-plane and worker nodes to upgrade to the next available K3s version calculated by getNextAvailableK3sReleaseVersionInfo.
      * This function triggers the start of the upgrade progress.
      * If upgrade plans already exist, they will be deleted first.
      */
@@ -224,7 +224,7 @@ class K3sUpdateService {
 
         const channelUrl = versionInfo.channelUrl;
 
-        // Delete existing plans if they exist
+        // 删除 existing plans if they exist
         await this.deleteUpgradePlans();
 
         // Server Plan - upgrades control-plane nodes
@@ -247,7 +247,7 @@ class K3sUpdateService {
                         }
                     ]
                 },
-                serviceAccountName: 'system-upgrade',
+                serviceAccount名称: 'system-upgrade',
                 upgrade: {
                     image: 'rancher/k3s-upgrade'
                 },
@@ -278,7 +278,7 @@ class K3sUpdateService {
                     args: ['prepare', 'server-plan'],
                     image: 'rancher/k3s-upgrade'
                 },
-                serviceAccountName: 'system-upgrade',
+                serviceAccount名称: 'system-upgrade',
                 upgrade: {
                     image: 'rancher/k3s-upgrade'
                 },
@@ -309,7 +309,7 @@ class K3sUpdateService {
         console.log('Deleting existing upgrade plans...');
 
         if (plans.agentPlan) {
-            // Delete agent-plan first (it depends on server-plan)
+            // 删除 agent-plan first (it depends on server-plan)
             await client.delete({
                 apiVersion: 'upgrade.cattle.io/v1',
                 kind: 'Plan',
@@ -318,11 +318,11 @@ class K3sUpdateService {
                     namespace: this.SYSTEM_UPGRADE_NAMESPACE
                 }
             });
-            console.log('Deleted agent-plan');
+            console.log('删除d agent-plan');
         }
 
         if (plans.serverPlan) {
-            // Delete server-plan
+            // 删除 server-plan
             await client.delete({
                 apiVersion: 'upgrade.cattle.io/v1',
                 kind: 'Plan',
@@ -331,7 +331,7 @@ class K3sUpdateService {
                     namespace: this.SYSTEM_UPGRADE_NAMESPACE
                 }
             });
-            console.log('Deleted server-plan');
+            console.log('删除d server-plan');
         }
     }
 }

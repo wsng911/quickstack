@@ -1,37 +1,37 @@
-import { AppPodsStatusModel } from '@/shared/model/app-pod-status.model';
-import { usePodsStatus } from '../states/zustand.states';
+import { AppPods状态Model } from '@/shared/model/app-pod-status.model';
+import { usePods状态 } from '../states/zustand.states';
 
 /**
  * Singleton service that manages streaming for all pods status.
  * This service runs in the browser and updates the Zustand store with fresh data via SSE.
  */
-class PodsStatusPollingService {
-    private static instance: PodsStatusPollingService;
+class Pods状态PollingService {
+    private static instance: Pods状态PollingService;
     private controller: AbortController | null = null;
     private isConnected = false;
 
     private constructor() { }
 
-    public static getInstance(): PodsStatusPollingService {
-        if (!PodsStatusPollingService.instance) {
-            PodsStatusPollingService.instance = new PodsStatusPollingService();
+    public static getInstance(): Pods状态PollingService {
+        if (!Pods状态PollingService.instance) {
+            Pods状态PollingService.instance = new Pods状态PollingService();
         }
-        return PodsStatusPollingService.instance;
+        return Pods状态PollingService.instance;
     }
 
     public start(): void {
         if (this.isConnected) {
-            console.log('[PodsStatusService] Already connected, skipping start');
+            console.log('[Pods状态Service] Already connected, skipping start');
             return;
         }
 
-        console.log('[PodsStatusService] Starting pod status stream');
+        console.log('[Pods状态Service] Starting pod status stream');
         this.connect();
     }
 
     public stop(): void {
         if (this.controller) {
-            console.log('[PodsStatusService] Stopping pod status stream');
+            console.log('[Pods状态Service] Stopping pod status stream');
             this.controller.abort();
             this.controller = null;
             this.isConnected = false;
@@ -69,9 +69,9 @@ class PodsStatusPollingService {
             }
         } catch (error: any) {
             if (error.name === 'AbortError') {
-                console.log('[PodsStatusService] Stream aborted');
+                console.log('[Pods状态Service] Stream aborted');
             } else {
-                console.error('[PodsStatusService] Stream error:', error);
+                console.error('[Pods状态Service] Stream error:', error);
                 // Retry logic
                 this.isConnected = false;
                 setTimeout(() => {
@@ -94,15 +94,15 @@ class PodsStatusPollingService {
                 const jsonStr = line.substring(6);
                 try {
                     const data = JSON.parse(jsonStr);
-                    const { setPodsStatus, updatePodStatus } = usePodsStatus.getState();
+                    const { setPods状态, updatePod状态 } = usePods状态.getState();
 
                     if (Array.isArray(data)) {
-                        setPodsStatus(data as AppPodsStatusModel[]);
+                        setPods状态(data as AppPods状态Model[]);
                     } else {
-                        updatePodStatus(data as AppPodsStatusModel);
+                        updatePod状态(data as AppPods状态Model);
                     }
                 } catch (e) {
-                    console.error('[PodsStatusService] Error parsing JSON:', e);
+                    console.error('[Pods状态Service] Error parsing JSON:', e);
                 }
             }
         }
@@ -119,4 +119,4 @@ class PodsStatusPollingService {
     }
 }
 
-export const podsStatusPollingService = PodsStatusPollingService.getInstance();
+export const pods状态PollingService = Pods状态PollingService.getInstance();

@@ -15,7 +15,7 @@ export function HintBoxUrl({ url }: { url: string }) {
         <Tooltip>
             <TooltipTrigger asChild>
                 <Link href={url} target="_blank">
-                    <Button type="button" variant="outline" className="h-8 w-8 p-0"><QuestionMarkIcon /></Button>
+                    <Button type="button" variant="outline" class名称="h-8 w-8 p-0"><QuestionMarkIcon /></Button>
                 </Link>
             </TooltipTrigger>
             <TooltipContent>

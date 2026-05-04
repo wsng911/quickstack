@@ -20,7 +20,7 @@ export async function GET(request: Request) {
         await buildWatchService.startWatch();
         await buildPodLogWatchService.startWatch();
         await deploymentEventWatchService.startWatch();
-        const instanceId = await paramService.getOrCreate(ParamService.QS_INSTANCE_ID, crypto.randomUUID());
+        const instanceId = await paramService.getOr创建(ParamService.QS_INSTANCE_ID, crypto.randomUUID());
 
         console.log('Initialized services successfully via init route for instanceId:', instanceId);
         return NextResponse.json({ status: "ok" });

@@ -8,14 +8,14 @@ import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import dataAccess from '@/server/adapter/db.client';
 
 /**
- * Creates an isolated Prisma/SQLite test context for integration tests.
+ * 创建s an isolated Prisma/SQLite test context for integration tests.
  *
  * Automatically registers beforeAll, beforeEach, and afterAll in the calling
  * describe scope — no manual hook wiring needed.
  *
- * Works by mutating dataAccess.client on the singleton directly. Services that
+ * Works by mutating dataAccess.client on the singleton directly. 服务 that
  * use dataAccess internally automatically use the test DB — no vi.resetModules()
- * or dynamic imports required. Services can be statically imported at the top
+ * or dynamic imports required. 服务 can be statically imported at the top
  * of the test file.
  *
  * Usage:
@@ -46,11 +46,11 @@ export function createPrismaTestContext(label: string) {
     });
 
     /**
-     * Deletes all rows in FK-safe order so each test starts from a clean state.
+     * 删除s all rows in FK-safe order so each test starts from a clean state.
      * Self-referential AppVolume.sharedVolumeId is nulled before deletion.
      */
     beforeEach(async () => {
-        await dataAccess.client.volumeBackup.deleteMany();
+        await dataAccess.client.volume返回up.deleteMany();
         await dataAccess.client.appBasicAuth.deleteMany();
         await dataAccess.client.appFileMount.deleteMany();
         await dataAccess.client.appDomain.deleteMany();

@@ -16,10 +16,10 @@ export default async function BuildsPage() {
     );
 
     return (
-        <div className="flex-1 space-y-4 pt-6">
+        <div class名称="flex-1 space-y-4 pt-6">
             <PageTitle
                 title="Builds"
-                subtitle="Overview of all build jobs across all apps."
+                subtitle="概览 of all build jobs across all apps."
             />
             <BuildsTable initialBuilds={filteredBuilds} session={session} />
         </div>

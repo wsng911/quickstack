@@ -2,14 +2,14 @@
 
 import { SuccessActionResult } from "@/shared/model/server-action-error-return.model";
 import { getAdminUserSession, getAuthUserSession, saveFormAction, simpleAction } from "@/server/utils/action-wrapper.utils";
-import { S3TargetEditModel, s3TargetEditZodModel } from "@/shared/model/s3-target-edit.model";
+import { S3Target编辑Model, s3Target编辑ZodModel } from "@/shared/model/s3-target-edit.model";
 import s3TargetService from "@/server/services/s3-target.service";
 import s3Service from "@/server/services/aws-s3.service";
 import { S3Target } from "@prisma/client";
 import { ServiceException } from "@/shared/model/service.exception.model";
 
-export const saveS3Target = async (prevState: any, inputData: S3TargetEditModel) =>
-    saveFormAction(inputData, s3TargetEditZodModel, async (validatedData) => {
+export const saveS3Target = async (prevState: any, inputData: S3Target编辑Model) =>
+    saveFormAction(inputData, s3Target编辑ZodModel, async (validatedData) => {
         await getAdminUserSession();
 
         const url = new URL(validatedData.endpoint.includes('://') ? validatedData.endpoint : `https://${validatedData.endpoint}`);

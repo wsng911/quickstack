@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const giteaAppTemplate: AppTemplateModel = {
     name: "Gitea",
-    iconName: 'https://raw.githubusercontent.com/go-gitea/gitea/main/assets/logo.svg',
+    icon名称: 'https://raw.githubusercontent.com/go-gitea/gitea/main/assets/logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -36,7 +36,7 @@ GITEA__database__DB_TYPE=sqlite3
             size: 2000,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

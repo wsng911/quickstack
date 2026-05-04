@@ -29,7 +29,7 @@ interface SelectBoxProps {
   placeholder?: string
   inputPlaceholder?: string
   emptyPlaceholder?: string
-  className?: string
+  class名称?: string
   multiple?: boolean
 }
 
@@ -39,7 +39,7 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
       inputPlaceholder,
       emptyPlaceholder,
       placeholder,
-      className,
+      class名称,
       options,
       value,
       onChange,
@@ -47,7 +47,7 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
     },
     ref
   ) => {
-    const [searchTerm, setSearchTerm] = React.useState<string>('')
+    const [searchTerm, set搜索Term] = React.useState<string>('')
     const [isOpen, setIsOpen] = React.useState(false)
 
     const handleSelect = (selectedValue: string) => {
@@ -71,13 +71,13 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <div
-            className={cn(
+            class名称={cn(
               'flex min-h-[36px] cursor-pointer items-center justify-between rounded-md border px-3 py-1 data-[state=open]:border-ring',
-              className
+              class名称
             )}
           >
             <div
-              className={cn(
+              class名称={cn(
                 'items-center gap-1 overflow-hidden text-sm',
                 multiple
                   ? 'flex flex-grow flex-wrap '
@@ -94,7 +94,7 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
                     .map((option) => (
                       <span
                         key={option.value}
-                        className="inline-flex items-center gap-1 rounded-md border py-0.5 pl-2 pr-1 text-xs font-medium text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                        class名称="inline-flex items-center gap-1 rounded-md border py-0.5 pl-2 pr-1 text-xs font-medium text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                       >
                         <span>{option.label}</span>
                         <span
@@ -102,7 +102,7 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
                             e.preventDefault()
                             handleSelect(option.value)
                           }}
-                          className="flex items-center rounded-sm px-[1px] text-muted-foreground/60 hover:bg-accent hover:text-muted-foreground"
+                          class名称="flex items-center rounded-sm px-[1px] text-muted-foreground/60 hover:bg-accent hover:text-muted-foreground"
                         >
                           <Cross2Icon />
                         </span>
@@ -112,12 +112,12 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
                   options.find((opt) => opt.value === value)?.label
                 )
               ) : (
-                <span className="mr-auto text-muted-foreground">
+                <span class名称="mr-auto text-muted-foreground">
                   {placeholder}
                 </span>
               )}
             </div>
-            <div className="flex items-center self-stretch pl-1 text-muted-foreground/60 hover:text-foreground [&>div]:flex [&>div]:items-center [&>div]:self-stretch">
+            <div class名称="flex items-center self-stretch pl-1 text-muted-foreground/60 hover:text-foreground [&>div]:flex [&>div]:items-center [&>div]:self-stretch">
               {value && value.length > 0 ? (
                 <div
                   onClick={(e) => {
@@ -125,35 +125,35 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
                     handleClear()
                   }}
                 >
-                  <Cross2Icon className="size-4" />
+                  <Cross2Icon class名称="size-4" />
                 </div>
               ) : (
                 <div>
-                  <CaretSortIcon className="size-4" />
+                  <CaretSortIcon class名称="size-4" />
                 </div>
               )}
             </div>
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[var(--radix-popover-trigger-width)] p-0"
+          class名称="w-[var(--radix-popover-trigger-width)] p-0"
           align="start"
         >
           <Command>
-            <div className="relative">
+            <div class名称="relative">
               <CommandInput
                 value={searchTerm}
-                onValueChange={(e) => setSearchTerm(e)}
+                onValueChange={(e) => set搜索Term(e)}
                 ref={ref}
-                placeholder={inputPlaceholder ?? 'Search...'}
-                className="h-9"
+                placeholder={inputPlaceholder ?? '搜索...'}
+                class名称="h-9"
               />
               {searchTerm && (
                 <div
-                  className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-muted-foreground hover:text-foreground"
-                  onClick={() => setSearchTerm('')}
+                  class名称="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-muted-foreground hover:text-foreground"
+                  onClick={() => set搜索Term('')}
                 >
-                  <Cross2Icon className="size-4" />
+                  <Cross2Icon class名称="size-4" />
                 </div>
               )}
             </div>
@@ -162,7 +162,7 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
             </CommandEmpty>
             <CommandGroup>
               <ScrollArea>
-                <div className="max-h-64">
+                <div class名称="max-h-64">
                   {options.map((option) => {
                     const isSelected =
                       Array.isArray(value) && value.includes(option.value)
@@ -174,7 +174,7 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
                       >
                         {multiple && (
                           <div
-                            className={cn(
+                            class名称={cn(
                               'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
                               isSelected
                                 ? 'bg-primary text-primary-foreground'
@@ -187,7 +187,7 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
                         <span>{option.label}</span>
                         {!multiple && option.value === value && (
                           <CheckIcon
-                            className={cn(
+                            class名称={cn(
                               'ml-auto',
                               option.value === value
                                 ? 'opacity-100'
@@ -208,6 +208,6 @@ const SelectBox = React.forwardRef<HTMLInputElement, SelectBoxProps>(
   }
 )
 
-SelectBox.displayName = 'SelectBox'
+SelectBox.display名称 = 'SelectBox'
 
 export default SelectBox

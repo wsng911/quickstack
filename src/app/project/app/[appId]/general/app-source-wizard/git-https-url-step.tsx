@@ -14,7 +14,7 @@ export function GitHttpsUrlStep({ formData, showCredentials, showToken, setShowT
     onRetry: () => Promise<boolean>;
 }) {
     return (
-        <div className="space-y-4">
+        <div class名称="space-y-4">
             <IconInput
                 icon={LinkIcon}
                 label="Git URL"
@@ -23,16 +23,16 @@ export function GitHttpsUrlStep({ formData, showCredentials, showToken, setShowT
                 onChange={(event) => onChange({ gitUrl: event.target.value, gitBranch: '' })}
             />
             {showCredentials && (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div class名称="grid gap-4 md:grid-cols-2">
                     <IconInput
                         icon={User}
-                        label="Git Username"
-                        value={formData.gitUsername ?? ''}
-                        onChange={(event) => onChange({ gitUsername: event.target.value })}
+                        label="Git 用户名"
+                        value={formData.git用户名 ?? ''}
+                        onChange={(event) => onChange({ git用户名: event.target.value })}
                     />
                     <SecretInput
                         icon={LockKeyhole}
-                        label="Git Password or Token"
+                        label="Git 密码 or Token"
                         value={formData.gitToken ?? ''}
                         visible={showToken}
                         onVisibleChange={setShowToken}

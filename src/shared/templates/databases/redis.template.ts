@@ -4,10 +4,10 @@ import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { AppTemplateUtils } from "@/server/utils/app-template.utils";
 
 export function getRedisAppTemplate(config?: {
-    appName?: string
+    app名称?: string
 }): AppTemplateContentModel {
     return {
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -17,7 +17,7 @@ export function getRedisAppTemplate(config?: {
             }
         ],
         appModel: {
-            name: config?.appName || "Redis",
+            name: config?.app名称 || "Redis",
             appType: 'REDIS',
             sourceType: 'CONTAINER',
             containerImageSource: "",
@@ -36,7 +36,7 @@ export function getRedisAppTemplate(config?: {
             size: 200,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -48,18 +48,18 @@ export function getRedisAppTemplate(config?: {
 
 export const redisAppTemplate: AppTemplateModel = {
     name: "Redis",
-    iconName: 'https://cdn.simpleicons.org/redis',
+    icon名称: 'https://cdn.simpleicons.org/redis',
     templates: [
         getRedisAppTemplate()
     ],
 };
 
-export const postCreateRedisAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
+export const post创建RedisAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
 
     const redisApp = createdApps[0];
 
-    const createdPassword = AppTemplateUtils.generateStrongPasswort(25);
-    redisApp.containerArgs = `["--requirepass", "${createdPassword}"]`;
+    const created密码 = AppTemplateUtils.generateStrongPasswort(25);
+    redisApp.containerArgs = `["--requirepass", "${created密码}"]`;
 
     return [redisApp];
 };

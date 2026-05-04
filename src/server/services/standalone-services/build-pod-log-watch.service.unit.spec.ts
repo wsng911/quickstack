@@ -13,7 +13,7 @@ vi.mock('@/server/adapter/kubernetes-api.adapter', () => ({
     default: {
         getKubeConfig: vi.fn(),
         core: {
-            listNamespacedPod: vi.fn(),
+            list名称spacedPod: vi.fn(),
         },
         log: {
             log: vi.fn(),
@@ -47,7 +47,7 @@ describe('BuildPodLogWatchService', () => {
     });
 
     it('ignores pods without deployment annotation', async () => {
-        vi.mocked(k3s.core.listNamespacedPod).mockResolvedValue({
+        vi.mocked(k3s.core.list名称spacedPod).mockResolvedValue({
             body: {
                 items: [{
                     metadata: {
@@ -58,7 +58,7 @@ describe('BuildPodLogWatchService', () => {
                         containers: [{ name: 'build-1' }],
                     },
                     status: {
-                        containerStatuses: [
+                        container状态es: [
                             { name: 'build-1', state: { running: { startedAt: new Date().toISOString() } } },
                         ],
                     },
@@ -85,15 +85,15 @@ describe('BuildPodLogWatchService', () => {
                 containers: [{ name: 'build-1' }],
             },
             status: {
-                containerStatuses: [
+                container状态es: [
                     { name: 'build-1', state: { running: { startedAt: new Date().toISOString() } } },
                 ],
             },
         };
 
         let endStream: (() => void) | undefined;
-        vi.mocked(k3s.core.listNamespacedPod).mockResolvedValue({ body: { items: [pod] } } as any);
-        vi.mocked(k3s.log.log).mockImplementation(async (_ns, _podName, _containerName, logStream) => {
+        vi.mocked(k3s.core.list名称spacedPod).mockResolvedValue({ body: { items: [pod] } } as any);
+        vi.mocked(k3s.log.log).mockImplementation(async (_ns, _pod名称, _container名称, logStream) => {
             const writable = logStream as stream.PassThrough;
             endStream = () => writable.end();
             return { abort: vi.fn() } as any;

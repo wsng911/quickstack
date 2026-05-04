@@ -4,8 +4,8 @@ import { buildJobSchemaZod } from "./build-job";
 export const globalBuildJobSchemaZod = buildJobSchemaZod.extend({
     appId: z.string(),
     projectId: z.string(),
-    appName: z.string(),
-    projectName: z.string(),
+    app名称: z.string(),
+    project名称: z.string(),
     completionTime: z.date().optional(),
 });
 

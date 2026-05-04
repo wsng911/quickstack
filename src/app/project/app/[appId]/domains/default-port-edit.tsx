@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { AppPort } from "@prisma/client"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { savePort } from "./actions"
@@ -24,7 +24,7 @@ import { AppPortModel, appPortZodModel } from "@/shared/model/default-port.model
 
 
 
-export default function DefaultPortEditDialog({ children, appPort, appId }: { children: React.ReactNode; appPort?: AppPort; appId: string; }) {
+export default function DefaultPort编辑Dialog({ children, appPort, appId }: { children: React.ReactNode; appPort?: AppPort; appId: string; }) {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -60,18 +60,18 @@ export default function DefaultPortEditDialog({ children, appPort, appId }: { ch
                 {children}
             </div>
             <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent class名称="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>Edit Internal Port</DialogTitle>
-                        <DialogDescription>
-                            Edit the internal port for the application.
-                        </DialogDescription>
+                        <DialogTitle>编辑 Internal Port</DialogTitle>
+                        <Dialog描述>
+                            编辑 the internal port for the application.
+                        </Dialog描述>
                     </DialogHeader>
                     <Form {...form}>
-                        <form action={(e) => form.handleSubmit((data) => {
+                        <form action={(e) => form.handle提交((data) => {
                             return formAction(data);
                         })()}>
-                            <div className="space-y-4">
+                            <div class名称="space-y-4">
                                 <FormField
                                     control={form.control}
                                     name="port"
@@ -86,8 +86,8 @@ export default function DefaultPortEditDialog({ children, appPort, appId }: { ch
                                     )}
                                 />
 
-                                <p className="text-red-500">{state.message}</p>
-                                <SubmitButton>Save</SubmitButton>
+                                <p class名称="text-red-500">{state.message}</p>
+                                <提交Button>保存</提交Button>
                             </div>
                         </form>
                     </Form >

@@ -2,7 +2,7 @@ import { revalidateTag, unstable_cache } from "next/cache";
 import dataAccess from "../adapter/db.client";
 import { Tags } from "../utils/cache-tag-generator.utils";
 import { Prisma, Project } from "@prisma/client";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import deploymentService from "./deployment.service";
 import namespaceService from "./namespace.service";
 import buildService from "./build.service";
@@ -17,7 +17,7 @@ class ProjectService {
         }
         try {
             await buildService.deleteAllBuildsOfProject(existingItem.id);
-            await namespaceService.deleteNamespace(existingItem.id);
+            await namespaceService.delete名称space(existingItem.id);
             await dataAccess.client.project.delete({
                 where: {
                     id: projectid
@@ -52,7 +52,7 @@ class ProjectService {
         });
     }
 
-    async save(item: Prisma.ProjectUncheckedCreateInput | Prisma.ProjectUncheckedUpdateInput) {
+    async save(item: Prisma.ProjectUnchecked创建Input | Prisma.ProjectUncheckedUpdateInput) {
         let savedItem: Project;
         try {
             if (item.id) {
@@ -63,12 +63,12 @@ class ProjectService {
                     data: item
                 });
             } else {
-                item.id = KubeObjectNameUtils.toProjectId(item.name as string);
+                item.id = KubeObject名称Utils.toProjectId(item.name as string);
                 savedItem = await dataAccess.client.project.create({
-                    data: item as Prisma.ProjectUncheckedCreateInput
+                    data: item as Prisma.ProjectUnchecked创建Input
                 });
             }
-            await namespaceService.createNamespaceIfNotExists(savedItem.id);
+            await namespaceService.create名称spaceIfNotExists(savedItem.id);
         } finally {
             revalidateTag(Tags.projects());
         }

@@ -7,7 +7,7 @@ import type { StartedK3sContainer } from '@testcontainers/k3s';
 import { createK3sTestContext } from '@/__tests__/k3s-test.utils';
 import networkPolicyService from '@/server/services/network-policy.service';
 import svcService from '@/server/services/svc.service';
-import { KubeObjectNameUtils } from '@/server/utils/kube-object-name.utils';
+import { KubeObject名称Utils } from '@/server/utils/kube-object-name.utils';
 import { AppExtendedModel } from '@/shared/model/app-extended.model';
 import { AppNetworkPolicyType } from '@/shared/model/network-policy.model';
 import { Constants } from '@/shared/utils/constants';
@@ -22,7 +22,7 @@ describe('network-policy.service integration', () => {
     it('creates a NetworkPolicy that allows external ingress to App Node Ports', async () => {
         const namespace = 'node-port-policy-test';
         const { core, network } = ctx.getClients();
-        await core.createNamespace({
+        await core.create名称space({
             metadata: {
                 name: namespace,
             },
@@ -47,7 +47,7 @@ describe('network-policy.service integration', () => {
             ],
         } as AppExtendedModel);
 
-        const policy = await network.readNamespacedNetworkPolicy(KubeObjectNameUtils.toNetworkPolicyName('demo-app'), namespace);
+        const policy = await network.read名称spacedNetworkPolicy(KubeObject名称Utils.toNetworkPolicy名称('demo-app'), namespace);
 
         expect(policy.body.spec?.ingress).toEqual(
             expect.arrayContaining([
@@ -63,7 +63,7 @@ describe('network-policy.service integration', () => {
         const namespace = 'normal-app-policy-test';
         const appId = 'normal-app';
         const { core, network } = ctx.getClients();
-        await core.createNamespace({
+        await core.create名称space({
             metadata: {
                 name: namespace,
             },
@@ -78,7 +78,7 @@ describe('network-policy.service integration', () => {
             appNodePorts: [],
         }));
 
-        const policy = await network.readNamespacedNetworkPolicy(KubeObjectNameUtils.toNetworkPolicyName(appId), namespace);
+        const policy = await network.read名称spacedNetworkPolicy(KubeObject名称Utils.toNetworkPolicy名称(appId), namespace);
 
         expect(policy.body.spec?.podSelector).toEqual({
             matchLabels: {
@@ -108,7 +108,7 @@ describe('network-policy.service integration', () => {
         const namespace = 'disabled-app-policy-test';
         const appId = 'disabled-policy-app';
         const { core, network } = ctx.getClients();
-        await core.createNamespace({
+        await core.create名称space({
             metadata: {
                 name: namespace,
             },
@@ -124,7 +124,7 @@ describe('network-policy.service integration', () => {
         });
         await networkPolicyService.reconcileNetworkPolicy(enabledApp);
 
-        await expect(network.readNamespacedNetworkPolicy(KubeObjectNameUtils.toNetworkPolicyName(appId), namespace))
+        await expect(network.read名称spacedNetworkPolicy(KubeObject名称Utils.toNetworkPolicy名称(appId), namespace))
             .resolves
             .toBeDefined();
 
@@ -133,19 +133,19 @@ describe('network-policy.service integration', () => {
             useNetworkPolicy: false,
         });
 
-        const policies = await network.listNamespacedNetworkPolicy(namespace);
+        const policies = await network.list名称spacedNetworkPolicy(namespace);
         expect(policies.body.items.map(policy => policy.metadata?.name))
             .not
-            .toContain(KubeObjectNameUtils.toNetworkPolicyName(appId));
+            .toContain(KubeObject名称Utils.toNetworkPolicy名称(appId));
     });
 
     it.each(networkPolicyCombinations)(
         'creates expected rules for ingress %s and egress %s',
         async (ingressPolicy, egressPolicy) => {
-            const namespace = toKubeName(`policy-matrix-${ingressPolicy}-${egressPolicy}`);
+            const namespace = toKube名称(`policy-matrix-${ingressPolicy}-${egressPolicy}`);
             const appId = 'matrix-app';
             const { core, network } = ctx.getClients();
-            await core.createNamespace({
+            await core.create名称space({
                 metadata: {
                     name: namespace,
                 },
@@ -160,7 +160,7 @@ describe('network-policy.service integration', () => {
                 appNodePorts: [],
             }));
 
-            const policy = await network.readNamespacedNetworkPolicy(KubeObjectNameUtils.toNetworkPolicyName(appId), namespace);
+            const policy = await network.read名称spacedNetworkPolicy(KubeObject名称Utils.toNetworkPolicy名称(appId), namespace);
 
             expectIngressRules(policy.body.spec?.ingress ?? [], ingressPolicy);
             expectEgressRules(policy.body.spec?.egress ?? [], egressPolicy);
@@ -170,13 +170,13 @@ describe('network-policy.service integration', () => {
     it('allows an nginx Deployment to be reached through a node on NodePort 30081', async () => {
         const app = createNginxApp();
         const { core, apps } = ctx.getClients();
-        await core.createNamespace({
+        await core.create名称space({
             metadata: {
                 name: app.projectId,
             },
         });
 
-        await apps.createNamespacedDeployment(app.projectId, {
+        await apps.create名称spacedDeployment(app.projectId, {
             metadata: {
                 name: app.id,
             },
@@ -266,8 +266,8 @@ function createNginxApp(): AppExtendedModel {
         sourceType: 'CONTAINER',
         buildMethod: 'RAILPACK',
         containerImageSource: 'nginx:1.27-alpine',
-        containerRegistryUsername: null,
-        containerRegistryPassword: null,
+        containerRegistry用户名: null,
+        containerRegistry密码: null,
         containerCommand: null,
         containerArgs: null,
         securityContextRunAsUser: null,
@@ -276,7 +276,7 @@ function createNginxApp(): AppExtendedModel {
         securityContextPrivileged: false,
         gitUrl: null,
         gitBranch: null,
-        gitUsername: null,
+        git用户名: null,
         gitToken: null,
         dockerfilePath: './Dockerfile',
         replicas: 1,
@@ -353,7 +353,7 @@ function expectIngressRules(rules: k8s.V1NetworkPolicyIngressRule[], policyType:
     };
 
     expect(hasTraefikIngressPeer(peers)).toBe(expectedPeers[policyType].traefik);
-    expect(hasSameNamespacePeer(peers)).toBe(expectedPeers[policyType].namespace);
+    expect(hasSame名称spacePeer(peers)).toBe(expectedPeers[policyType].namespace);
     expect(hasContainerTypePeer(peers, Constants.QS_ANNOTATION_CONTAINER_TYPE_DB_BACKUP_JOB))
         .toBe(expectedPeers[policyType].backupJob);
     expect(hasContainerTypePeer(peers, Constants.QS_ANNOTATION_CONTAINER_TYPE_DB_TOOL))
@@ -390,7 +390,7 @@ function expectEgressRules(rules: k8s.V1NetworkPolicyEgressRule[], policyType: A
 
     expect(hasDnsEgressRule(rules)).toBe(expectedRules[policyType].dns);
     expect(hasInternetEgressPeer(rules)).toBe(expectedRules[policyType].internet);
-    expect(hasSameNamespaceEgressPeer(rules)).toBe(expectedRules[policyType].namespace);
+    expect(hasSame名称spaceEgressPeer(rules)).toBe(expectedRules[policyType].namespace);
 }
 
 function hasTraefikIngressPeer(peers: k8s.V1NetworkPolicyPeer[]) {
@@ -399,7 +399,7 @@ function hasTraefikIngressPeer(peers: k8s.V1NetworkPolicyPeer[]) {
         peer.podSelector?.matchLabels?.['app.kubernetes.io/name'] === 'traefik');
 }
 
-function hasSameNamespacePeer(peers: k8s.V1NetworkPolicyPeer[]) {
+function hasSame名称spacePeer(peers: k8s.V1NetworkPolicyPeer[]) {
     return peers.some(peer => isEmptySelector(peer.podSelector));
 }
 
@@ -432,7 +432,7 @@ function hasInternetEgressPeer(rules: k8s.V1NetworkPolicyEgressRule[]) {
             destination.ipBlock?.except?.includes('192.168.0.0/16')));
 }
 
-function hasSameNamespaceEgressPeer(rules: k8s.V1NetworkPolicyEgressRule[]) {
+function hasSame名称spaceEgressPeer(rules: k8s.V1NetworkPolicyEgressRule[]) {
     return rules.some(rule =>
         (rule.to ?? []).some(destination =>
             isEmptySelector(destination.podSelector)));
@@ -444,7 +444,7 @@ function isEmptySelector(selector: k8s.V1LabelSelector | undefined) {
         (selector.matchExpressions ?? []).length === 0;
 }
 
-function toKubeName(value: string) {
+function toKube名称(value: string) {
     return value.toLowerCase().replace(/_/g, '-');
 }
 
@@ -470,7 +470,7 @@ async function waitForDeploymentAvailable(
     name: string
 ) {
     return await waitFor(async () => {
-        const deployment = await apps.readNamespacedDeployment(name, namespace);
+        const deployment = await apps.read名称spacedDeployment(name, namespace);
         const status = deployment.body.status;
         const available = status?.conditions?.some(condition =>
             condition.type === 'Available' && condition.status === 'True');

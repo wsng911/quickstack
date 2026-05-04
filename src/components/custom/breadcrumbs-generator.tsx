@@ -17,9 +17,9 @@ import {
     SidebarMenuSubItem,
     SidebarTrigger
 } from "@/components/ui/sidebar"
-import { AppleIcon, Calendar, ChartNoAxesCombined, ChevronDown, ChevronUp, FolderClosed, Home, Inbox, Plus, Search, Server, Settings, Settings2, User, User2 } from "lucide-react"
+import { AppleIcon, Calendar, ChartNoAxesCombined, ChevronDown, ChevronUp, Folder关闭d, Home, Inbox, Plus, 搜索, Server, 设置, 设置2, User, User2 } from "lucide-react"
 import Link from "next/link"
-import { EditProjectDialog } from "../../app/projects/edit-project-dialog"
+import { 编辑ProjectDialog } from "../../app/projects/edit-project-dialog"
 import projectService from "@/server/services/project.service"
 import { getAuthUserSession } from "@/server/utils/action-wrapper.utils"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
@@ -31,9 +31,9 @@ export function BreadcrumbsGenerator() {
     const { breadcrumbs } = useBreadcrumbs();
 
     return (<>
-        <div className="-ml-1 flex gap-4 items-center fixed w-full top-0 bg-white pt-6 pb-4 z-50">
+        <div class名称="-ml-1 flex gap-4 items-center fixed w-full top-0 bg-white pt-6 pb-4 z-50">
             <SidebarTrigger />
-            <Separator orientation="vertical" className="mr-1 h-4" />
+            <Separator orientation="vertical" class名称="mr-1 h-4" />
             {breadcrumbs && <Breadcrumb>
                 <BreadcrumbList>
                     {breadcrumbs.map((x, index) => (<>
@@ -41,7 +41,7 @@ export function BreadcrumbsGenerator() {
                         <BreadcrumbItem key={x.name}>
                             {x.dropdownItems ? (
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger className="flex items-center gap-1 transition-colors hover:text-foreground">
+                                    <DropdownMenuTrigger class名称="flex items-center gap-1 transition-colors hover:text-foreground">
                                         {x.name}
                                         <ChevronDown size={14} />
                                     </DropdownMenuTrigger>
@@ -61,7 +61,7 @@ export function BreadcrumbsGenerator() {
                 </BreadcrumbList>
             </Breadcrumb>}
         </div>
-        <div className="h-[32px]">
+        <div class名称="h-[32px]">
             <div></div>
         </div>
     </>

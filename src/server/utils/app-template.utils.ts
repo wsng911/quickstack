@@ -1,14 +1,14 @@
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
-import { AppTemplateContentModel, AppTemplateInputSettingsModel } from "@/shared/model/app-template.model";
+import { AppTemplateContentModel, AppTemplateInput设置Model } from "@/shared/model/app-template.model";
 import { DatabaseTemplateInfoModel, databaseTemplateInfoZodModel } from "@/shared/model/database-template-info.model";
 import { ServiceException } from "@/shared/model/service.exception.model";
 import crypto from "crypto";
 import { EnvVarUtils } from "./env-var.utils";
-import { KubeObjectNameUtils } from "./kube-object-name.utils";
+import { KubeObject名称Utils } from "./kube-object-name.utils";
 
 export class AppTemplateUtils {
     static mapTemplateInputValuesToApp(appTemplate: AppTemplateContentModel,
-        inputValues: AppTemplateInputSettingsModel[]) {
+        inputValues: AppTemplateInput设置Model[]) {
 
         this.populateRandomValues(inputValues);
 
@@ -32,21 +32,21 @@ export class AppTemplateUtils {
      * Replaces placeholders in the env variables with the database information.
      *
      * params:
-     * - {databaseName}
+     * - {database名称}
      * - {username}
      * - {password}
      * - {port}
      * - {hostname}
      */
     static replacePlaceholdersInEnvVariablesWithDatabaseInfo(app: AppExtendedModel, databaseInfo: DatabaseTemplateInfoModel) {
-        app.envVars = app.envVars.replaceAll(/\{databaseName\}/g, databaseInfo.databaseName);
+        app.envVars = app.envVars.replaceAll(/\{database名称\}/g, databaseInfo.database名称);
         app.envVars = app.envVars.replaceAll(/\{username\}/g, databaseInfo.username);
         app.envVars = app.envVars.replaceAll(/\{password\}/g, databaseInfo.password);
         app.envVars = app.envVars.replaceAll(/\{port\}/g, databaseInfo.port + '');
         app.envVars = app.envVars.replaceAll(/\{hostname\}/g, databaseInfo.hostname);
     }
 
-    static populateRandomValues(inputValues: AppTemplateInputSettingsModel[]) {
+    static populateRandomValues(inputValues: AppTemplateInput设置Model[]) {
         for (const input of inputValues) {
             if (input.randomGeneratedIfEmpty && !input.value) {
                 input.value = crypto.randomBytes(16).toString('hex');
@@ -65,7 +65,7 @@ export class AppTemplateUtils {
      */
     static generateStrongPasswort(length = 25): string {
         if (length < 10 || length > 72) {
-            throw new ServiceException('Password must be 10-72 characters long');
+            throw new ServiceException('密码 must be 10-72 characters long');
         }
         const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const lowercase = 'abcdefghijklmnopqrstuvwxyz';
@@ -103,10 +103,10 @@ export class AppTemplateUtils {
         let returnVal: DatabaseTemplateInfoModel;
         const envVars = EnvVarUtils.parseEnvVariables(app);
         const port = app.appPorts.find(x => !!x.port)?.port!;
-        const hostname = KubeObjectNameUtils.toServiceName(app.id);
+        const hostname = KubeObject名称Utils.toService名称(app.id);
         if (app.appType === 'MONGODB') {
             returnVal = {
-                databaseName: envVars.find(x => x.name === 'MONGO_INITDB_DATABASE')?.value!,
+                database名称: envVars.find(x => x.name === 'MONGO_INITDB_DATABASE')?.value!,
                 username: envVars.find(x => x.name === 'MONGO_INITDB_ROOT_USERNAME')?.value!,
                 password: envVars.find(x => x.name === 'MONGO_INITDB_ROOT_PASSWORD')?.value!,
                 port,
@@ -115,7 +115,7 @@ export class AppTemplateUtils {
             };
         } else if (app.appType === 'MYSQL') {
             returnVal = {
-                databaseName: envVars.find(x => x.name === 'MYSQL_DATABASE')?.value!,
+                database名称: envVars.find(x => x.name === 'MYSQL_DATABASE')?.value!,
                 username: envVars.find(x => x.name === 'MYSQL_USER')?.value!,
                 password: envVars.find(x => x.name === 'MYSQL_PASSWORD')?.value!,
                 port,
@@ -124,7 +124,7 @@ export class AppTemplateUtils {
             };
         } else if (app.appType === 'POSTGRES') {
             returnVal = {
-                databaseName: envVars.find(x => x.name === 'POSTGRES_DB')?.value!,
+                database名称: envVars.find(x => x.name === 'POSTGRES_DB')?.value!,
                 username: envVars.find(x => x.name === 'POSTGRES_USER')?.value!,
                 password: envVars.find(x => x.name === 'POSTGRES_PASSWORD')?.value!,
                 port,
@@ -133,7 +133,7 @@ export class AppTemplateUtils {
             };
         } else if (app.appType === 'MARIADB') {
             returnVal = {
-                databaseName: envVars.find(x => x.name === 'MYSQL_DATABASE')?.value!,
+                database名称: envVars.find(x => x.name === 'MYSQL_DATABASE')?.value!,
                 username: envVars.find(x => x.name === 'MYSQL_USER')?.value!,
                 password: envVars.find(x => x.name === 'MYSQL_PASSWORD')?.value!,
                 port,
@@ -151,7 +151,7 @@ export class AppTemplateUtils {
                 }
             }
             returnVal = {
-                databaseName: '',
+                database名称: '',
                 username: '',
                 password,
                 port,

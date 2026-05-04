@@ -2,22 +2,22 @@
 
 import { getAdminUserSession, getAuthUserSession, saveFormAction, simpleAction, fileUploadAction } from "@/server/utils/action-wrapper.utils";
 import paramService, { ParamService } from "@/server/services/param.service";
-import { QsIngressSettingsModel, qsIngressSettingsZodModel } from "@/shared/model/qs-settings.model";
-import { QsLetsEncryptSettingsModel, qsLetsEncryptSettingsZodModel } from "@/shared/model/qs-letsencrypt-settings.model";
+import { QsIngress设置Model, qsIngress设置ZodModel } from "@/shared/model/qs-settings.model";
+import { QsLetsEncrypt设置Model, qsLetsEncrypt设置ZodModel } from "@/shared/model/qs-letsencrypt-settings.model";
 import quickStackService from "@/server/services/qs.service";
 import { ServerActionResult, SuccessActionResult } from "@/shared/model/server-action-error-return.model";
 import registryService from "@/server/services/registry.service";
-import { RegistryStorageLocationSettingsModel, registryStorageLocationSettingsZodModel } from "@/shared/model/registry-storage-location-settings.model";
-import { SystemBackupLocationSettingsModel, systemBackupLocationSettingsZodModel } from "@/shared/model/system-backup-location-settings.model";
+import { RegistryStorageLocation设置Model, registryStorageLocation设置ZodModel } from "@/shared/model/registry-storage-location-settings.model";
+import { System返回upLocation设置Model, system返回upLocation设置ZodModel } from "@/shared/model/system-backup-location-settings.model";
 import { Constants } from "@/shared/utils/constants";
-import { QsPublicIpv4SettingsModel, qsPublicIpv4SettingsZodModel } from "@/shared/model/qs-public-ipv4-settings.model";
-import ipAddressFinderAdapter from "@/server/adapter/ip-adress-finder.adapter";
+import { QsPublicIpv4设置Model, qsPublicIpv4设置ZodModel } from "@/shared/model/qs-public-ipv4-settings.model";
+import ip添加ressFinderAdapter from "@/server/adapter/ip-adress-finder.adapter";
 import { KubeSizeConverter } from "@/shared/utils/kubernetes-size-converter.utils";
 import buildService from "@/server/services/build.service";
 import standalonePodService from "@/server/services/standalone-services/standalone-pod.service";
 import maintenanceService from "@/server/services/standalone-services/maintenance.service";
 import appLogsService from "@/server/services/standalone-services/app-logs.service";
-import systemBackupService from "@/server/services/standalone-services/system-backup.service";
+import system返回upService from "@/server/services/standalone-services/system-backup.service";
 import backupService from "@/server/services/standalone-services/backup.service";
 import networkPolicyService from "@/server/services/network-policy.service";
 import traefikService from "@/server/services/traefik.service";
@@ -28,40 +28,40 @@ import { z } from "zod";
 import { revalidateTag } from "next/cache";
 import { Tags } from "@/server/utils/cache-tag-generator.utils";
 import clusterService from "@/server/services/cluster.service";
-import { TraefikIpPropagationStatus } from "@/shared/model/traefik-ip-propagation.model";
+import { TraefikIpPropagation状态 } from "@/shared/model/traefik-ip-propagation.model";
 import k3sUpdateService from "@/server/services/upgrade-services/k3s-update.service";
 import longhornUpdateService from "@/server/services/upgrade-services/longhorn-update.service";
 import longhornUiService from "@/server/services/longhorn-ui.service";
-import { BuildSettingsModel, buildSettingsZodModel } from "@/shared/model/build-settings.model";
+import { Build设置Model, build设置ZodModel } from "@/shared/model/build-settings.model";
 
-export const saveBuildSettings = async (prevState: any, inputData: BuildSettingsModel) =>
-  saveFormAction(inputData, buildSettingsZodModel, async (validatedData) => {
+export const saveBuild设置 = async (prevState: any, inputData: Build设置Model) =>
+  saveFormAction(inputData, build设置ZodModel, async (validatedData) => {
     await getAdminUserSession();
 
-    const saveOrDelete = async (key: string, value: string | number | null | undefined) => {
+    const saveOr删除 = async (key: string, value: string | number | null | undefined) => {
       if (value !== null && value !== undefined && value !== '') {
         await paramService.save({ name: key, value: String(value) });
       } else {
-        await paramService.deleteByNameIfExists(key);
+        await paramService.deleteBy名称IfExists(key);
       }
     };
 
     // Resource limits only apply when using k3s native scheduling
     if (validatedData.buildNode === Constants.BUILD_NODE_K3S_NATIVE_VALUE) {
-      await saveOrDelete(ParamService.BUILD_MEMORY_LIMIT, validatedData.memoryLimit);
-      await saveOrDelete(ParamService.BUILD_MEMORY_RESERVATION, validatedData.memoryReservation);
-      await saveOrDelete(ParamService.BUILD_CPU_LIMIT, validatedData.cpuLimit);
-      await saveOrDelete(ParamService.BUILD_CPU_RESERVATION, validatedData.cpuReservation);
+      await saveOr删除(ParamService.BUILD_MEMORY_LIMIT, validatedData.memoryLimit);
+      await saveOr删除(ParamService.BUILD_MEMORY_RESERVATION, validatedData.memoryReservation);
+      await saveOr删除(ParamService.BUILD_CPU_LIMIT, validatedData.cpuLimit);
+      await saveOr删除(ParamService.BUILD_CPU_RESERVATION, validatedData.cpuReservation);
     } else {
-      await paramService.deleteByNameIfExists(ParamService.BUILD_MEMORY_LIMIT);
-      await paramService.deleteByNameIfExists(ParamService.BUILD_MEMORY_RESERVATION);
-      await paramService.deleteByNameIfExists(ParamService.BUILD_CPU_LIMIT);
-      await paramService.deleteByNameIfExists(ParamService.BUILD_CPU_RESERVATION);
+      await paramService.deleteBy名称IfExists(ParamService.BUILD_MEMORY_LIMIT);
+      await paramService.deleteBy名称IfExists(ParamService.BUILD_MEMORY_RESERVATION);
+      await paramService.deleteBy名称IfExists(ParamService.BUILD_CPU_LIMIT);
+      await paramService.deleteBy名称IfExists(ParamService.BUILD_CPU_RESERVATION);
     }
-    await saveOrDelete(ParamService.BUILD_NODE, validatedData.buildNode);
+    await saveOr删除(ParamService.BUILD_NODE, validatedData.buildNode);
   });
 
-export const getBuildSettings = async (): Promise<BuildSettingsModel> => {
+export const getBuild设置 = async (): Promise<Build设置Model> => {
   await getAdminUserSession();
   const [memoryLimit, memoryReservation, cpuLimit, cpuReservation, buildNode] = await Promise.all([
     paramService.getNumber(ParamService.BUILD_MEMORY_LIMIT),
@@ -73,31 +73,31 @@ export const getBuildSettings = async (): Promise<BuildSettingsModel> => {
   return { memoryLimit, memoryReservation, cpuLimit, cpuReservation, buildNode };
 };
 
-export const setNodeStatus = async (nodeName: string, schedulable: boolean) =>
+export const setNode状态 = async (node名称: string, schedulable: boolean) =>
   simpleAction(async () => {
     await getAdminUserSession();
-    await clusterService.setNodeStatus(nodeName, schedulable);
+    await clusterService.setNode状态(node名称, schedulable);
     return new SuccessActionResult(undefined, 'Successfully updated node status.');
   });
 
 export const applyTraefikIpPropagation = async (enableIpPreservation: boolean) =>
   simpleAction(async () => {
     await getAdminUserSession();
-    const updatedStatus = await traefikService.applyExternalTrafficPolicy(enableIpPreservation);
-    return new SuccessActionResult<TraefikIpPropagationStatus>(
-      updatedStatus,
+    const updated状态 = await traefikService.applyExternalTrafficPolicy(enableIpPreservation);
+    return new SuccessActionResult<TraefikIpPropagation状态>(
+      updated状态,
       `Traefik externalTrafficPolicy set to ${enableIpPreservation ? 'Local' : 'Cluster'}.`,
     );
   });
 
-export const getTraefikIpPropagationStatus = async () =>
-  simpleAction<TraefikIpPropagationStatus, TraefikIpPropagationStatus>(async () => {
+export const getTraefikIpPropagation状态 = async () =>
+  simpleAction<TraefikIpPropagation状态, TraefikIpPropagation状态>(async () => {
     await getAdminUserSession();
-    return traefikService.getStatus();
+    return traefikService.get状态();
   });
 
-export const updateIngressSettings = async (prevState: any, inputData: QsIngressSettingsModel) =>
-  saveFormAction(inputData, qsIngressSettingsZodModel, async (validatedData) => {
+export const updateIngress设置 = async (prevState: any, inputData: QsIngress设置Model) =>
+  saveFormAction(inputData, qsIngress设置ZodModel, async (validatedData) => {
     await getAdminUserSession();
 
     const url = new URL(validatedData.serverUrl.includes('://') ? validatedData.serverUrl : `https://${validatedData.serverUrl}`);
@@ -117,8 +117,8 @@ export const updateIngressSettings = async (prevState: any, inputData: QsIngress
   });
 
 
-export const updatePublicIpv4Settings = async (prevState: any, inputData: QsPublicIpv4SettingsModel) =>
-  saveFormAction(inputData, qsPublicIpv4SettingsZodModel, async (validatedData) => {
+export const updatePublicIpv4设置 = async (prevState: any, inputData: QsPublicIpv4设置Model) =>
+  saveFormAction(inputData, qsPublicIpv4设置ZodModel, async (validatedData) => {
     await getAdminUserSession();
 
     await paramService.save({
@@ -128,19 +128,19 @@ export const updatePublicIpv4Settings = async (prevState: any, inputData: QsPubl
   });
 
 
-export const updatePublicIpv4SettingsAutomatically = async () =>
+export const updatePublicIpv4设置Automatically = async () =>
   simpleAction(async () => {
     await getAdminUserSession();
 
-    const publicIpv4 = await ipAddressFinderAdapter.getPublicIpOfServer();
+    const publicIpv4 = await ip添加ressFinderAdapter.getPublicIpOfServer();
     await paramService.save({
       name: ParamService.PUBLIC_IPV4_ADDRESS,
       value: publicIpv4
     });
   });
 
-export const updateLetsEncryptSettings = async (prevState: any, inputData: QsLetsEncryptSettingsModel) =>
-  saveFormAction(inputData, qsLetsEncryptSettingsZodModel, async (validatedData) => {
+export const updateLetsEncrypt设置 = async (prevState: any, inputData: QsLetsEncrypt设置Model) =>
+  saveFormAction(inputData, qsLetsEncrypt设置ZodModel, async (validatedData) => {
     await getAdminUserSession();
 
     await paramService.save({
@@ -227,8 +227,8 @@ export const setCanaryChannel = async (useCanaryChannel: boolean) =>
     return new SuccessActionResult(undefined, `Turned ${useCanaryChannel ? 'on' : 'off'} the canary channel.`);
   });
 
-export const setRegistryStorageLocation = async (prevState: any, inputData: RegistryStorageLocationSettingsModel) =>
-  saveFormAction(inputData, registryStorageLocationSettingsZodModel, async (validatedData) => {
+export const setRegistryStorageLocation = async (prevState: any, inputData: RegistryStorageLocation设置Model) =>
+  saveFormAction(inputData, registryStorageLocation设置ZodModel, async (validatedData) => {
     await getAdminUserSession();
 
     await registryService.deployRegistry(validatedData.registryStorageLocation, true);
@@ -239,42 +239,42 @@ export const setRegistryStorageLocation = async (prevState: any, inputData: Regi
     });
   });
 
-export const setSystemBackupLocation = async (prevState: any, inputData: SystemBackupLocationSettingsModel) =>
-  saveFormAction(inputData, systemBackupLocationSettingsZodModel, async (validatedData) => {
+export const setSystem返回upLocation = async (prevState: any, inputData: System返回upLocation设置Model) =>
+  saveFormAction(inputData, system返回upLocation设置ZodModel, async (validatedData) => {
     await getAdminUserSession();
 
     await paramService.save({
       name: ParamService.QS_SYSTEM_BACKUP_LOCATION,
-      value: validatedData.systemBackupLocation
+      value: validatedData.system返回upLocation
     });
   });
 
-export const listSystemBackups = async () =>
+export const listSystem返回ups = async () =>
   simpleAction(async () => {
     await getAdminUserSession();
 
-    const systemBackupLocationId = await paramService.getString(ParamService.QS_SYSTEM_BACKUP_LOCATION, Constants.QS_SYSTEM_BACKUP_DEACTIVATED);
+    const system返回upLocationId = await paramService.getString(ParamService.QS_SYSTEM_BACKUP_LOCATION, Constants.QS_SYSTEM_BACKUP_DEACTIVATED);
 
-    if (systemBackupLocationId === Constants.QS_SYSTEM_BACKUP_DEACTIVATED || !systemBackupLocationId) {
+    if (system返回upLocationId === Constants.QS_SYSTEM_BACKUP_DEACTIVATED || !system返回upLocationId) {
       return new SuccessActionResult([], 'No backup location configured');
     }
 
-    const backups = await systemBackupService.listSystemBackups(systemBackupLocationId);
+    const backups = await system返回upService.listSystem返回ups(system返回upLocationId);
 
-    return new SuccessActionResult(backups, 'Backups loaded');
+    return new SuccessActionResult(backups, '返回ups loaded');
   }) as Promise<ServerActionResult<any, any[]>>;
 
-export const runSystemBackupNow = async () =>
+export const runSystem返回upNow = async () =>
   simpleAction(async () => {
     await getAdminUserSession();
 
-    const systemBackupLocationId = await paramService.getString(ParamService.QS_SYSTEM_BACKUP_LOCATION, Constants.QS_SYSTEM_BACKUP_DEACTIVATED);
+    const system返回upLocationId = await paramService.getString(ParamService.QS_SYSTEM_BACKUP_LOCATION, Constants.QS_SYSTEM_BACKUP_DEACTIVATED);
 
-    if (systemBackupLocationId === Constants.QS_SYSTEM_BACKUP_DEACTIVATED || !systemBackupLocationId) {
+    if (system返回upLocationId === Constants.QS_SYSTEM_BACKUP_DEACTIVATED || !system返回upLocationId) {
       throw new Error('System backup is not configured. Please select an S3 storage target first.');
     }
 
-    await backupService.runSystemBackup();
+    await backupService.runSystem返回up();
 
     return new SuccessActionResult(undefined, 'System backup started successfully');
   });
@@ -288,11 +288,11 @@ export const deleteAllNetworkPolicies = async () =>
     return new SuccessActionResult(undefined, `Successfully deleted all (${deletedCount}) network policies.`);
   });
 
-export const uploadAndRestoreSystemBackup = async (formData: FormData) =>
+export const uploadAndRestoreSystem返回up = async (formData: FormData) =>
   fileUploadAction(formData, 'backupFile', async (file: File) => {
     await getAdminUserSession();
 
-    const backupTempDir = PathUtils.tempBackupDataFolder;
+    const backupTempDir = PathUtils.temp返回upDataFolder;
     await FsUtils.createDirIfNotExistsAsync(backupTempDir, true);
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -305,7 +305,7 @@ export const uploadAndRestoreSystemBackup = async (formData: FormData) =>
 
     try {
       // Restore the backup
-      await systemBackupService.restoreSystemBackup(uploadPath);
+      await system返回upService.restoreSystem返回up(uploadPath);
 
       return new SuccessActionResult(undefined, 'System backup restored successfully. Please restart QuickStack for changes to take effect.');
     } finally {
@@ -314,19 +314,19 @@ export const uploadAndRestoreSystemBackup = async (formData: FormData) =>
     }
   }) as Promise<ServerActionResult<any, void>>;
 
-export const downloadSystemBackup = async (backupKey: string) =>
+export const downloadSystem返回up = async (backupKey: string) =>
   simpleAction(async () => {
     await getAdminUserSession();
 
-    const systemBackupLocationId = await paramService.getString(ParamService.QS_SYSTEM_BACKUP_LOCATION, Constants.QS_SYSTEM_BACKUP_DEACTIVATED);
+    const system返回upLocationId = await paramService.getString(ParamService.QS_SYSTEM_BACKUP_LOCATION, Constants.QS_SYSTEM_BACKUP_DEACTIVATED);
 
-    if (systemBackupLocationId === Constants.QS_SYSTEM_BACKUP_DEACTIVATED || !systemBackupLocationId) {
+    if (system返回upLocationId === Constants.QS_SYSTEM_BACKUP_DEACTIVATED || !system返回upLocationId) {
       throw new Error('System backup is not configured. Please select an S3 storage target first.');
     }
 
-    const fileName = await systemBackupService.downloadSystemBackup(systemBackupLocationId, backupKey);
+    const file名称 = await system返回upService.downloadSystem返回up(system返回upLocationId, backupKey);
 
-    return new SuccessActionResult(fileName, 'Starting download...');
+    return new SuccessActionResult(file名称, 'Starting download...');
   }) as Promise<ServerActionResult<any, string>>;
 
 export const setTraefikIpPropagation = async (prevState: any, inputData: { enableIpPreservation: boolean }) =>
@@ -336,7 +336,7 @@ export const setTraefikIpPropagation = async (prevState: any, inputData: { enabl
     return new SuccessActionResult(undefined, `Traefik externalTrafficPolicy set to ${validatedData.enableIpPreservation ? 'Local' : 'Cluster'}.`);
   });
 
-export const checkK3sUpgradeControllerStatus = async () =>
+export const checkK3sUpgradeController状态 = async () =>
   simpleAction(async () => {
     await getAdminUserSession();
     return await k3sUpdateService.isSystemUpgradeControllerPresent();
@@ -364,7 +364,7 @@ export const startLonghornUpgrade = async () =>
     return new SuccessActionResult(undefined, 'Longhorn upgrade has been initiated. Volume engines will be upgraded automatically.');
   });
 
-export const getLonghornUiIngressStatus = async () =>
+export const getLonghornUiIngress状态 = async () =>
   simpleAction(async () => {
     await getAdminUserSession();
     const active = await longhornUiService.isIngressActive();

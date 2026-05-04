@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const mattermostAppTemplate: AppTemplateModel = {
     name: "Mattermost",
-    iconName: 'https://raw.githubusercontent.com/mattermost/mattermost/master/webapp/channels/src/images/logo.png',
+    icon名称: 'https://raw.githubusercontent.com/mattermost/mattermost/master/webapp/channels/src/images/logo.png',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -35,13 +35,13 @@ MM_SQLSETTINGS_DRIVERNAME=postgres
             size: 2000,
             containerMountPath: '/mattermost/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }, {
             size: 200,
             containerMountPath: '/mattermost/config',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

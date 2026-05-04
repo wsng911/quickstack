@@ -46,12 +46,12 @@ export function DefaultDataTable<TData, TValue>({
     columns,
     data,
     globalFilterFn,
-    hideSearchBar = false,
+    hide搜索Bar = false,
     initialTableState,
     onRowSelectionUpdate,
     onTableStateChanged
 }: DataTableProps<TData, TValue> & {
-    hideSearchBar?: boolean;
+    hide搜索Bar?: boolean;
     onRowSelectionUpdate?: (selectedItems: TData[]) => void;
     onTableStateChanged?: (state: Partial<TableState>) => void;
     initialTableState?: Partial<TableState>;
@@ -124,19 +124,19 @@ export function DefaultDataTable<TData, TValue>({
 
     return (
         <div>
-            <div className="flex items-center py-4">
-                {!hideSearchBar && <Input
-                    placeholder="Search..."
+            <div class名称="flex items-center py-4">
+                {!hide搜索Bar && <Input
+                    placeholder="搜索..."
                     value={globalFilter ?? ""}
                     onChange={(event: any) =>
                         table.setGlobalFilter(String(event.target.value))
                     }
-                    className="max-w-sm"
+                    class名称="max-w-sm"
                 />}
                 <DataTableViewOptions table={table} />
 
             </div>
-            <div className="rounded-md border">
+            <div class名称="rounded-md border">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -172,7 +172,7 @@ export function DefaultDataTable<TData, TValue>({
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <TableCell colSpan={columns.length} class名称="h-24 text-center">
                                     No elements to show.
                                 </TableCell>
                             </TableRow>
@@ -180,7 +180,7 @@ export function DefaultDataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="mt-4">
+            <div class名称="mt-4">
                 <DataTablePagination table={table}/>
             </div>
         </div>

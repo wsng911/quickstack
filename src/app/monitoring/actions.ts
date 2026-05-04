@@ -4,8 +4,8 @@ import monitoringService from "@/server/services/monitoring.service";
 import clusterService from "@/server/services/cluster.service";
 import { getAuthUserSession, simpleAction } from "@/server/utils/action-wrapper.utils";
 import { UserGroupUtils } from "@/shared/utils/role.utils";
-import { AppMonitoringUsageModel } from "@/shared/model/app-monitoring-usage.model";
-import { AppVolumeMonitoringUsageModel } from "@/shared/model/app-volume-monitoring-usage.model";
+import { App监控ingUsageModel } from "@/shared/model/app-monitoring-usage.model";
+import { AppVolume监控ingUsageModel } from "@/shared/model/app-volume-monitoring-usage.model";
 import { NodeResourceModel } from "@/shared/model/node-resource.model";
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model";
 
@@ -15,18 +15,18 @@ export const getNodeResourceUsage = async () =>
         return await clusterService.getNodeResourceUsage();
     }) as Promise<ServerActionResult<unknown, NodeResourceModel[]>>;
 
-export const getVolumeMonitoringUsage = async () =>
+export const getVolume监控ingUsage = async () =>
     simpleAction(async () => {
         const session = await getAuthUserSession();
         let volumesUsage = await monitoringService.getAllAppVolumesUsage();
         volumesUsage = volumesUsage?.filter((volume) => UserGroupUtils.sessionHasReadAccessForApp(session, volume.appId));
         return volumesUsage;
-    }) as Promise<ServerActionResult<unknown, AppVolumeMonitoringUsageModel[]>>;
+    }) as Promise<ServerActionResult<unknown, AppVolume监控ingUsageModel[]>>;
 
-export const getMonitoringForAllApps = async () =>
+export const get监控ingForAllApps = async () =>
     simpleAction(async () => {
         const session = await getAuthUserSession();
-        let updatedNodeRessources = await monitoringService.getMonitoringForAllApps();
+        let updatedNodeRessources = await monitoringService.get监控ingForAllApps();
         updatedNodeRessources = updatedNodeRessources?.filter((app) => UserGroupUtils.sessionHasReadAccessForApp(session, app.appId));
         return updatedNodeRessources;
-    }) as Promise<ServerActionResult<unknown, AppMonitoringUsageModel[]>>;
+    }) as Promise<ServerActionResult<unknown, App监控ingUsageModel[]>>;

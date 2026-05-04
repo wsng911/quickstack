@@ -1,5 +1,5 @@
 import * as k8s from '@kubernetes/client-node';
-import { V1ContainerStatus, V1Pod } from '@kubernetes/client-node';
+import { V1Container状态, V1Pod } from '@kubernetes/client-node';
 import { Constants } from '@/shared/utils/constants';
 import k3s from '../../adapter/kubernetes-api.adapter';
 import { dlog } from '../deployment-logs.service';
@@ -63,59 +63,59 @@ class BuildPodLogWatchService {
             return;
         }
 
-        const podName = pod.metadata?.name;
-        if (!podName) {
+        const pod名称 = pod.metadata?.name;
+        if (!pod名称) {
             return;
         }
 
-        const containersOfThisPod = this.getReadableContainersInOrder(pod);
+        const containersOfThisPod = this.getReadable容器InOrder(pod);
         for (const container of containersOfThisPod) {
             const containerKey = this.createContainerKey(pod, container.name);
             if (this.processedContainerKeys.has(containerKey) || this.activeContainerKeys.has(containerKey)) {
                 continue;
             }
 
-            void this.streamContainerLogs(deploymentId, podName, container.name, containerKey, !!container.status?.state?.running);
+            void this.streamContainerLogs(deploymentId, pod名称, container.name, containerKey, !!container.status?.state?.running);
         }
     }
 
-    private getReadableContainersInOrder(pod: V1Pod): Array<{ name: string; status?: V1ContainerStatus }> {
-        const initStatuses = pod.status?.initContainerStatuses ?? [];
-        const containerStatuses = pod.status?.containerStatuses ?? [];
+    private getReadable容器InOrder(pod: V1Pod): Array<{ name: string; status?: V1Container状态 }> {
+        const init状态es = pod.status?.initContainer状态es ?? [];
+        const container状态es = pod.status?.container状态es ?? [];
 
         return [
-            ...(pod.spec?.initContainers ?? []).filter((container) => {
+            ...(pod.spec?.init容器 ?? []).filter((container) => {
                 // th elogs of the container wich waits for the build to start does not contain useful information, so we skip it.
                 return !container.name.toLowerCase().includes(Constants.QS_BUILD_INIT_CONTAINER_NAME.toLowerCase());
             }).map((container) => ({
                 name: container.name!,
-                status: initStatuses.find((status) => status.name === container.name),
+                status: init状态es.find((status) => status.name === container.name),
             })),
             ...(pod.spec?.containers ?? []).map((container) => ({
                 name: container.name!,
-                status: containerStatuses.find((status) => status.name === container.name),
+                status: container状态es.find((status) => status.name === container.name),
             })),
         ].filter((container) => !!container.status?.state?.running || !!container.status?.state?.terminated);
     }
 
-    private createContainerKey(pod: V1Pod, containerName: string) {
-        return `${pod.metadata?.uid ?? pod.metadata?.name}:${containerName}`;
+    private createContainerKey(pod: V1Pod, container名称: string) {
+        return `${pod.metadata?.uid ?? pod.metadata?.name}:${container名称}`;
     }
 
     private async streamContainerLogs(
         deploymentId: string,
-        podName: string,
-        containerName: string,
+        pod名称: string,
+        container名称: string,
         containerKey: string,
         follow: boolean,
     ) {
         this.activeContainerKeys.add(containerKey);
-        await dlog(deploymentId, `[INFO] Streaming logs from pod "${podName}" container "${containerName}"`);
+        await dlog(deploymentId, `[INFO] Streaming logs from pod "${pod名称}" container "${container名称}"`);
 
         const logStream = new stream.PassThrough();
         let logRequest: { abort?: () => void } | undefined;
         try {
-            logRequest = await k3s.log.log(BUILD_NAMESPACE, podName, containerName, logStream, {
+            logRequest = await k3s.log.log(BUILD_NAMESPACE, pod名称, container名称, logStream, {
                 follow,
                 tailLines: undefined,
                 timestamps: true,
@@ -124,8 +124,8 @@ class BuildPodLogWatchService {
             });
         } catch (error) {
             this.activeContainerKeys.delete(containerKey);
-            await dlog(deploymentId, `[ERROR] Failed to start log stream for pod "${podName}" container "${containerName}".`);
-            console.error(`[BuildPodLogWatch] Failed to start log stream for ${podName}/${containerName}:`, error);
+            await dlog(deploymentId, `[ERROR] Failed to start log stream for pod "${pod名称}" container "${container名称}".`);
+            console.error(`[BuildPodLogWatch] Failed to start log stream for ${pod名称}/${container名称}:`, error);
             return;
         }
 
@@ -140,8 +140,8 @@ class BuildPodLogWatchService {
             logRequest?.abort?.();
 
             if (error) {
-                console.error(`[BuildPodLogWatch] Error while streaming ${podName}/${containerName}:`, error);
-                await dlog(deploymentId, `[ERROR] An unexpected error occurred while streaming logs from pod "${podName}" container "${containerName}".`);
+                console.error(`[BuildPodLogWatch] Error while streaming ${pod名称}/${container名称}:`, error);
+                await dlog(deploymentId, `[ERROR] An unexpected error occurred while streaming logs from pod "${pod名称}" container "${container名称}".`);
             }
         };
 

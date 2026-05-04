@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const navidiomeAppTemplate: AppTemplateModel = {
     name: "Navidrome",
-    iconName: 'https://raw.githubusercontent.com/navidrome/navidrome/master/resources/logo-192x192.png',
+    icon名称: 'https://raw.githubusercontent.com/navidrome/navidrome/master/resources/logo-192x192.png',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -36,13 +36,13 @@ ND_SESSIONTIMEOUT=24h
             size: 100,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }, {
             size: 5000,
             containerMountPath: '/music',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

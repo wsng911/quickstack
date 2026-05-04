@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { ReactFlow, Background, Controls, Node, Edge, MarkerType, Handle, Position } from '@xyflow/react';
+import { ReactFlow, 返回ground, Controls, Node, Edge, MarkerType, Handle, Position } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { App, AppDomain, AppPort } from '@prisma/client';
 import { Globe, Network, Lock, Cloud, Shield, ArrowDown, HeartPulse } from 'lucide-react';
-import PodStatusIndicator from '@/components/custom/pod-status-indicator';
+import Pod状态Indicator from '@/components/custom/pod-status-indicator';
 import { useRouter } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -46,13 +46,13 @@ const PolicyIcon = ({ policy, type, ports, useNetworkPolicy }: { policy: string,
     }
 
     return (
-        <div className='flex items-center gap-2'>
-            {useNetworkPolicy && <div className={`p-1 bg-white rounded-full border shadow-sm ${color}`} title={`${type}: ${title}`}>
-                <div className=' flex gap-1 items-center'>
+        <div class名称='flex items-center gap-2'>
+            {useNetworkPolicy && <div class名称={`p-1 bg-white rounded-full border shadow-sm ${color}`} title={`${type}: ${title}`}>
+                <div class名称=' flex gap-1 items-center'>
                     <Icon size={16} />
                 </div>
             </div>}
-            {ports && type === 'ingress' && <div className={`p-1 px-2 bg-white rounded-full border shadow-sm text-xs text-gray-500`} title={`${type}: ${title}`}>
+            {ports && type === 'ingress' && <div class名称={`p-1 px-2 bg-white rounded-full border shadow-sm text-xs text-gray-500`} title={`${type}: ${title}`}>
                 {ports}
             </div>}
         </div>
@@ -70,19 +70,19 @@ const AppNode = ({ data }: {
     }
 }) => {
     return (
-        <div className="relative bg-white border border-slate-300 rounded-md p-4 min-w-[150px] shadow-sm text-center cursor-pointer hover:border-slate-400 transition-colors">
-            <Handle type="target" position={Position.Top} className="!bg-transparent !border-0" />
+        <div class名称="relative bg-white border border-slate-300 rounded-md p-4 min-w-[150px] shadow-sm text-center cursor-pointer hover:border-slate-400 transition-colors">
+            <Handle type="target" position={Position.Top} class名称="!bg-transparent !border-0" />
 
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+            <div class名称="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                 <PolicyIcon policy={data.ingressPolicy} ports={data.ports} useNetworkPolicy={data.app.useNetworkPolicy} type="ingress" />
             </div>
 
-            <div className="font-semibold text-sm mt-2 mb-2 flex gap-2 items-center justify-center">
-                <PodStatusIndicator appId={data.appId} /> <p>{data.label}</p>
+            <div class名称="font-semibold text-sm mt-2 mb-2 flex gap-2 items-center justify-center">
+                <Pod状态Indicator appId={data.appId} /> <p>{data.label}</p>
                 {(!!data.app.healthChechHttpGetPath || !!data.app.healthCheckTcpPort) && <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <HeartPulse size={16} className="text-blue-500" />
+                            <HeartPulse size={16} class名称="text-blue-500" />
                         </TooltipTrigger>
                         <TooltipContent>
                             <p>Healthchecks enabled for this App</p>
@@ -91,11 +91,11 @@ const AppNode = ({ data }: {
                 </TooltipProvider>}
             </div>
 
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10">
+            <div class名称="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10">
                 <PolicyIcon policy={data.egressPolicy} ports={data.ports} useNetworkPolicy={data.app.useNetworkPolicy} type="egress" />
             </div>
 
-            <Handle type="source" position={Position.Bottom} className="!bg-transparent !border-0" />
+            <Handle type="source" position={Position.Bottom} class名称="!bg-transparent !border-0" />
         </div>
     );
 };
@@ -106,40 +106,40 @@ const nodeTypes = {
 
 const Legend = () => {
     return (
-        <div className="mt-4 p-4 border rounded-md bg-slate-50 text-sm">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class名称="mt-4 p-4 border rounded-md bg-slate-50 text-sm">
+            <div class名称="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <h4 className="font-medium mb-1 text-xs uppercase text-slate-500 pb-2">Node Layout</h4>
-                    <div className="flex items-center gap-2 mb-2">
-                        <div className="w-8 h-8 border border-slate-300 rounded bg-white relative mx-1">
-                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-200 rounded-full border border-slate-300"></div>
+                    <h4 class名称="font-medium mb-1 text-xs uppercase text-slate-500 pb-2">Node Layout</h4>
+                    <div class名称="flex items-center gap-2 mb-2">
+                        <div class名称="w-8 h-8 border border-slate-300 rounded bg-white relative mx-1">
+                            <div class名称="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-200 rounded-full border border-slate-300"></div>
                         </div>
                         <span>Top Icon: <strong>Ingress Policy</strong> (Incoming traffic)</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 border border-slate-300 rounded bg-white relative mx-1">
-                            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-200 rounded-full border border-slate-300"></div>
+                    <div class名称="flex items-center gap-2">
+                        <div class名称="w-8 h-8 border border-slate-300 rounded bg-white relative mx-1">
+                            <div class名称="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-200 rounded-full border border-slate-300"></div>
                         </div>
                         <span>Bottom Icon: <strong>Egress Policy</strong> (Outgoing traffic)</span>
                     </div>
                 </div>
                 <div>
-                    <h4 className="font-medium mb-1 text-xs uppercase text-slate-500 pb-2">Network Policy Types</h4>
-                    <div className="grid grid-cols-2 gap-2">
-                        <div className="flex items-center gap-2">
-                            <Globe size={16} className="text-green-500" />
+                    <h4 class名称="font-medium mb-1 text-xs uppercase text-slate-500 pb-2">Network Policy Types</h4>
+                    <div class名称="grid grid-cols-2 gap-2">
+                        <div class名称="flex items-center gap-2">
+                            <Globe size={16} class名称="text-green-500" />
                             <span>Allow All</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Network size={16} className="text-blue-500" />
+                        <div class名称="flex items-center gap-2">
+                            <Network size={16} class名称="text-blue-500" />
                             <span>Project Only</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Cloud size={16} className="text-orange-500" />
+                        <div class名称="flex items-center gap-2">
+                            <Cloud size={16} class名称="text-orange-500" />
                             <span>Internet Only</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Lock size={16} className="text-red-500" />
+                        <div class名称="flex items-center gap-2">
+                            <Lock size={16} class名称="text-red-500" />
                             <span>Deny All</span>
                         </div>
                     </div>
@@ -213,7 +213,7 @@ export default function ProjectNetworkGraph({ apps }: ProjectNetworkGraphProps) 
                 target: app.id,
                 label: `${hostnames}`,
                 markerEnd: {
-                    type: MarkerType.ArrowClosed,
+                    type: MarkerType.Arrow关闭d,
                 },
                 animated: true,
                 style: { stroke: '#000' },
@@ -250,7 +250,7 @@ export default function ProjectNetworkGraph({ apps }: ProjectNetworkGraphProps) 
         return { nodes, edges };
     }, [apps]);
     return (
-        <div className="space-y-4">
+        <div class名称="space-y-4">
             <div style={{ height: 600, border: '1px solid #eee', borderRadius: 8 }}>
                 <ReactFlow
                     defaultNodes={nodes}
@@ -266,7 +266,7 @@ export default function ProjectNetworkGraph({ apps }: ProjectNetworkGraphProps) 
                         }
                     }}
                 >
-                    {/* <Background />
+                    {/* <返回ground />
                     <Controls />*/}
                 </ReactFlow>
             </div>

@@ -29,7 +29,7 @@ export default function BuildLogsStreamed({
     const initializeConnection = async (controller: AbortController) => {
         // Initiate the first call to connect to SSE API
 
-        setLogs('Loading...');
+        setLogs('加载中...');
 
         const signal = controller.signal;
         const apiResponse = await fetch('/api/build-logs', {
@@ -85,17 +85,17 @@ export default function BuildLogsStreamed({
     }, [logs]);
 
     return <>
-        <div className="space-y-4">
-            <Textarea ref={textAreaRef} value={logs} readOnly className={cn(
+        <div class名称="space-y-4">
+            <Textarea ref={textAreaRef} value={logs} readOnly class名称={cn(
                 (fullHeight ? "h-[80vh]" : "h-[400px]"),
                 " bg-slate-900 text-white",
-                sourceCodePro.className)} />
-            <div className="w-fit">
+                sourceCodePro.class名称)} />
+            <div class名称="w-fit">
                 <HoverCard>
                     <HoverCardTrigger>
-                        {isConnected ? <div className="w-3 h-3 rounded-full bg-green-500"></div> : <div className="w-3 h-3 rounded-full bg-slate-500"></div>}
+                        {isConnected ? <div class名称="w-3 h-3 rounded-full bg-green-500"></div> : <div class名称="w-3 h-3 rounded-full bg-slate-500"></div>}
                     </HoverCardTrigger>
-                    <HoverCardContent className="text-sm">
+                    <HoverCardContent class名称="text-sm">
                         {isConnected ? 'Connected to Logstream' : 'Disconnected from Logstream'}
                     </HoverCardContent>
                 </HoverCard>

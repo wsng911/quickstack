@@ -1,18 +1,18 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download, EditIcon, Folder, TrashIcon, Share2, Unlink2, Unlink } from "lucide-react";
-import DialogEditDialog from "./storage-edit-overlay";
-import SharedStorageEditDialog from "./shared-storage-edit-overlay";
+import { Download, 编辑Icon, Folder, TrashIcon, Share2, Unlink2, Unlink } from "lucide-react";
+import Dialog编辑Dialog from "./storage-edit-overlay";
+import SharedStorage编辑Dialog from "./shared-storage-edit-overlay";
 import { Toast } from "@/frontend/utils/toast.utils";
 import { deleteVolume, downloadPvcData, getPvcUsage, openFileBrowserForVolume } from "./actions";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 import { AppVolume } from "@prisma/client";
 import React from "react";
-import { KubeObjectNameUtils } from "@/server/utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "@/server/utils/kube-object-name.utils";
 import {
     Tooltip,
     TooltipContent,
@@ -47,7 +47,7 @@ export default function StorageList({ app, readonly, nodesInfo }: {
         if (response.status === 'success' && response.data) {
             const mappedVolumeData = [...app.appVolumes] as AppVolumeWithCapacity[];
             for (let item of mappedVolumeData) {
-                const volume = response.data.find(x => x.pvcName === KubeObjectNameUtils.toPvcName(item.sharedVolumeId || item.id));
+                const volume = response.data.find(x => x.pvc名称 === KubeObject名称Utils.toPvc名称(item.sharedVolumeId || item.id));
                 if (volume) {
                     item.usedBytes = volume.usedBytes;
                     item.capacityBytes = KubeSizeConverter.fromMegabytesToBytes(item.size);
@@ -64,15 +64,15 @@ export default function StorageList({ app, readonly, nodesInfo }: {
         loadAndMapStorageData();
     }, [app.appVolumes, app]);
 
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
 
-    const asyncDeleteVolume = async (volumeId: string, isBaseVolume: boolean) => {
+    const async删除Volume = async (volumeId: string, isBaseVolume: boolean) => {
         try {
             const confirm = await openDialog({
-                title: isBaseVolume ? "Delete Volume" : "Detach Volume",
+                title: isBaseVolume ? "删除 Volume" : "Detach Volume",
                 description: isBaseVolume ? "The volume will be removed and the Data will be lost. The changes will take effect, after you deploy the app. Are you sure you want to remove this volume?" :
                     "The volume will be detached from the app. The data will remain on the cluster and can be re-attached later. The changes will take effect, after you deploy the app. Are you sure you want to detach this volume?",
-                okButton: isBaseVolume ? "Delete Volume" : "Detach Volume"
+                okButton: isBaseVolume ? "删除 Volume" : "Detach Volume"
             });
             if (confirm) {
                 setIsLoading(true);
@@ -94,7 +94,7 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                 setIsLoading(true);
                 await Toast.fromAction(() => downloadPvcData(volumeId)).then(x => {
                     if (x.status === 'success' && x.data) {
-                        window.open('/api/volume-data-download?fileName=' + x.data);
+                        window.open('/api/volume-data-download?file名称=' + x.data);
                     }
                 });
             }
@@ -124,12 +124,12 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                 description: <>
                     The File Browser is ready and can be opened in a new tab. <br />
                     Use the following credentials to login:
-                    <div className="pt-3 grid grid-cols-1 gap-1">
-                        <Label>Username</Label>
+                    <div class名称="pt-3 grid grid-cols-1 gap-1">
+                        <Label>用户名</Label>
                         <div> <Code>quickstack</Code></div>
                     </div>
-                    <div className="pt-3 pb-4 grid grid-cols-1 gap-1">
-                        <Label>Password</Label>
+                    <div class名称="pt-3 pb-4 grid grid-cols-1 gap-1">
+                        <Label>密码</Label>
                         <div><Code>{fileBrowserStartResult.data.password}</Code></div>
                     </div>
                     <div>
@@ -137,7 +137,7 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                     </div>
                 </>,
                 okButton: '',
-                cancelButton: "Close"
+                cancelButton: "关闭"
             });
         } finally {
             setIsLoading(false);
@@ -148,7 +148,7 @@ export default function StorageList({ app, readonly, nodesInfo }: {
         <Card>
             <CardHeader>
                 <CardTitle>Volumes</CardTitle>
-                <CardDescription>Add one or more volumes to to configure persistent storage within your container.</CardDescription>
+                <Card描述>添加 one or more volumes to to configure persistent storage within your container.</Card描述>
             </CardHeader>
             <CardContent>
                 <Table>
@@ -161,32 +161,32 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                             <TableHead>Storage Class</TableHead>
                             <TableHead>Access Mode</TableHead>
                             <TableHead>Shared</TableHead>
-                            <TableHead className="w-[100px]">Action</TableHead>
+                            <TableHead class名称="w-[100px]">Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {volumesWithStorage.map(volume => (
                             <TableRow key={volume.containerMountPath}>
-                                <TableCell className="font-medium">{volume.containerMountPath}</TableCell>
-                                <TableCell className="font-medium">{volume.size} MB</TableCell>
-                                <TableCell className="font-medium space-y-2">
+                                <TableCell class名称="font-medium">{volume.containerMountPath}</TableCell>
+                                <TableCell class名称="font-medium">{volume.size} MB</TableCell>
+                                <TableCell class名称="font-medium space-y-2">
                                     {volume.usedPercentage && <>
                                         <Progress value={volume.usedPercentage}
                                             color={volume.usedPercentage >= 90 ? 'red' : (volume.usedPercentage >= 80 ? 'orange' : undefined)} />
-                                        <div className='text-xs text-slate-500'>
+                                        <div class名称='text-xs text-slate-500'>
                                             {KubeSizeConverter.convertBytesToReadableSize(volume.usedBytes!)} used ({volume.usedPercentage}%)
                                         </div>
                                     </>}
                                 </TableCell>
-                                <TableCell className="font-medium capitalize">{volume.storageClassName?.replace('-', ' ')}</TableCell>
-                                <TableCell className="font-medium">{volume.accessMode}</TableCell>
-                                <TableCell className="font-medium">
+                                <TableCell class名称="font-medium capitalize">{volume.storageClass名称?.replace('-', ' ')}</TableCell>
+                                <TableCell class名称="font-medium">{volume.accessMode}</TableCell>
+                                <TableCell class名称="font-medium">
                                     {volume.shareWithOtherApps && (
                                         <TooltipProvider>
                                             <Tooltip delayDuration={200}>
                                                 <TooltipTrigger>
-                                                    <span className="px-2 py-1 rounded-lg text-xs font-semibold bg-green-100 text-green-800 inline-flex items-center gap-1">
-                                                        <Share2 className="h-3 w-3" />
+                                                    <span class名称="px-2 py-1 rounded-lg text-xs font-semibold bg-green-100 text-green-800 inline-flex items-center gap-1">
+                                                        <Share2 class名称="h-3 w-3" />
                                                         Shareable
                                                     </span>
                                                 </TooltipTrigger>
@@ -200,8 +200,8 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                                         <TooltipProvider>
                                             <Tooltip delayDuration={200}>
                                                 <TooltipTrigger>
-                                                    <span className="px-2 py-1 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800 inline-flex items-center gap-1">
-                                                        <Share2 className="h-3 w-3" />
+                                                    <span class名称="px-2 py-1 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800 inline-flex items-center gap-1">
+                                                        <Share2 class名称="h-3 w-3" />
                                                         Shared
                                                     </span>
                                                 </TooltipTrigger>
@@ -212,7 +212,7 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                                         </TooltipProvider>
                                     )}
                                 </TableCell>
-                                <TableCell className="font-medium flex gap-2">
+                                <TableCell class名称="font-medium flex gap-2">
                                     {!volume.sharedVolumeId && <>
                                         <TooltipProvider>
                                             <Tooltip delayDuration={200}>
@@ -258,7 +258,7 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                                             <TooltipProvider>
                                                 <Tooltip delayDuration={200}>
                                                     <TooltipTrigger>
-                                                        <Button variant="ghost" disabled={true}><EditIcon /></Button>
+                                                        <Button variant="ghost" disabled={true}><编辑Icon /></Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>
                                                         <p>Shared volumes cannot be edited (size and storage class are inherited)</p>
@@ -266,28 +266,28 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                                                 </Tooltip>
                                             </TooltipProvider>
                                         ) : (
-                                            <DialogEditDialog app={app} volume={volume} nodesInfo={nodesInfo}>
+                                            <Dialog编辑Dialog app={app} volume={volume} nodesInfo={nodesInfo}>
                                                 <TooltipProvider>
                                                     <Tooltip delayDuration={200}>
                                                         <TooltipTrigger>
-                                                            <Button variant="ghost" disabled={isLoading}><EditIcon /></Button>
+                                                            <Button variant="ghost" disabled={isLoading}><编辑Icon /></Button>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>Edit volume settings</p>
+                                                            <p>编辑 volume settings</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
-                                            </DialogEditDialog>
+                                            </Dialog编辑Dialog>
                                         )}
                                         <TooltipProvider>
                                             <Tooltip delayDuration={200}>
                                                 <TooltipTrigger>
-                                                    <Button variant="ghost" onClick={() => asyncDeleteVolume(volume.id, !volume.sharedVolumeId)} disabled={isLoading}>
+                                                    <Button variant="ghost" onClick={() => async删除Volume(volume.id, !volume.sharedVolumeId)} disabled={isLoading}>
                                                         {volume.sharedVolumeId ? <Unlink /> : <TrashIcon />}
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    <p>{volume.sharedVolumeId ? 'Detach Volume' : 'Delete Volume'}</p>
+                                                    <p>{volume.sharedVolumeId ? 'Detach Volume' : '删除 Volume'}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -298,13 +298,13 @@ export default function StorageList({ app, readonly, nodesInfo }: {
                     </TableBody>
                 </Table>
             </CardContent>
-            {!readonly && <CardFooter className="flex gap-2">
-                <DialogEditDialog app={app} nodesInfo={nodesInfo}>
-                    <Button>Add Volume</Button>
-                </DialogEditDialog>
-                <SharedStorageEditDialog app={app}>
-                    <Button variant="outline">Add Shared Volume</Button>
-                </SharedStorageEditDialog>
+            {!readonly && <CardFooter class名称="flex gap-2">
+                <Dialog编辑Dialog app={app} nodesInfo={nodesInfo}>
+                    <Button>添加 Volume</Button>
+                </Dialog编辑Dialog>
+                <SharedStorage编辑Dialog app={app}>
+                    <Button variant="outline">添加 Shared Volume</Button>
+                </SharedStorage编辑Dialog>
             </CardFooter>}
         </Card >
     </>;

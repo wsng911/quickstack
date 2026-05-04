@@ -17,7 +17,7 @@ export class Constants {
     static readonly INTERNAL_REGISTRY_LOCATION = 'internal-registry-location';
     static readonly TRAEFIK_ME_SECRET_NAME = 'traefik-me-tls';
     static readonly QS_SYSTEM_BACKUP_DEACTIVATED = 'deactivated';
-    static readonly QS_SYSTEM_BACKUP_LOCATION_PARAM_KEY = 'qsSystemBackupLocation';
+    static readonly QS_SYSTEM_BACKUP_LOCATION_PARAM_KEY = 'qsSystem返回upLocation';
     static readonly DEFAULT_INGRESS_NETWORK_POLICY_APPS = 'ALLOW_ALL';
     static readonly DEFAULT_EGRESS_NETWORK_POLICY_APPS = 'ALLOW_ALL';
     static readonly DEFAULT_INGRESS_NETWORK_POLICY_DATABASES = 'NAMESPACE_ONLY';

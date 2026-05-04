@@ -1,6 +1,6 @@
 import { PrismaClient, User } from "@prisma/client";
 import NextAuth, { NextAuthOptions, Session } from "next-auth"
-import EmailProvider from "next-auth/providers/email";
+import 邮箱Provider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { JWT } from "next-auth/jwt";
 import { UserSession } from "@/shared/model/sim-session.model";
@@ -21,15 +21,15 @@ export const authOptions: NextAuthOptions = {
     },
     providers: [
         CredentialsProvider({
-            // The name to display on the sign in form (e.g. "Sign in with...")
+            // The name to display on the sign in form (e.g. "登录 with...")
             name: "Credentials",
             // `credentials` is used to generate a form on the sign in page.
             // You can specify which fields should be submitted, by adding keys to the `credentials` object.
             // e.g. domain, username, password, 2FA token, etc.
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
-                username: { label: "Username", type: "text" },
-                password: { label: "Password", type: "password" },
+                username: { label: "用户名", type: "text" },
+                password: { label: "密码", type: "password" },
                 totpToken: { label: "TOTP Token", type: "text" },
             },
             async authorize(credentials, req) {
@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
                 if (!authUserInfo) {
                     return null;
                 }
-                const user = await userService.getUserByEmail(authUserInfo.email);
+                const user = await userService.getUserBy邮箱(authUserInfo.email);
                 if (user.twoFaEnabled) {
                     if (!credentials.totpToken) {
                         return null;

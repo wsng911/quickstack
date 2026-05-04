@@ -1,11 +1,11 @@
 import * as z from "zod"
 
-import { CompleteVolumeBackup, RelatedVolumeBackupModel } from "./index"
+import { CompleteVolume返回up, RelatedVolume返回upModel } from "./index"
 
 export const S3TargetModel = z.object({
   id: z.string(),
   name: z.string(),
-  bucketName: z.string(),
+  bucket名称: z.string(),
   endpoint: z.string(),
   region: z.string(),
   accessKeyId: z.string(),
@@ -15,7 +15,7 @@ export const S3TargetModel = z.object({
 })
 
 export interface CompleteS3Target extends z.infer<typeof S3TargetModel> {
-  volumeBackups: CompleteVolumeBackup[]
+  volume返回ups: CompleteVolume返回up[]
 }
 
 /**
@@ -24,5 +24,5 @@ export interface CompleteS3Target extends z.infer<typeof S3TargetModel> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const RelatedS3TargetModel: z.ZodSchema<CompleteS3Target> = z.lazy(() => S3TargetModel.extend({
-  volumeBackups: RelatedVolumeBackupModel.array(),
+  volume返回ups: RelatedVolume返回upModel.array(),
 }))

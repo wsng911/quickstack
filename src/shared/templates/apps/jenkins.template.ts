@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const jenkinsAppTemplate: AppTemplateModel = {
     name: "Jenkins",
-    iconName: 'https://www.jenkins.io/images/logos/jenkins/jenkins.svg',
+    icon名称: 'https://www.jenkins.io/images/logos/jenkins/jenkins.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -34,7 +34,7 @@ export const jenkinsAppTemplate: AppTemplateModel = {
             size: 2000,
             containerMountPath: '/var/jenkins_home',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

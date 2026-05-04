@@ -1,4 +1,4 @@
-class IpAddressFinder {
+class Ip添加ressFinder {
 
     public async getPublicIpOfServer(): Promise<string> {
         // source: https://www.ipify.org
@@ -8,5 +8,5 @@ class IpAddressFinder {
     }
 }
 
-const ipAddressFinderAdapter = new IpAddressFinder();
-export default ipAddressFinderAdapter;
+const ip添加ressFinderAdapter = new Ip添加ressFinder();
+export default ip添加ressFinderAdapter;

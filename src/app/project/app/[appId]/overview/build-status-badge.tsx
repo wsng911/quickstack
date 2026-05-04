@@ -10,24 +10,24 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { isDate } from "date-fns";
-import { BuildJobStatus } from "@/shared/model/build-job";
+import { BuildJob状态 } from "@/shared/model/build-job";
 
 
-export default function BuildStatusBadge(
+export default function Build状态Badge(
     {
         children
     }: {
-        children: BuildJobStatus
+        children: BuildJob状态
     }
 ) {
 
     return (<>
-        <span className={'px-2 py-1 rounded-lg text-sm font-semibold ' + getBackgroundColorForStatus(children) + ' ' + getTextColorForStatus(children)}>{getTextForStatus(children)}</span>
+        <span class名称={'px-2 py-1 rounded-lg text-sm font-semibold ' + get返回groundColorFor状态(children) + ' ' + getTextColorFor状态(children)}>{getTextFor状态(children)}</span>
 
     </>)
 }
 
-function getTextForStatus(status: BuildJobStatus) {
+function getTextFor状态(status: BuildJob状态) {
     switch (status) {
         case 'UNKNOWN':
             return 'Unknown';
@@ -42,7 +42,7 @@ function getTextForStatus(status: BuildJobStatus) {
     }
 }
 
-function getBackgroundColorForStatus(status: BuildJobStatus) {
+function get返回groundColorFor状态(status: BuildJob状态) {
     switch (status) {
 
         case 'UNKNOWN':
@@ -58,7 +58,7 @@ function getBackgroundColorForStatus(status: BuildJobStatus) {
     }
 }
 
-function getTextColorForStatus(status: BuildJobStatus) {
+function getTextColorFor状态(status: BuildJob状态) {
     switch (status) {
 
         case 'UNKNOWN':

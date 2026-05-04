@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  Dialog描述,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -28,17 +28,17 @@ export function InputDialog() {
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={() => closeDialog()}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent class名称="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{data.title}</DialogTitle>
-          {data.description && <DialogDescription>
+          {data.description && <Dialog描述>
             {data.description}
-          </DialogDescription>}
+          </Dialog描述>}
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            {data.fieldName && <Label className="text-right">
-              {data.fieldName}
+        <div class名称="grid gap-4 py-4">
+          <div class名称="grid grid-cols-4 items-center gap-4">
+            {data.field名称 && <Label class名称="text-right">
+              {data.field名称}
             </Label>}
             <Input
               value={inputValue}
@@ -48,7 +48,7 @@ export function InputDialog() {
                 }
               }}
               onChange={(e) => setInputValue(e.target.value)}
-              className="col-span-3"
+              class名称="col-span-3"
             />
           </div>
         </div>
@@ -57,7 +57,7 @@ export function InputDialog() {
             if (!inputValue) return;
             closeDialog(inputValue)
           }}>{data.okButton ?? 'OK'}</Button>
-          <Button variant="secondary" onClick={() => closeDialog(undefined)}>{data.cancelButton ?? 'Cancel'}</Button>
+          <Button variant="secondary" onClick={() => closeDialog(undefined)}>{data.cancelButton ?? '取消'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -70,17 +70,17 @@ export function InputDialog({
   children,
   title,
   description,
-  fieldName,
+  field名称,
   OKButton = 'OK',
-  CancelButton = 'Cancel',
+  取消Button = '取消',
   onResult
 }: {
   children: React.ReactNode;
   title: string;
   description: string;
-  fieldName: string;
+  field名称: string;
   OKButton?: string;
-  CancelButton?: string;
+  取消Button?: string;
 }) {
 
   const [value, setValue] = React.useState<string>("");
@@ -123,19 +123,19 @@ export function InputDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent class名称="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
+          <Dialog描述>
             {description}
-          </DialogDescription>
+          </Dialog描述>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor={fieldName} className="text-right">
-              {fieldName}
+        <div class名称="grid gap-4 py-4">
+          <div class名称="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor={field名称} class名称="text-right">
+              {field名称}
             </Label>
-            <Input disabled={isLoading} id={fieldName}
+            <Input disabled={isLoading} id={field名称}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyUp={(e) => {
@@ -143,18 +143,18 @@ export function InputDialog({
                   submit();
                 }
               }}
-              className="col-span-3"
+              class名称="col-span-3"
             />
           </div>
         </div>
-        <p className="text-sm text-right text-red-500">{errorMessages}</p>
+        <p class名称="text-sm text-right text-red-500">{errorMessages}</p>
         <DialogFooter>
           <Button disabled={isLoading} onClick={submit}>{isLoading ? <LoadingSpinner /> : OKButton}</Button>
           <Button disabled={isLoading} variant="secondary" onClick={() => {
             onResult(undefined);
             setValue("");
             setIsOpen(false);
-          }}>{CancelButton}</Button>
+          }}>{取消Button}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

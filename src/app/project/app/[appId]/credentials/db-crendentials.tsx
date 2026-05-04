@@ -1,8 +1,8 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { useEffect, useState } from "react";
 import { DatabaseTemplateInfoModel } from "@/shared/model/database-template-info.model";
-import { Actions } from "@/frontend/utils/nextjs-actions.utils";
+import { 操作 } from "@/frontend/utils/nextjs-actions.utils";
 import { getDatabaseCredentials } from "./actions";
 import CopyInputField from "@/components/custom/copy-input-field";
 import FullLoadingSpinner from "@/components/ui/full-loading-spinnter";
@@ -17,7 +17,7 @@ export default function DbCredentials({
 
 
     const loadCredentials = async (appId: string) => {
-        const response = await Actions.run(() => getDatabaseCredentials(appId));
+        const response = await 操作.run(() => getDatabaseCredentials(appId));
         setDatabaseCredentials(response);
     }
 
@@ -32,24 +32,24 @@ export default function DbCredentials({
         <Card>
             <CardHeader>
                 <CardTitle>Database Credentials</CardTitle>
-                <CardDescription>Use these credentials to connect to your database from other apps within the same project.</CardDescription>
+                <Card描述>Use these credentials to connect to your database from other apps within the same project.</Card描述>
             </CardHeader>
             <CardContent>
                 {!databaseCredentials ? <FullLoadingSpinner /> : <>
-                    <div className="grid grid-cols-2 gap-4">
-                        {!!databaseCredentials?.databaseName && <>   <CopyInputField
-                            label="Database Name"
-                            value={databaseCredentials?.databaseName || ''} />
+                    <div class名称="grid grid-cols-2 gap-4">
+                        {!!databaseCredentials?.database名称 && <>   <CopyInputField
+                            label="Database 名称"
+                            value={databaseCredentials?.database名称 || ''} />
 
                             <div></div>
                         </>}
 
                         {!!databaseCredentials?.username && <CopyInputField
-                            label="Username"
+                            label="用户名"
                             value={databaseCredentials?.username || ''} />}
 
                         {!!databaseCredentials?.password && <CopyInputField
-                            label="Password"
+                            label="密码"
                             secret={true}
                             value={databaseCredentials?.password || ''} />}
 
@@ -61,7 +61,7 @@ export default function DbCredentials({
                             label="Internal Port"
                             value={(databaseCredentials?.port + '')} />
                     </div>
-                    <div className="grid grid-cols-1 gap-4 pt-4">
+                    <div class名称="grid grid-cols-1 gap-4 pt-4">
                         <CopyInputField
                             label="Internal Connection URL"
                             secret={true}

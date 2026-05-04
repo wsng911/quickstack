@@ -1,45 +1,45 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { deletePort, savePort } from "./actions";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
-import { KubeObjectNameUtils } from "@/server/utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "@/server/utils/kube-object-name.utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { Code } from "@/components/custom/code";
 import { ListUtils } from "@/shared/utils/list.utils";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import DefaultPortEditDialog from "./default-port-edit";
+import DefaultPort编辑Dialog from "./default-port-edit";
 import { Button } from "@/components/ui/button";
-import { EditIcon, Plus, TrashIcon } from "lucide-react";
+import { 编辑Icon, Plus, TrashIcon } from "lucide-react";
 import { Toast } from "@/frontend/utils/toast.utils";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 
 export default function InternalHostnames({ app, readonly }: {
     app: AppExtendedModel;
     readonly: boolean;
 }) {
 
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
 
-    const asyncDeleteDomain = async (portId: string) => {
+    const async删除Domain = async (portId: string) => {
         const confirm = await openDialog({
-            title: "Delete Port",
+            title: "删除 Port",
             description: "The port will be removed and the changes will take effect, after you deploy the app. Are you sure you want to remove this port?",
-            okButton: "Delete Port"
+            okButton: "删除 Port"
         });
         if (confirm) {
             await Toast.fromAction(() => deletePort(portId));
         }
     };
 
-    const internalUrl = KubeObjectNameUtils.toServiceName(app.id);
+    const internalUrl = KubeObject名称Utils.toService名称(app.id);
 
     return <>
         <Card>
             <CardHeader>
                 <CardTitle>Internal Ports</CardTitle>
-                <CardDescription>If you want to connect other apps to this app, you have to configure the internal ports below.</CardDescription>
+                <Card描述>If you want to connect other apps to this app, you have to configure the internal ports below.</Card描述>
             </CardHeader>
             <CardContent>
                 <Table>
@@ -47,20 +47,20 @@ export default function InternalHostnames({ app, readonly }: {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Port</TableHead>
-                            <TableHead className="w-[100px]">Action</TableHead>
+                            <TableHead class名称="w-[100px]">Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {app.appPorts.map(port => (
                             <TableRow key={port.id}>
-                                <TableCell className="font-medium">
+                                <TableCell class名称="font-medium">
                                     {port.port}
                                 </TableCell>
-                                {!readonly && <TableCell className="font-medium  flex gap-2">
-                                    <DefaultPortEditDialog appId={app.id} appPort={port}>
-                                        <Button variant="ghost"><EditIcon /></Button>
-                                    </DefaultPortEditDialog>
-                                    <Button variant="ghost" onClick={() => asyncDeleteDomain(port.id)}>
+                                {!readonly && <TableCell class名称="font-medium  flex gap-2">
+                                    <DefaultPort编辑Dialog appId={app.id} appPort={port}>
+                                        <Button variant="ghost"><编辑Icon /></Button>
+                                    </DefaultPort编辑Dialog>
+                                    <Button variant="ghost" onClick={() => async删除Domain(port.id)}>
                                         <TrashIcon />
                                     </Button>
                                 </TableCell>}
@@ -70,33 +70,33 @@ export default function InternalHostnames({ app, readonly }: {
                 </Table>
             </CardContent>
             {!readonly && <CardFooter>
-                <DefaultPortEditDialog appId={app.id}>
-                    <Button><Plus /> Add Port</Button>
-                </DefaultPortEditDialog>
+                <DefaultPort编辑Dialog appId={app.id}>
+                    <Button><Plus /> 添加 Port</Button>
+                </DefaultPort编辑Dialog>
             </CardFooter>}
         </Card>
 
         <Card>
             <CardHeader>
                 <CardTitle>Internal Hostnames</CardTitle>
-                <CardDescription>Internal hostnames can be used to connect to this app from other apps in the same project. </CardDescription>
+                <Card描述>Internal hostnames can be used to connect to this app from other apps in the same project. </Card描述>
             </CardHeader>
             <CardContent>
                 {ListUtils.removeDuplicates([
                     ...app.appPorts.map(p => p.port),
                     ...app.appDomains.map(d => d.port)
                 ]).map(port => (
-                    <div key={port} className="flex gap-1 pb-2">
+                    <div key={port} class名称="flex gap-1 pb-2">
                         <div><Code>{internalUrl + ':' + port}</Code></div>
-                        <div className="self-center">
+                        <div class名称="self-center">
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild><QuestionMarkCircledIcon /></TooltipTrigger>
                                     <TooltipContent>
-                                        <p className="max-w-[350px]">
+                                        <p class名称="max-w-[350px]">
                                             Other apps can connect to this app using this hostname. This hostname is valid for all internal connections within the same project.<br /><br />
-                                            <span className="font-bold">Hostname:</span> {internalUrl}<br />
-                                            <span className="font-bold">Port:</span> {port}
+                                            <span class名称="font-bold">Hostname:</span> {internalUrl}<br />
+                                            <span class名称="font-bold">Port:</span> {port}
                                         </p>
                                     </TooltipContent>
                                 </Tooltip>

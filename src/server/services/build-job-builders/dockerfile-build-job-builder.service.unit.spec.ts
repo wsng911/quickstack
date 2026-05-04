@@ -12,7 +12,7 @@ describe('DockerfileBuildJobBuilder', () => {
                 gitBranch: 'main',
                 dockerfilePath: './apps/web/Dockerfile',
             } as any,
-            buildName: 'build-1',
+            build名称: 'build-1',
             deploymentId: 'deployment-1',
             latestRemoteGitHash: 'abc123',
             latestRemoteGitCommitMessage: 'feat: test',
@@ -21,7 +21,7 @@ describe('DockerfileBuildJobBuilder', () => {
 
         expect(job.metadata?.annotations?.['qs-build-method']).toBe('DOCKERFILE');
         expect(job.spec?.template?.metadata?.annotations?.['qs-deplyoment-id']).toBe('deployment-1');
-        expect(job.spec?.template?.spec?.initContainers?.map((container) => container.name)).toEqual([
+        expect(job.spec?.template?.spec?.init容器?.map((container) => container.name)).toEqual([
             'build-queue-init',
             'build-git-init',
         ]);
@@ -58,12 +58,12 @@ describe('DockerfileBuildJobBuilder', () => {
                 gitBranch: 'main',
                 dockerfilePath: './Dockerfile',
             } as any,
-            buildName: 'build-1',
+            build名称: 'build-1',
             deploymentId: 'deployment-1',
             latestRemoteGitHash: 'abc123',
             latestRemoteGitCommitMessage: 'feat: test',
             queuedAt: '123',
-            gitSshPrivateKeySecretName: 'git-ssh-build-1',
+            gitSshPrivateKeySecret名称: 'git-ssh-build-1',
         });
 
         expect(job.metadata?.annotations?.['qs-git-ssh-secret']).toBe('git-ssh-build-1');
@@ -71,7 +71,7 @@ describe('DockerfileBuildJobBuilder', () => {
             {
                 name: 'build-git-ssh-key',
                 secret: {
-                    secretName: 'git-ssh-build-1',
+                    secret名称: 'git-ssh-build-1',
                     defaultMode: 0o400,
                 },
             },

@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const filebrowserAppTemplate: AppTemplateModel = {
     name: "File Browser",
-    iconName: 'https://raw.githubusercontent.com/filebrowser/logo/master/banner.svg',
+    icon名称: 'https://raw.githubusercontent.com/filebrowser/logo/master/banner.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -33,13 +33,13 @@ export const filebrowserAppTemplate: AppTemplateModel = {
             size: 5000,
             containerMountPath: '/srv',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }, {
             size: 50,
             containerMountPath: '/database',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

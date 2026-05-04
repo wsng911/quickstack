@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const adminerAppTemplate: AppTemplateModel = {
     name: "Adminer",
-    iconName: 'https://cdn.simpleicons.org/adminer',
+    icon名称: 'https://cdn.simpleicons.org/adminer',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",

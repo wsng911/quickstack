@@ -1,10 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 import { Toast } from "@/frontend/utils/toast.utils";
-import { Actions } from "@/frontend/utils/nextjs-actions.utils";
+import { 操作 } from "@/frontend/utils/nextjs-actions.utils";
 import { deleteDbToolDeploymentForAppIfExists, deployDbTool, downloadDbGateFilesForApp, getIsDbToolActive, getLoginCredentialsForRunningDbTool } from "./actions";
 import { Label } from "@/components/ui/label";
 import FullLoadingSpinner from "@/components/ui/full-loading-spinnter";
@@ -20,12 +20,12 @@ export default function DbGateDbTool({
     app: AppExtendedModel;
 }) {
 
-    const { openConfirmDialog } = useConfirmDialog();
+    const { open确认Dialog } = use确认Dialog();
     const [isDbGateActive, setIsDbGateActive] = useState<boolean | undefined>(undefined);
     const [loading, setLoading] = useState(false);
 
     const loadIsDbGateActive = async (appId: string) => {
-        const response = await Actions.run(() => getIsDbToolActive(appId, 'dbgate'));
+        const response = await 操作.run(() => getIsDbToolActive(appId, 'dbgate'));
         setIsDbGateActive(response);
     }
 
@@ -34,7 +34,7 @@ export default function DbGateDbTool({
             setLoading(true);
             await Toast.fromAction(() => downloadDbGateFilesForApp(app.id)).then(x => {
                 if (x.status === 'success' && x.data) {
-                    window.open('/api/volume-data-download?fileName=' + x.data);
+                    window.open('/api/volume-data-download?file名称=' + x.data);
                 }
             });
         } finally {
@@ -45,19 +45,19 @@ export default function DbGateDbTool({
     const openDbGateAsync = async () => {
         try {
             setLoading(true);
-            const credentials = await Actions.run(() => getLoginCredentialsForRunningDbTool(app.id, 'dbgate'));
+            const credentials = await 操作.run(() => getLoginCredentialsForRunningDbTool(app.id, 'dbgate'));
             setLoading(false);
-            await openConfirmDialog({
+            await open确认Dialog({
                 title: "Open DB Gate",
                 description: <>
                     DB Gate is ready and can be opened in a new tab. <br />
                     Use the following credentials to login:
-                    <div className="pt-3 grid grid-cols-1 gap-1">
-                        <Label>Username</Label>
+                    <div class名称="pt-3 grid grid-cols-1 gap-1">
+                        <Label>用户名</Label>
                         <div> <Code>{credentials.username}</Code></div>
                     </div>
-                    <div className="pt-3 pb-4 grid grid-cols-1 gap-1">
-                        <Label>Password</Label>
+                    <div class名称="pt-3 pb-4 grid grid-cols-1 gap-1">
+                        <Label>密码</Label>
                         <div><Code>{credentials.password}</Code></div>
                     </div>
                     <div>
@@ -65,7 +65,7 @@ export default function DbGateDbTool({
                     </div>
                 </>,
                 okButton: '',
-                cancelButton: "Close"
+                cancelButton: "关闭"
             });
         } finally {
             setLoading(false);
@@ -80,8 +80,8 @@ export default function DbGateDbTool({
     }, [app]);
 
     return <>
-        <div className="flex gap-4 items-center">
-            <div className="flex items-center space-x-3">
+        <div class名称="flex gap-4 items-center">
+            <div class名称="flex items-center space-x-3">
                 <Switch id="canary-channel-mode" disabled={loading || isDbGateActive === undefined} checked={isDbGateActive} onCheckedChange={async (checked) => {
                     try {
                         setLoading(true);

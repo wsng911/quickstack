@@ -8,10 +8,10 @@ export function DockerfilePathStep({ value, isDetecting, onChange }: {
     onChange: (value: string) => void;
 }) {
     return (
-        <div className="space-y-4">
+        <div class名称="space-y-4">
             {isDetecting && (
-                <div className="flex min-h-20 items-center justify-center gap-2 rounded-md border text-sm text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                <div class名称="flex min-h-20 items-center justify-center gap-2 rounded-md border text-sm text-muted-foreground">
+                    <Loader2 class名称="h-4 w-4 animate-spin" />
                     Detecting Dockerfile...
                 </div>
             )}

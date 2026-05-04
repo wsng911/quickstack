@@ -5,11 +5,11 @@ import PageTitle from "@/components/custom/page-title";
 import clusterService from "@/server/services/cluster.service";
 import ResourceNodes from "./monitoring-nodes";
 import { NodeResourceModel } from "@/shared/model/node-resource.model";
-import { AppVolumeMonitoringUsageModel } from "@/shared/model/app-volume-monitoring-usage.model";
+import { AppVolume监控ingUsageModel } from "@/shared/model/app-volume-monitoring-usage.model";
 import monitoringService from "@/server/services/monitoring.service";
-import AppRessourceMonitoring from "./app-monitoring";
-import AppVolumeMonitoring from "./app-volumes-monitoring";
-import { AppMonitoringUsageModel } from "@/shared/model/app-monitoring-usage.model";
+import AppRessource监控ing from "./app-monitoring";
+import AppVolume监控ing from "./app-volumes-monitoring";
+import { App监控ingUsageModel } from "@/shared/model/app-monitoring-usage.model";
 import { UserGroupUtils } from "@/shared/utils/role.utils";
 import { CatchUtils } from "@/shared/utils/catch.utils";
 
@@ -20,7 +20,7 @@ export default async function ResourceNodesInfoPage() {
     let [resourcesNode, volumesUsage, updatedNodeRessources] = await Promise.all([
         CatchUtils.resultOrUndefined(() => clusterService.getNodeResourceUsage()),
         CatchUtils.resultOrUndefined(() => monitoringService.getAllAppVolumesUsage()),
-        CatchUtils.resultOrUndefined(() => monitoringService.getMonitoringForAllApps())
+        CatchUtils.resultOrUndefined(() => monitoringService.get监控ingForAllApps())
     ]);
 
     // filter by role
@@ -30,15 +30,15 @@ export default async function ResourceNodesInfoPage() {
     updatedNodeRessources = updatedNodeRessources?.filter((app) => UserGroupUtils.sessionHasReadAccessForApp(session, app.appId));
 
     return (
-        <div className="flex-1 space-y-4 pt-6">
+        <div class名称="flex-1 space-y-4 pt-6">
             <PageTitle
-                title={'Monitoring'}
+                title={'监控ing'}
                 subtitle={`View all resources of the nodes which belong to the QuickStack Cluster.`}>
             </PageTitle>
-            <div className="space-y-6">
+            <div class名称="space-y-6">
                 <ResourceNodes resourcesNodes={resourcesNode} />
-                <AppRessourceMonitoring appsRessourceUsage={updatedNodeRessources} />
-                <AppVolumeMonitoring volumesUsage={volumesUsage} />
+                <AppRessource监控ing appsRessourceUsage={updatedNodeRessources} />
+                <AppVolume监控ing volumesUsage={volumesUsage} />
             </div>
         </div>
     )

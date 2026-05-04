@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const elementAppTemplate: AppTemplateModel = {
     name: "Element Web",
-    iconName: 'https://raw.githubusercontent.com/element-hq/element-web/develop/res/vector-icons/1024.png',
+    icon名称: 'https://raw.githubusercontent.com/element-hq/element-web/develop/res/vector-icons/1024.png',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",

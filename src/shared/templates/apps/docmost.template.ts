@@ -1,28 +1,28 @@
 import { Constants } from "@/shared/utils/constants";
 import { AppTemplateModel } from "../../model/app-template.model";
 import { getPostgresAppTemplate } from "../databases/postgres.template";
-import { getRedisAppTemplate, postCreateRedisAppTemplate } from "../databases/redis.template";
+import { getRedisAppTemplate, post创建RedisAppTemplate } from "../databases/redis.template";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
-import { KubeObjectNameUtils } from "@/server/utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "@/server/utils/kube-object-name.utils";
 import { AppTemplateUtils } from "@/server/utils/app-template.utils";
 
 export const docmostAppTemplate: AppTemplateModel = {
     name: "Docmost",
-    iconName: 'https://cdn-1.webcatalog.io/catalog/docmost/docmost-icon-filled-256.webp',
+    icon名称: 'https://cdn-1.webcatalog.io/catalog/docmost/docmost-icon-filled-256.webp',
     templates: [
         // PostgreSQL
         getPostgresAppTemplate({
-            appName: 'Docmost PostgreSQL',
-            dbName: 'docmost',
-            dbUsername: 'docmost'
+            app名称: 'Docmost PostgreSQL',
+            db名称: 'docmost',
+            db用户名: 'docmost'
         }),
         // Redis
         getRedisAppTemplate({
-            appName: 'Docmost Redis'
+            app名称: 'Docmost Redis'
         }),
         // Docmost
         {
-            inputSettings: [
+            input设置: [
                 {
                     key: "containerImageSource",
                     label: "Container Image",
@@ -58,7 +58,7 @@ export const docmostAppTemplate: AppTemplateModel = {
                 size: 500,
                 containerMountPath: '/app/data/storage',
                 accessMode: 'ReadWriteOnce',
-                storageClassName: 'longhorn',
+                storageClass名称: 'longhorn',
                 shareWithOtherApps: false,
             }],
             appFileMounts: [],
@@ -69,14 +69,14 @@ export const docmostAppTemplate: AppTemplateModel = {
 };
 
 
-export const postCreateDocmostAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
+export const post创建DocmostAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
 
     const createdPostgresApp = createdApps[0];
     const createdRedisApp = createdApps[1];
     const createdDocmostApp = createdApps[2];
 
     if (!createdPostgresApp || !createdRedisApp || !createdDocmostApp) {
-        throw new Error('Created templates for PostgreSQL, Redis or Docmost not found.');
+        throw new Error('创建d templates for PostgreSQL, Redis or Docmost not found.');
     }
 
     const redisConnectionInfo = AppTemplateUtils.getDatabaseModelFromApp(createdRedisApp);

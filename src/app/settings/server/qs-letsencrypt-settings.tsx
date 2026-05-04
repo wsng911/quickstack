@@ -1,7 +1,7 @@
 'use client';
 
-import { SubmitButton } from "@/components/custom/submit-button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { 提交Button } from "@/components/custom/submit-button";
+import { Card, CardContent, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FormUtils } from "@/frontend/utils/form.utilts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,29 +11,29 @@ import { ServerActionResult } from "@/shared/model/server-action-error-return.mo
 import { Input } from "@/components/ui/input";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { updateLetsEncryptSettings } from "./actions";
-import { QsLetsEncryptSettingsModel, qsLetsEncryptSettingsZodModel } from "@/shared/model/qs-letsencrypt-settings.model";
+import { updateLetsEncrypt设置 } from "./actions";
+import { QsLetsEncrypt设置Model, qsLetsEncrypt设置ZodModel } from "@/shared/model/qs-letsencrypt-settings.model";
 
-export default function QuickStackLetsEncryptSettings({
+export default function QuickStackLetsEncrypt设置({
     letsEncryptMail,
 }: {
     letsEncryptMail: string;
 }) {
-    const form = useForm<QsLetsEncryptSettingsModel>({
-        resolver: zodResolver(qsLetsEncryptSettingsZodModel),
+    const form = useForm<QsLetsEncrypt设置Model>({
+        resolver: zodResolver(qsLetsEncrypt设置ZodModel),
         defaultValues: {
             letsEncryptMail,
         }
     });
 
-    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: QsLetsEncryptSettingsModel) =>
-        updateLetsEncryptSettings(state, payload), FormUtils.getInitialFormState<typeof qsLetsEncryptSettingsZodModel>());
+    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: QsLetsEncrypt设置Model) =>
+        updateLetsEncrypt设置(state, payload), FormUtils.getInitialFormState<typeof qsLetsEncrypt设置ZodModel>());
 
     useEffect(() => {
         if (state.status === 'success') {
-            toast.success('Settings updated successfully. It may take a few seconds for the changes to take effect.');
+            toast.success('设置 updated successfully. It may take a few seconds for the changes to take effect.');
         }
-        FormUtils.mapValidationErrorsToForm<typeof qsLetsEncryptSettingsZodModel>(state, form)
+        FormUtils.mapValidationErrorsToForm<typeof qsLetsEncrypt设置ZodModel>(state, form)
     }, [state]);
 
     const sourceTypeField = form.watch();
@@ -41,19 +41,19 @@ export default function QuickStackLetsEncryptSettings({
         <Card>
             <CardHeader>
                 <CardTitle>SSL Certificates</CardTitle>
-                <CardDescription>To issue SSL Certificates to your Apps, provide your Let's Encrypt email address.</CardDescription>
+                <Card描述>To issue SSL Certificates to your Apps, provide your Let's Encrypt email address.</Card描述>
             </CardHeader>
             <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                     return formAction(data);
                 })()}>
-                    <CardContent className="space-y-4">
+                    <CardContent class名称="space-y-4">
                         <FormField
                             control={form.control}
                             name="letsEncryptMail"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Let's Encrypt Email</FormLabel>
+                                    <FormLabel>Let's Encrypt 邮箱</FormLabel>
                                     <FormControl>
                                         <Input  {...field} />
                                     </FormControl>
@@ -63,9 +63,9 @@ export default function QuickStackLetsEncryptSettings({
                         />
 
                     </CardContent>
-                    <CardFooter className="gap-4">
-                        <SubmitButton>Save</SubmitButton>
-                        <p className="text-red-500">{state?.message}</p>
+                    <CardFooter class名称="gap-4">
+                        <提交Button>保存</提交Button>
+                        <p class名称="text-red-500">{state?.message}</p>
                     </CardFooter>
                 </form>
             </Form >

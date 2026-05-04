@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const droneAppTemplate: AppTemplateModel = {
     name: "Drone CI",
-    iconName: 'https://cdn.simpleicons.org/drone',
+    icon名称: 'https://cdn.simpleicons.org/drone',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -48,7 +48,7 @@ export const droneAppTemplate: AppTemplateModel = {
             size: 500,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

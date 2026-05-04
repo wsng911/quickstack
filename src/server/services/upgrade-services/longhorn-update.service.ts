@@ -15,7 +15,7 @@ class LonghornUpdateService {
      */
     async getCurrentVersion(): Promise<string | undefined> {
         try {
-            const daemonSet = await k3s.apps.readNamespacedDaemonSet(
+            const daemonSet = await k3s.apps.read名称spacedDaemonSet(
                 this.LONGHORN_MANAGER_NAME,
                 this.LONGHORN_NAMESPACE
             );
@@ -40,7 +40,7 @@ class LonghornUpdateService {
      */
     async isInstalled(): Promise<boolean> {
         try {
-            await k3s.apps.readNamespacedDaemonSet(
+            await k3s.apps.read名称spacedDaemonSet(
                 this.LONGHORN_MANAGER_NAME,
                 this.LONGHORN_NAMESPACE
             );
@@ -108,7 +108,7 @@ class LonghornUpdateService {
      */
     async isUpgradeInProgress(): Promise<boolean> {
         try {
-            const podsResponse = await k3s.core.listNamespacedPod(this.LONGHORN_NAMESPACE);
+            const podsResponse = await k3s.core.list名称spacedPod(this.LONGHORN_NAMESPACE);
             const pods = podsResponse.body.items;
 
             if (pods.length === 0) {
@@ -192,7 +192,7 @@ class LonghornUpdateService {
     /**
      * Gets detailed upgrade status including pod states
      */
-    async getUpgradeStatus(): Promise<{
+    async getUpgrade状态(): Promise<{
         isUpgrading: boolean;
         desiredPods: number;
         readyPods: number;
@@ -209,7 +209,7 @@ class LonghornUpdateService {
         let updatedPods = 0;
 
         try {
-            const daemonSet = await k3s.apps.readNamespacedDaemonSet(
+            const daemonSet = await k3s.apps.read名称spacedDaemonSet(
                 this.LONGHORN_MANAGER_NAME,
                 this.LONGHORN_NAMESPACE
             );

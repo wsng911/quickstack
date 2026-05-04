@@ -62,12 +62,12 @@ describe('useDialog integration tests', () => {
   it('handles complex ReactNode content', async () => {
     const { result } = renderHook(() => useDialog());
 
-    // Create a complex ReactNode structure
+    // 创建 a complex ReactNode structure
     const complexContent = React.createElement(
       'div',
-      { className: 'dialog-content' },
+      { class名称: 'dialog-content' },
       React.createElement('h1', null, 'Title'),
-      React.createElement('p', null, 'Description'),
+      React.createElement('p', null, '描述'),
       React.createElement('button', { 'data-testid': 'action-btn' }, 'Action')
     );
 

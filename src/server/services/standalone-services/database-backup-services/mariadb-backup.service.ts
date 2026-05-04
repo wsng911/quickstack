@@ -2,30 +2,30 @@ import k3s from "../../../adapter/kubernetes-api.adapter";
 import { V1Job } from "@kubernetes/client-node";
 import { Constants } from "../../../../shared/utils/constants";
 import { AppTemplateUtils } from "../../../utils/app-template.utils";
-import { KubeObjectNameUtils } from "../../../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../../../utils/kube-object-name.utils";
 import namespaceService from "../../namespace.service";
-import sharedBackupService from "./shared-backup.service";
-import { VolumeBackupExtendedModel } from "@/shared/model/volume-backup-extended.model";
+import shared返回upService from "./shared-backup.service";
+import { Volume返回upExtendedModel } from "@/shared/model/volume-backup-extended.model";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 
-class MariaDbBackupService {
+class MariaDb返回upService {
 
-    async backupMariaDb(backupVolume: VolumeBackupExtendedModel, app: AppExtendedModel) {
+    async backupMariaDb(backupVolume: Volume返回upExtendedModel, app: AppExtendedModel) {
 
-        const backupNamespace = app.projectId; // must run in the same namespace as the app
+        const backup名称space = app.projectId; // must run in the same namespace as the app
 
-        await namespaceService.createNamespaceIfNotExists(backupNamespace);
+        await namespaceService.create名称spaceIfNotExists(backup名称space);
 
-        const jobName = KubeObjectNameUtils.addRandomSuffix(`backup-mariadb-${app.id}`);
-        console.log(`Creating MariaDB/MySQL backup job with name: ${jobName}`);
+        const job名称 = KubeObject名称Utils.addRandomSuffix(`backup-mariadb-${app.id}`);
+        console.log(`Creating MariaDB/MySQL backup job with name: ${job名称}`);
 
         const dbCredentials = AppTemplateUtils.getDatabaseModelFromApp(app);
 
         const now = new Date();
         const nowString = now.toISOString();
-        const s3Key = `${sharedBackupService.folderPathForVolumeBackup(app.id, backupVolume.id)}/${nowString}.tar.gz`;
+        const s3Key = `${shared返回upService.folderPathForVolume返回up(app.id, backupVolume.id)}/${nowString}.tar.gz`;
 
-        console.log(`MariaDB/MySQL Database: ${dbCredentials.databaseName}`);
+        console.log(`MariaDB/MySQL Database: ${dbCredentials.database名称}`);
         console.log(`S3 Key: ${s3Key}`);
 
         const endpoint = backupVolume.target.endpoint.includes('http') ? backupVolume.target.endpoint : `https://${backupVolume.target.endpoint}`;
@@ -37,8 +37,8 @@ class MariaDbBackupService {
             apiVersion: "batch/v1",
             kind: "Job",
             metadata: {
-                name: jobName,
-                namespace: backupNamespace,
+                name: job名称,
+                namespace: backup名称space,
                 annotations: {
                     [Constants.QS_ANNOTATION_APP_ID]: app.id,
                     [Constants.QS_ANNOTATION_PROJECT_ID]: app.projectId,
@@ -56,7 +56,7 @@ class MariaDbBackupService {
                     spec: {
                         containers: [
                             {
-                                name: jobName,
+                                name: job名称,
                                 image: "quickstack/job-backup-mariadb:" + imageTag,
                                 env: [
                                     {
@@ -77,7 +77,7 @@ class MariaDbBackupService {
                                     },
                                     {
                                         name: "MYSQL_DATABASE",
-                                        value: dbCredentials.databaseName
+                                        value: dbCredentials.database名称
                                     },
                                     {
                                         name: "S3_ENDPOINT",
@@ -93,7 +93,7 @@ class MariaDbBackupService {
                                     },
                                     {
                                         name: "S3_BUCKET_NAME",
-                                        value: backupVolume.target.bucketName
+                                        value: backupVolume.target.bucket名称
                                     },
                                     {
                                         name: "S3_REGION",
@@ -113,22 +113,22 @@ class MariaDbBackupService {
             }
         };
 
-        await k3s.batch.createNamespacedJob(backupNamespace, jobDefinition);
-        console.log(`MariaDB/MySQL backup job ${jobName} started successfully`);
+        await k3s.batch.create名称spacedJob(backup名称space, jobDefinition);
+        console.log(`MariaDB/MySQL backup job ${job名称} started successfully`);
 
         // Wait for pod to be created
         await new Promise(resolve => setTimeout(resolve, 5000));
 
         // Log backup output
-        await sharedBackupService.logDatabaseBackupOutput(jobName, backupNamespace);
+        await shared返回upService.logDatabase返回upOutput(job名称, backup名称space);
 
         // Wait for job completion
-        await sharedBackupService.waitForBackupJobCompletion(jobName, backupNamespace);
+        await shared返回upService.waitFor返回upJobCompletion(job名称, backup名称space);
 
-        await sharedBackupService.deleteOldBackupsBasedOnRetention(backupVolume.target, app.id, backupVolume.id, backupVolume.retention, '.tar.gz');
+        await shared返回upService.deleteOld返回upsBasedOnRetention(backupVolume.target, app.id, backupVolume.id, backupVolume.retention, '.tar.gz');
         console.log(`MariaDB/MySQL backup finished for volume ${backupVolume.volumeId} and backup ${backupVolume.id}`);
     }
 }
 
-const mariaDbBackupService = new MariaDbBackupService();
-export default mariaDbBackupService;
+const mariaDb返回upService = new MariaDb返回upService();
+export default mariaDb返回upService;

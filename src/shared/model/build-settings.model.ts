@@ -1,7 +1,7 @@
 import { stringToOptionalNumber } from "@/shared/utils/zod.utils";
 import { z } from "zod";
 
-export const buildSettingsZodModel = z.object({
+export const build设置ZodModel = z.object({
     memoryReservation: stringToOptionalNumber,
     memoryLimit: stringToOptionalNumber,
     cpuReservation: stringToOptionalNumber,
@@ -9,4 +9,4 @@ export const buildSettingsZodModel = z.object({
     buildNode: z.string().optional().nullable(),
 });
 
-export type BuildSettingsModel = z.infer<typeof buildSettingsZodModel>;
+export type Build设置Model = z.infer<typeof build设置ZodModel>;

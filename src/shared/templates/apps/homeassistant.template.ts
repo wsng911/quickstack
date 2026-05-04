@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const homeassistantAppTemplate: AppTemplateModel = {
     name: "Home Assistant",
-    iconName: 'https://cdn.simpleicons.org/homeassistant',
+    icon名称: 'https://cdn.simpleicons.org/homeassistant',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -34,7 +34,7 @@ export const homeassistantAppTemplate: AppTemplateModel = {
             size: 1000,
             containerMountPath: '/config',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

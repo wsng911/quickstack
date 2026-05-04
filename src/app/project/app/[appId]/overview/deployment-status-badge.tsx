@@ -1,22 +1,22 @@
 'use client'
 
-import { DeploymentStatus } from "@/shared/model/deployment-info.model";
+import { Deployment状态 } from "@/shared/model/deployment-info.model";
 
 
-export default function DeploymentStatusBadge(
+export default function Deployment状态Badge(
     {
         children
     }: {
-        children: DeploymentStatus
+        children: Deployment状态
     }
 ) {
 
     return (<>
-        <span className={'px-2 py-1 rounded-lg text-sm font-semibold ' + getBackgroundColorForStatus(children) + ' ' + getTextColorForStatus(children)}>{getTextForStatus(children)}</span>
+        <span class名称={'px-2 py-1 rounded-lg text-sm font-semibold ' + get返回groundColorFor状态(children) + ' ' + getTextColorFor状态(children)}>{getTextFor状态(children)}</span>
     </>)
 }
 
-function getTextForStatus(status: DeploymentStatus) {
+function getTextFor状态(status: Deployment状态) {
     switch (status) {
         case 'SHUTDOWN':
             return 'Shutdown';
@@ -35,7 +35,7 @@ function getTextForStatus(status: DeploymentStatus) {
     }
 }
 
-function getBackgroundColorForStatus(status: DeploymentStatus) {
+function get返回groundColorFor状态(status: Deployment状态) {
     switch (status) {
 
         case 'SHUTDOWN':
@@ -55,7 +55,7 @@ function getBackgroundColorForStatus(status: DeploymentStatus) {
     }
 }
 
-function getTextColorForStatus(status: DeploymentStatus) {
+function getTextColorFor状态(status: Deployment状态) {
     switch (status) {
 
         case 'SHUTDOWN':

@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const nginxAppTemplate: AppTemplateModel = {
     name: "NGINX",
-    iconName: 'https://cdn.simpleicons.org/nginx',
+    icon名称: 'https://cdn.simpleicons.org/nginx',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",

@@ -3,7 +3,7 @@ import k3s from "../adapter/kubernetes-api.adapter";
 import { V1PersistentVolumeClaim } from "@kubernetes/client-node";
 import { ServiceException } from "@/shared/model/service.exception.model";
 import { AppVolume } from "@prisma/client";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import { Constants } from "../../shared/utils/constants";
 import { dlog } from "./deployment-logs.service";
 
@@ -14,15 +14,15 @@ class SvcService {
         if (!existingService) {
             return;
         }
-        const returnVal = await k3s.core.deleteNamespacedService(KubeObjectNameUtils.toServiceName(appId), projectId);
-        console.log(`Deleted Service ${KubeObjectNameUtils.toServiceName(appId)} in namespace ${projectId}`);
+        const returnVal = await k3s.core.delete名称spacedService(KubeObject名称Utils.toService名称(appId), projectId);
+        console.log(`删除d Service ${KubeObject名称Utils.toService名称(appId)} in namespace ${projectId}`);
         return returnVal;
     }
 
     async getService(projectId: string, appId: string) {
-        const allServices = await k3s.core.listNamespacedService(projectId);
-        if (allServices.body.items.some((item) => item.metadata?.name === KubeObjectNameUtils.toServiceName(appId))) {
-            const res = await k3s.core.readNamespacedService(KubeObjectNameUtils.toServiceName(appId), projectId);
+        const all服务 = await k3s.core.list名称spacedService(projectId);
+        if (all服务.body.items.some((item) => item.metadata?.name === KubeObject名称Utils.toService名称(appId))) {
+            const res = await k3s.core.read名称spacedService(KubeObject名称Utils.toService名称(appId), projectId);
             return res.body;
         }
     }
@@ -77,40 +77,40 @@ class SvcService {
 
     }
 
-    async createOrUpdateService(namespace: string, kubeAppName: string, ports: {
+    async createOrUpdateService(namespace: string, kubeApp名称: string, ports: {
         name: string;
         port: number;
         targetPort: number;
         nodePort?: number;
         protocol?: string;
     }[], serviceType?: string) {
-        const existingService = await this.getService(namespace, kubeAppName);
+        const existingService = await this.getService(namespace, kubeApp名称);
         // port configuration with removed duplicates
 
         if (ports.length === 0) {
             if (existingService) {
-                await this.deleteService(namespace, kubeAppName);
+                await this.deleteService(namespace, kubeApp名称);
             }
             return;
         }
 
         const body = {
             metadata: {
-                name: KubeObjectNameUtils.toServiceName(kubeAppName)
+                name: KubeObject名称Utils.toService名称(kubeApp名称)
             },
             spec: {
                 ...(serviceType ? { type: serviceType } : {}),
                 selector: {
-                    app: kubeAppName
+                    app: kubeApp名称
                 },
                 ports: ports
             }
         };
 
         if (existingService) {
-            await k3s.core.replaceNamespacedService(KubeObjectNameUtils.toServiceName(kubeAppName), namespace, body);
+            await k3s.core.replace名称spacedService(KubeObject名称Utils.toService名称(kubeApp名称), namespace, body);
         } else {
-            await k3s.core.createNamespacedService(namespace, body);
+            await k3s.core.create名称spacedService(namespace, body);
         }
 
     }

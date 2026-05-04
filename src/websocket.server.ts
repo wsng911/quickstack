@@ -3,7 +3,7 @@ import type http from "node:http";
 
 export default async function initializeWebsocket(server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>) {
 
-  // Create a WebSocket server by passing the HTTP server
+  // 创建 a WebSocket server by passing the HTTP server
   const wss = new WebSocket.Server({ server });
 
   // Event handler for WebSocket connections

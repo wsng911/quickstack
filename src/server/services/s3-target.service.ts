@@ -41,7 +41,7 @@ class S3TargetService {
         });
     }
 
-    async save(item: Prisma.S3TargetUncheckedCreateInput | Prisma.S3TargetUncheckedUpdateInput) {
+    async save(item: Prisma.S3TargetUnchecked创建Input | Prisma.S3TargetUncheckedUpdateInput) {
         let savedItem: S3Target;
         try {
             if (item.id) {
@@ -53,7 +53,7 @@ class S3TargetService {
                 });
             } else {
                 savedItem = await dataAccess.client.s3Target.create({
-                    data: item as Prisma.S3TargetUncheckedCreateInput
+                    data: item as Prisma.S3TargetUnchecked创建Input
                 });
             }
         } finally {

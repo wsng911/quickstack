@@ -2,17 +2,17 @@ import { AppBuildMethod, AppSourceInfoInputModel } from "@/shared/model/app-sour
 import { SecretSummaryRow, SummaryRow } from "./source-wizard-fields";
 import { buildMethodLabels, defaultDockerfilePath, SourceType, sourceTypeLabels } from "./types";
 
-export function SourceSummaryStep({ formData, publicKey, showGitToken, setShowGitToken, showRegistryPassword, setShowRegistryPassword }: {
+export function SourceSummaryStep({ formData, publicKey, showGitToken, setShowGitToken, showRegistry密码, setShowRegistry密码 }: {
     formData: AppSourceInfoInputModel;
     publicKey?: string;
     showGitToken: boolean;
     setShowGitToken: (show: boolean) => void;
-    showRegistryPassword: boolean;
-    setShowRegistryPassword: (show: boolean) => void;
+    showRegistry密码: boolean;
+    setShowRegistry密码: (show: boolean) => void;
 }) {
     const isGitSource = formData.sourceType === 'GIT' || formData.sourceType === 'GIT_SSH';
     return (
-        <div className="space-y-4 rounded-md border p-4">
+        <div class名称="space-y-4 rounded-md border p-4">
             <SummaryRow label="Source Type" value={sourceTypeLabels[formData.sourceType as SourceType]} />
             {isGitSource && (
                 <>
@@ -24,8 +24,8 @@ export function SourceSummaryStep({ formData, publicKey, showGitToken, setShowGi
             )}
             {formData.sourceType === 'GIT' && (
                 <>
-                    <SummaryRow label="Git Username" value={formData.gitUsername || 'Not configured'} />
-                    <SecretSummaryRow label="Git Password or Token" value={formData.gitToken ?? ''} visible={showGitToken} onVisibleChange={setShowGitToken} />
+                    <SummaryRow label="Git 用户名" value={formData.git用户名 || 'Not configured'} />
+                    <SecretSummaryRow label="Git 密码 or Token" value={formData.gitToken ?? ''} visible={showGitToken} onVisibleChange={setShowGitToken} />
                 </>
             )}
             {formData.sourceType === 'GIT_SSH' && (
@@ -33,9 +33,9 @@ export function SourceSummaryStep({ formData, publicKey, showGitToken, setShowGi
             )}
             {formData.sourceType === 'CONTAINER' && (
                 <>
-                    <SummaryRow label="Image Name" value={formData.containerImageSource ?? ''} mono />
-                    <SummaryRow label="Registry Username" value={formData.containerRegistryUsername || 'Not configured'} />
-                    <SecretSummaryRow label="Registry Password" value={formData.containerRegistryPassword ?? ''} visible={showRegistryPassword} onVisibleChange={setShowRegistryPassword} />
+                    <SummaryRow label="Image 名称" value={formData.containerImageSource ?? ''} mono />
+                    <SummaryRow label="Registry 用户名" value={formData.containerRegistry用户名 || 'Not configured'} />
+                    <SecretSummaryRow label="Registry 密码" value={formData.containerRegistry密码 ?? ''} visible={showRegistry密码} onVisibleChange={setShowRegistry密码} />
                 </>
             )}
         </div>

@@ -1,7 +1,7 @@
 import { V1Deployment, V1Ingress } from "@kubernetes/client-node";
 import dataAccess from "../adapter/db.client";
 import { Constants } from "@/shared/utils/constants";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
 import deploymentService from "./deployment.service";
 import k3s from "../adapter/kubernetes-api.adapter";
 import ingressService from "./ingress.service";
@@ -25,7 +25,7 @@ class FileBrowserService {
             }
         });
 
-        const kubeAppName = `fb-${volumeId}`; // filebrowser-app
+        const kubeApp名称 = `fb-${volumeId}`; // filebrowser-app
         const namespace = volume.app.projectId;
         const appId = volume.app.id;
         const projectId = volume.app.projectId;
@@ -40,33 +40,33 @@ class FileBrowserService {
         const traefikHostname = await hostnameDnsProviderService.getDomainForApp(volume.id);
 
         const sharedVolumeId = (volume as { sharedVolumeId?: string | null }).sharedVolumeId;
-        const pvcName = KubeObjectNameUtils.toPvcName(sharedVolumeId ?? volume.id);
+        const pvc名称 = KubeObject名称Utils.toPvc名称(sharedVolumeId ?? volume.id);
 
         console.log(`Creating filebrowser deployment for volume ${volumeId}`);
 
-        const randomPassword = randomBytes(15).toString('hex');
-        await this.createOrUpdateFilebrowserDeployment(kubeAppName, appId, projectId, pvcName, randomPassword);
+        const random密码 = randomBytes(15).toString('hex');
+        await this.createOrUpdateFilebrowserDeployment(kubeApp名称, appId, projectId, pvc名称, random密码);
 
         console.log(`Creating service for filebrowser for volume ${volumeId}`);
-        await svcService.createOrUpdateService(projectId, kubeAppName, [{
+        await svcService.createOrUpdateService(projectId, kubeApp名称, [{
             name: 'http',
             port: 80,
             targetPort: 80,
         }]);
 
         console.log(`Creating ingress for filebrowser for volume ${volumeId}`);
-        await this.createOrUpdateIngress(kubeAppName, namespace, appId, projectId, traefikHostname);
+        await this.createOrUpdateIngress(kubeApp名称, namespace, appId, projectId, traefikHostname);
 
         console.log(`Creating network policy for filebrowser for volume ${volumeId}`);
-        await networkPolicyService.reconcileFileBrowserNetworkPolicy(kubeAppName, projectId);
+        await networkPolicyService.reconcileFileBrowserNetworkPolicy(kubeApp名称, projectId);
 
-        const fileBrowserPods = await podService.getPodsForApp(projectId, kubeAppName);
+        const fileBrowserPods = await podService.getPodsForApp(projectId, kubeApp名称);
         for (const pod of fileBrowserPods) {
-            await podService.waitUntilPodIsRunningFailedOrSucceded(projectId, pod.podName);
+            await podService.waitUntilPodIsRunningFailedOrSucceded(projectId, pod.pod名称);
         }
 
-        // return `https://${randomUsername}:${randomPassword}@${traefikHostname}`;
-        return { url: `https://${traefikHostname}`, password: randomPassword };
+        // return `https://${random用户名}:${random密码}@${traefikHostname}`;
+        return { url: `https://${traefikHostname}`, password: random密码 };
     }
 
     async deleteFileBrowserForVolumeIfExists(volumeId: string) {
@@ -83,30 +83,30 @@ class FileBrowserService {
             return;
         }
 
-        const kubeAppName = `fb-${volumeId}`; // filebrowser-app
+        const kubeApp名称 = `fb-${volumeId}`; // filebrowser-app
         const projectId = volume.app.projectId;
 
-        const existingDeployment = await deploymentService.getDeployment(projectId, kubeAppName);
-        if (existingDeployment) { await k3s.apps.deleteNamespacedDeployment(kubeAppName, projectId); }
+        const existingDeployment = await deploymentService.getDeployment(projectId, kubeApp名称);
+        if (existingDeployment) { await k3s.apps.delete名称spacedDeployment(kubeApp名称, projectId); }
 
-        const existingService = await svcService.getService(projectId, kubeAppName);
-        if (existingService) { await svcService.deleteService(projectId, kubeAppName); }
+        const existingService = await svcService.getService(projectId, kubeApp名称);
+        if (existingService) { await svcService.deleteService(projectId, kubeApp名称); }
 
 
-        const existingIngress = await ingressService.getIngressByName(projectId, kubeAppName);
+        const existingIngress = await ingressService.getIngressBy名称(projectId, kubeApp名称);
         if (existingIngress) {
-            await k3s.network.deleteNamespacedIngress(KubeObjectNameUtils.getIngressName(kubeAppName), projectId);
+            await k3s.network.delete名称spacedIngress(KubeObject名称Utils.getIngress名称(kubeApp名称), projectId);
         }
 
-        await networkPolicyService.deleteFileBrowserNetworkPolicy(kubeAppName, projectId);
+        await networkPolicyService.deleteFileBrowserNetworkPolicy(kubeApp名称, projectId);
     }
 
-    private async createOrUpdateIngress(kubeAppName: string, namespace: string, appId: string, projectId: string, traefikHostname: string) {
+    private async createOrUpdateIngress(kubeApp名称: string, namespace: string, appId: string, projectId: string, traefikHostname: string) {
         const ingressDefinition: V1Ingress = {
             apiVersion: 'networking.k8s.io/v1',
             kind: 'Ingress',
             metadata: {
-                name: KubeObjectNameUtils.getIngressName(kubeAppName),
+                name: KubeObject名称Utils.getIngress名称(kubeApp名称),
                 namespace: namespace,
                 annotations: {
                     [Constants.QS_ANNOTATION_APP_ID]: appId,
@@ -114,7 +114,7 @@ class FileBrowserService {
                 },
             },
             spec: {
-                ingressClassName: 'traefik',
+                ingressClass名称: 'traefik',
                 rules: [
                     {
                         host: traefikHostname,
@@ -125,7 +125,7 @@ class FileBrowserService {
                                     pathType: 'Prefix',
                                     backend: {
                                         service: {
-                                            name: KubeObjectNameUtils.toServiceName(kubeAppName),
+                                            name: KubeObject名称Utils.toService名称(kubeApp名称),
                                             port: {
                                                 number: 80,
                                             },
@@ -138,39 +138,39 @@ class FileBrowserService {
                 ],
                 tls: [{
                     hosts: [traefikHostname],
-                    secretName: Constants.TRAEFIK_ME_SECRET_NAME,
+                    secret名称: Constants.TRAEFIK_ME_SECRET_NAME,
                 }],
             },
         };
 
-        const existingIngress = await ingressService.getIngressByName(projectId, kubeAppName);
+        const existingIngress = await ingressService.getIngressBy名称(projectId, kubeApp名称);
         if (existingIngress) {
-            await k3s.network.replaceNamespacedIngress(KubeObjectNameUtils.getIngressName(kubeAppName), projectId, ingressDefinition);
+            await k3s.network.replace名称spacedIngress(KubeObject名称Utils.getIngress名称(kubeApp名称), projectId, ingressDefinition);
         } else {
-            await k3s.network.createNamespacedIngress(projectId, ingressDefinition);
+            await k3s.network.create名称spacedIngress(projectId, ingressDefinition);
         }
     }
 
-    private async createOrUpdateFilebrowserDeployment(kubeAppName: string, appId: string, projectId: string, pvcName: string, authPassword: string) {
+    private async createOrUpdateFilebrowserDeployment(kubeApp名称: string, appId: string, projectId: string, pvc名称: string, auth密码: string) {
 
-        const password = authPassword;
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const password = auth密码;
+        const hashed密码 = await bcrypt.hash(password, 10);
 
         const body: V1Deployment = {
             metadata: {
-                name: kubeAppName
+                name: kubeApp名称
             },
             spec: {
                 replicas: 1,
                 selector: {
                     matchLabels: {
-                        app: kubeAppName
+                        app: kubeApp名称
                     }
                 },
                 template: {
                     metadata: {
                         labels: {
-                            app: kubeAppName
+                            app: kubeApp名称
                         },
                         annotations: {
                             [Constants.QS_ANNOTATION_APP_ID]: appId,
@@ -182,7 +182,7 @@ class FileBrowserService {
                     spec: {
                         containers: [
                             {
-                                name: kubeAppName,
+                                name: kubeApp名称,
                                 image: 'filebrowser/filebrowser:v2.31.2',
                                 imagePullPolicy: 'Always',
                                 /*args: [
@@ -204,7 +204,7 @@ class FileBrowserService {
                                     },
                                     {
                                         name: 'FB_PASSWORD',
-                                        value: hashedPassword
+                                        value: hashed密码
                                     }
                                 ]
 
@@ -214,7 +214,7 @@ class FileBrowserService {
                             {
                                 name: 'fb-data',
                                 persistentVolumeClaim: {
-                                    claimName: pvcName
+                                    claim名称: pvc名称
                                 }
                             }
                         ]
@@ -223,11 +223,11 @@ class FileBrowserService {
             }
         };
 
-        const existingDeployment = await deploymentService.getDeployment(projectId, kubeAppName);
+        const existingDeployment = await deploymentService.getDeployment(projectId, kubeApp名称);
         if (existingDeployment) {
-            await k3s.apps.replaceNamespacedDeployment(kubeAppName, projectId, body);
+            await k3s.apps.replace名称spacedDeployment(kubeApp名称, projectId, body);
         } else {
-            await k3s.apps.createNamespacedDeployment(projectId, body);
+            await k3s.apps.create名称spacedDeployment(projectId, body);
         }
     }
 }

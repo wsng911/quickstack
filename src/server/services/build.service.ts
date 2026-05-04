@@ -17,14 +17,14 @@ import gitService from "./git.service";
 import namespaceService from "./namespace.service";
 import paramService, { ParamService } from "./param.service";
 import registryService, { BUILD_NAMESPACE } from "./registry.service";
-import { KubeObjectNameUtils } from "../utils/kube-object-name.utils";
-import { V1JobStatus, V1ResourceRequirements } from "@kubernetes/client-node";
+import { KubeObject名称Utils } from "../utils/kube-object-name.utils";
+import { V1Job状态, V1ResourceRequirements } from "@kubernetes/client-node";
 import appGitSshKeyService from "./app-git-ssh-key.service";
 
 class BuildService {
 
     async buildApp(deploymentId: string, app: AppExtendedModel, forceBuild: boolean = false): Promise<[string, string, string, boolean]> {
-        await namespaceService.createNamespaceIfNotExists(BUILD_NAMESPACE);
+        await namespaceService.create名称spaceIfNotExists(BUILD_NAMESPACE);
         const registryLocation = await paramService.getString(ParamService.REGISTRY_SOTRAGE_LOCATION, Constants.INTERNAL_REGISTRY_LOCATION);
         await registryService.deployRegistry(registryLocation!);
 
@@ -73,11 +73,11 @@ class BuildService {
         latestRemoteGitHash: string,
         latestRemoteGitCommitMessage: string = '',
     ): Promise<[string, string, string, boolean]> {
-        const buildName = KubeObjectNameUtils.addRandomSuffix(KubeObjectNameUtils.toJobName(app.id));
+        const build名称 = KubeObject名称Utils.addRandomSuffix(KubeObject名称Utils.toJob名称(app.id));
         const buildMethod = this.getBuildMethod(app);
         const builder = this.getBuilder(buildMethod);
 
-        await dlog(deploymentId, `Creating build job with name: ${buildName}`);
+        await dlog(deploymentId, `Creating build job with name: ${build名称}`);
         await buildQueueInitContainer.ensureRbacResources();
 
         if (buildMethod === 'DOCKERFILE') {
@@ -88,30 +88,30 @@ class BuildService {
 
         const queuedAt = Date.now().toString();
         const schedulingConfig = await this.getBuildSchedulingConfig(deploymentId);
-        const gitSshPrivateKeySecretName = app.sourceType === 'GIT_SSH'
-            ? await appGitSshKeyService.createTemporaryBuildSecret(app.id, buildName)
+        const gitSshPrivateKeySecret名称 = app.sourceType === 'GIT_SSH'
+            ? await appGitSshKeyService.createTemporaryBuildSecret(app.id, build名称)
             : undefined;
 
         try {
             const jobDefinition = await builder.buildJobDefinition({
                 app,
-                buildName,
+                build名称,
                 deploymentId,
                 latestRemoteGitHash,
                 latestRemoteGitCommitMessage,
                 queuedAt,
                 ...schedulingConfig,
-                gitSshPrivateKeySecretName,
+                gitSshPrivateKeySecret名称,
             });
 
-            await k3s.batch.createNamespacedJob(BUILD_NAMESPACE, jobDefinition);
+            await k3s.batch.create名称spacedJob(BUILD_NAMESPACE, jobDefinition);
         } catch (error) {
-            await appGitSshKeyService.deleteTemporaryBuildSecret(gitSshPrivateKeySecretName);
+            await appGitSshKeyService.deleteTemporaryBuildSecret(gitSshPrivateKeySecret名称);
             throw error;
         }
-        await dlog(deploymentId, `Build job ${buildName} scheduled successfully`);
+        await dlog(deploymentId, `Build job ${build名称} scheduled successfully`);
 
-        return [buildName, latestRemoteGitHash, latestRemoteGitCommitMessage, false];
+        return [build名称, latestRemoteGitHash, latestRemoteGitCommitMessage, false];
     }
 
     private getBuildMethod(app: AppExtendedModel): AppBuildMethod {
@@ -183,9 +183,9 @@ class BuildService {
                 clusterService.getNodeResourceUsage(),
                 clusterService.getNodeInfo(),
             ]);
-            const schedulableNames = new Set(nodeInfos.filter(n => n.schedulable).map(n => n.name));
+            const schedulable名称s = new Set(nodeInfos.filter(n => n.schedulable).map(n => n.name));
             const bestNode = nodeResources
-                .filter(n => schedulableNames.has(n.name))
+                .filter(n => schedulable名称s.has(n.name))
                 .sort((a, b) => (b.ramCapacity - b.ramUsage) - (a.ramCapacity - a.ramUsage))[0];
             if (bestNode) {
                 nodeSelector = { 'kubernetes.io/hostname': bestNode.name };
@@ -199,66 +199,66 @@ class BuildService {
     }
 
     async deleteAllBuildsOfApp(appId: string) {
-        const jobNamePrefix = KubeObjectNameUtils.toJobName(appId);
-        const jobs = await k3s.batch.listNamespacedJob(BUILD_NAMESPACE);
-        const jobsOfBuild = jobs.body.items.filter((job) => job.metadata?.name?.startsWith(jobNamePrefix));
+        const job名称Prefix = KubeObject名称Utils.toJob名称(appId);
+        const jobs = await k3s.batch.list名称spacedJob(BUILD_NAMESPACE);
+        const jobsOfBuild = jobs.body.items.filter((job) => job.metadata?.name?.startsWith(job名称Prefix));
         for (const job of jobsOfBuild) {
             await this.deleteBuild(job.metadata?.name!);
         }
     }
 
     async deleteAllFailedOrSuccededBuilds() {
-        const jobs = await k3s.batch.listNamespacedJob(BUILD_NAMESPACE);
-        const jobsToDelete = jobs.body.items.filter((job) => {
-            const status = this.getJobStatusString(job.status);
+        const jobs = await k3s.batch.list名称spacedJob(BUILD_NAMESPACE);
+        const jobsTo删除 = jobs.body.items.filter((job) => {
+            const status = this.getJob状态String(job.status);
             return status !== 'RUNNING' && status !== 'PENDING';
         });
-        for (const job of jobsToDelete) {
+        for (const job of jobsTo删除) {
             await this.deleteBuild(job.metadata?.name!);
         }
     }
 
     async deleteAllBuildsOfProject(projectId: string) {
-        const jobs = await k3s.batch.listNamespacedJob(BUILD_NAMESPACE);
+        const jobs = await k3s.batch.list名称spacedJob(BUILD_NAMESPACE);
         const jobsOfProject = jobs.body.items.filter((job) => job.metadata?.annotations?.[Constants.QS_ANNOTATION_PROJECT_ID] === projectId);
         for (const job of jobsOfProject) {
             await this.deleteBuild(job.metadata?.name!);
         }
     }
 
-    async getBuildByName(buildName: string) {
-        const jobs = await k3s.batch.listNamespacedJob(BUILD_NAMESPACE);
-        return jobs.body.items.find((job) => job.metadata?.name === buildName);
+    async getBuildBy名称(build名称: string) {
+        const jobs = await k3s.batch.list名称spacedJob(BUILD_NAMESPACE);
+        return jobs.body.items.find((job) => job.metadata?.name === build名称);
     }
 
-    async getAppIdByBuildName(buildName: string) {
-        const job = await this.getBuildByName(buildName);
+    async getAppIdByBuild名称(build名称: string) {
+        const job = await this.getBuildBy名称(build名称);
         if (!job) {
-            throw new ServiceException(`No build found with name ${buildName}`);
+            throw new ServiceException(`No build found with name ${build名称}`);
         }
         const appId = job.metadata?.annotations?.[Constants.QS_ANNOTATION_APP_ID];
         if (!appId) {
-            throw new ServiceException(`No appId found for build ${buildName}`);
+            throw new ServiceException(`No appId found for build ${build名称}`);
         }
         return appId;
     }
 
-    async deleteBuild(buildName: string) {
-        const job = await this.getBuildByName(buildName);
-        const gitSshSecretName = job?.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_SSH_SECRET];
-        await k3s.batch.deleteNamespacedJob(buildName, BUILD_NAMESPACE);
-        await appGitSshKeyService.deleteTemporaryBuildSecret(gitSshSecretName);
-        console.log(`Deleted build job ${buildName}`);
+    async deleteBuild(build名称: string) {
+        const job = await this.getBuildBy名称(build名称);
+        const gitSshSecret名称 = job?.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_SSH_SECRET];
+        await k3s.batch.delete名称spacedJob(build名称, BUILD_NAMESPACE);
+        await appGitSshKeyService.deleteTemporaryBuildSecret(gitSshSecret名称);
+        console.log(`删除d build job ${build名称}`);
     }
 
     async getBuildsForApp(appId: string) {
-        const jobNamePrefix = KubeObjectNameUtils.toJobName(appId);
-        const jobs = await k3s.batch.listNamespacedJob(BUILD_NAMESPACE);
-        const jobsOfBuild = jobs.body.items.filter((job) => job.metadata?.name?.startsWith(jobNamePrefix));
+        const job名称Prefix = KubeObject名称Utils.toJob名称(appId);
+        const jobs = await k3s.batch.list名称spacedJob(BUILD_NAMESPACE);
+        const jobsOfBuild = jobs.body.items.filter((job) => job.metadata?.name?.startsWith(job名称Prefix));
         const builds = jobsOfBuild.map((job) => ({
             name: job.metadata?.name,
             startTime: job.status?.startTime,
-            status: this.getJobStatusString(job.status),
+            status: this.getJob状态String(job.status),
             gitCommit: job.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_COMMIT],
             gitCommitMessage: job.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_COMMIT_MESSAGE],
             deploymentId: job.metadata?.annotations?.[Constants.QS_ANNOTATION_DEPLOYMENT_ID],
@@ -273,17 +273,17 @@ class BuildService {
         return builds;
     }
 
-    async getJobStatus(buildName: string): Promise<'UNKNOWN' | 'RUNNING' | 'FAILED' | 'SUCCEEDED' | 'PENDING'> {
+    async getJob状态(build名称: string): Promise<'UNKNOWN' | 'RUNNING' | 'FAILED' | 'SUCCEEDED' | 'PENDING'> {
         try {
-            const response = await k3s.batch.readNamespacedJobStatus(buildName, BUILD_NAMESPACE);
-            return this.getJobStatusString(response.body.status);
+            const response = await k3s.batch.read名称spacedJob状态(build名称, BUILD_NAMESPACE);
+            return this.getJob状态String(response.body.status);
         } catch (err) {
             console.error(err);
         }
         return 'UNKNOWN';
     }
 
-    getJobStatusString(status?: V1JobStatus) {
+    getJob状态String(status?: V1Job状态) {
         if (!status) {
             return 'UNKNOWN';
         }
@@ -309,7 +309,7 @@ class BuildService {
     }
 
     async getAllBuilds(): Promise<GlobalBuildJobModel[]> {
-        const jobs = await k3s.batch.listNamespacedJob(BUILD_NAMESPACE);
+        const jobs = await k3s.batch.list名称spacedJob(BUILD_NAMESPACE);
         const appIds = Array.from(new Set(
             jobs.body.items
                 .map((job) => job.metadata?.annotations?.[Constants.QS_ANNOTATION_APP_ID])
@@ -330,14 +330,14 @@ class BuildService {
                 return {
                     name: job.metadata?.name ?? '',
                     startTime: job.status?.startTime ?? new Date(0),
-                    status: this.getJobStatusString(job.status),
+                    status: this.getJob状态String(job.status),
                     gitCommit: job.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_COMMIT] ?? '',
                     gitCommitMessage: job.metadata?.annotations?.[Constants.QS_ANNOTATION_GIT_COMMIT_MESSAGE],
                     deploymentId: job.metadata?.annotations?.[Constants.QS_ANNOTATION_DEPLOYMENT_ID] ?? '',
                     appId: appId ?? '',
                     projectId: projectId ?? '',
-                    appName: app?.name ?? appId ?? 'Unknown',
-                    projectName: app?.project?.name ?? projectId ?? 'Unknown',
+                    app名称: app?.name ?? appId ?? 'Unknown',
+                    project名称: app?.project?.name ?? projectId ?? 'Unknown',
                     completionTime: job.status?.completionTime ?? undefined,
                     buildMethod: job.metadata?.annotations?.[Constants.QS_ANNOTATION_BUILD_METHOD] as AppBuildMethod | undefined,
                 } as GlobalBuildJobModel;

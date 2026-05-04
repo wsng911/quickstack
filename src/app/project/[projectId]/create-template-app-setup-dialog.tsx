@@ -1,10 +1,10 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
-    FormDescription,
+    Form描述,
     FormField,
     FormItem,
     FormLabel,
@@ -16,21 +16,21 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { toast } from "sonner"
 import { AppTemplateModel, appTemplateZodModel } from "@/shared/model/app-template.model"
 import { createAppFromTemplate } from "./actions"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-export default function CreateTemplateAppSetupDialog({
+export default function 创建TemplateAppSetupDialog({
     appTemplate,
     projectId,
-    dialogClosed
+    dialog关闭d
 }: {
     appTemplate?: AppTemplateModel;
     projectId: string;
-    dialogClosed?: () => void;
+    dialog关闭d?: () => void;
 }) {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -48,12 +48,12 @@ export default function CreateTemplateAppSetupDialog({
         if (state.status === 'success') {
             form.reset();
             const appLabel = ((appTemplate?.templates.length ?? 0) > 1) ? 'Apps' : 'App';
-            toast.success(`${appLabel} Created successfully`, {
+            toast.success(`${appLabel} 创建d successfully`, {
                 description: `Click deploy to start the ${appLabel}.`,
             });
             setIsOpen(false);
-            if (dialogClosed) {
-                dialogClosed();
+            if (dialog关闭d) {
+                dialog关闭d();
             }
         }
         FormUtils.mapValidationErrorsToForm<typeof appTemplateZodModel>(state, form);
@@ -70,35 +70,35 @@ export default function CreateTemplateAppSetupDialog({
         <>
             <Dialog open={!!isOpen} onOpenChange={(isOpened) => {
                 setIsOpen(isOpened);
-                if (!isOpened && dialogClosed) {
-                    dialogClosed();
+                if (!isOpened && dialog关闭d) {
+                    dialog关闭d();
                 }
             }}>
-                <DialogContent className="sm:max-w-[500px]">
+                <DialogContent class名称="sm:max-w-[500px]">
                     <DialogHeader>
-                        <DialogTitle>Create App "{appTemplate?.name}"</DialogTitle>
-                        <DialogDescription>
+                        <DialogTitle>创建 App "{appTemplate?.name}"</DialogTitle>
+                        <Dialog描述>
                             Insert your values for the template.
-                        </DialogDescription>
+                        </Dialog描述>
                     </DialogHeader>
-                    <ScrollArea className="max-h-[70vh]">
-                        <div className="px-2">
+                    <ScrollArea class名称="max-h-[70vh]">
+                        <div class名称="px-2">
                             <Form {...form} >
-                                <form action={(e) => form.handleSubmit((data) => {
+                                <form action={(e) => form.handle提交((data) => {
                                     return formAction(data);
                                 })()}>
-                                    <div className="space-y-6">
+                                    <div class名称="space-y-6">
                                         {appTemplate?.templates.map((t, templateIndex) => (
                                             <>
-                                                {templateIndex > 0 && <div className="border-t pb-4"></div>}
+                                                {templateIndex > 0 && <div class名称="border-t pb-4"></div>}
                                                 {appTemplate?.templates.length > 1 &&
-                                                    <div className="text-2xl font-semibold">{t.appModel.name}</div>}
+                                                    <div class名称="text-2xl font-semibold">{t.appModel.name}</div>}
                                                 <FormField
                                                     control={form.control}
                                                     name={`templates[${templateIndex}].appModel.name` as any}
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>App Name</FormLabel>
+                                                            <FormLabel>App 名称</FormLabel>
                                                             <FormControl>
                                                                 <Input {...field} />
                                                             </FormControl>
@@ -106,10 +106,10 @@ export default function CreateTemplateAppSetupDialog({
                                                         </FormItem>
                                                     )}
                                                 />
-                                                {t.inputSettings.map((input, settingsIndex) => (
+                                                {t.input设置.map((input, settingsIndex) => (
                                                     <FormField
                                                         control={form.control}
-                                                        name={`templates[${templateIndex}].inputSettings[${settingsIndex}].value` as any}
+                                                        name={`templates[${templateIndex}].input设置[${settingsIndex}].value` as any}
                                                         render={({ field }) => (
                                                             <FormItem>
                                                                 <FormLabel>{input.label}</FormLabel>
@@ -117,7 +117,7 @@ export default function CreateTemplateAppSetupDialog({
                                                                     <Input {...field} />
                                                                 </FormControl>
                                                                 {input.randomGeneratedIfEmpty &&
-                                                                    <FormDescription>If left empty, a random value will be generated.</FormDescription>}
+                                                                    <Form描述>If left empty, a random value will be generated.</Form描述>}
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
@@ -125,8 +125,8 @@ export default function CreateTemplateAppSetupDialog({
                                                 ))}
                                             </>
                                         ))}
-                                        <p className="text-red-500">{state.message}</p>
-                                        <SubmitButton>Create</SubmitButton>
+                                        <p class名称="text-red-500">{state.message}</p>
+                                        <提交Button>创建</提交Button>
                                     </div>
 
                                 </form>

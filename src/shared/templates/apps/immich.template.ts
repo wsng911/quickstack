@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const immichAppTemplate: AppTemplateModel = {
     name: "Immich",
-    iconName: 'https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg',
+    icon名称: 'https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -15,7 +15,7 @@ export const immichAppTemplate: AppTemplateModel = {
             },
             {
                 key: "DB_PASSWORD",
-                label: "Database Password",
+                label: "Database 密码",
                 value: "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
@@ -44,7 +44,7 @@ REDIS_HOSTNAME=immich_redis
             size: 10000,
             containerMountPath: '/usr/src/app/upload',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

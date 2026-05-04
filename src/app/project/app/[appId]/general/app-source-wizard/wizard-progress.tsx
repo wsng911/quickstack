@@ -7,10 +7,10 @@ export function WizardProgress({ step, formData }: { step: StepId; formData: App
     const currentIndex = Math.max(0, steps.findIndex((item) => item.id === step));
 
     return (
-        <div className="flex gap-2">
+        <div class名称="flex gap-2">
             {steps.map((item, index) => (
-                <div key={item.id} className="h-1.5 flex-1 rounded-full bg-muted">
-                    <div className={cn("h-full rounded-full bg-primary transition-all", index <= currentIndex ? "w-full" : "w-0")} />
+                <div key={item.id} class名称="h-1.5 flex-1 rounded-full bg-muted">
+                    <div class名称={cn("h-full rounded-full bg-primary transition-all", index <= currentIndex ? "w-full" : "w-0")} />
                 </div>
             ))}
         </div>

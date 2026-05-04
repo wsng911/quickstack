@@ -131,14 +131,14 @@ export async function deployRegistryForBuildIntegration() {
             return 'MISSING';
         }
 
-        const pod = await k3s.core.readNamespacedPod(pods[0].podName, BUILD_NAMESPACE);
+        const pod = await k3s.core.read名称spacedPod(pods[0].pod名称, BUILD_NAMESPACE);
         return pod.body.status?.phase ?? 'UNKNOWN';
     }, {
         timeout: 120_000,
         interval: 2_000,
     }).toBe('Running');
 
-    const registryDeployments = await k3s.apps.listNamespacedDeployment(BUILD_NAMESPACE);
+    const registryDeployments = await k3s.apps.list名称spacedDeployment(BUILD_NAMESPACE);
     expect(registryDeployments.body.items.some((item) => item.metadata?.name === 'registry')).toBe(true);
 }
 
@@ -157,16 +157,16 @@ export async function runBuildAndAssert(input: BuildIntegrationInput) {
     }
 
     const deploymentId = `dep-${suffix}`;
-    const [buildJobName, gitCommitHash, gitCommitMessage, shouldDeployImmediately] =
+    const [buildJob名称, gitCommitHash, gitCommitMessage, shouldDeployImmediately] =
         await deploymentLogService.catchErrosAndLog(deploymentId, async () => buildService.buildApp(deploymentId, app, true));
 
     expect(shouldDeployImmediately).toBe(false);
-    expect(buildJobName).toMatch(new RegExp(`^build-${app.id}`));
+    expect(buildJob名称).toMatch(new RegExp(`^build-${app.id}`));
     expect(gitCommitHash).toMatch(/^[0-9a-f]{40}$/);
     expect(gitCommitMessage.length).toBeGreaterThan(0);
 
     await expect.poll(async () => {
-        return await buildService.getJobStatus(buildJobName);
+        return await buildService.getJob状态(buildJob名称);
     }, {
         timeout: 300_000,
         interval: 2_000,
@@ -177,8 +177,8 @@ export async function runBuildAndAssert(input: BuildIntegrationInput) {
 
     await podService.runCommandInPod(
         BUILD_NAMESPACE,
-        registryPods[0].podName,
-        registryPods[0].containerName,
+        registryPods[0].pod名称,
+        registryPods[0].container名称,
         [
             'sh',
             '-c',
@@ -188,7 +188,7 @@ export async function runBuildAndAssert(input: BuildIntegrationInput) {
 
     const builds = await buildService.getBuildsForApp(app.id);
     expect(builds[0]).toMatchObject({
-        name: buildJobName,
+        name: buildJob名称,
         status: 'SUCCEEDED',
         buildMethod: input.buildMethod,
         gitCommit: gitCommitHash,
@@ -197,7 +197,7 @@ export async function runBuildAndAssert(input: BuildIntegrationInput) {
     const logFile = await fs.readFile(PathUtils.appDeploymentLogFile(deploymentId), 'utf-8');
     expect(logFile).toContain(`Selected build method: ${input.buildMethod}`);
     expect(logFile).toContain(input.expectedLogLine);
-    expect(logFile).toContain(`Build job ${buildJobName} scheduled successfully`);
+    expect(logFile).toContain(`Build job ${buildJob名称} scheduled successfully`);
 }
 
 export async function runBuildAndAssertGitFailure(input: BuildIntegrationInput) {

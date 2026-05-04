@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const photoprismAppTemplate: AppTemplateModel = {
     name: "PhotoPrism",
-    iconName: 'https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo.svg',
+    icon名称: 'https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -15,7 +15,7 @@ export const photoprismAppTemplate: AppTemplateModel = {
             },
             {
                 key: "PHOTOPRISM_ADMIN_PASSWORD",
-                label: "Admin Password",
+                label: "Admin 密码",
                 value: "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
@@ -44,13 +44,13 @@ PHOTOPRISM_DATABASE_DRIVER=sqlite
             size: 500,
             containerMountPath: '/photoprism/storage',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }, {
             size: 10000,
             containerMountPath: '/photoprism/originals',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

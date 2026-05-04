@@ -57,7 +57,7 @@ class BuildInitContainerService {
         }, BUILD_NAMESPACE);
     }
 
-    getInitContainer(currentJobName: string, queuedAt: string): V1Container {
+    getInitContainer(currentJob名称: string, queuedAt: string): V1Container {
         const script = [
             'sleep $((RANDOM % 5 + 1));',
             'while true; do',
@@ -94,7 +94,7 @@ class BuildInitContainerService {
                 },
                 {
                     name: 'CURRENT_JOB_NAME',
-                    value: currentJobName,
+                    value: currentJob名称,
                 },
                 {
                     name: 'QUEUED_AT',

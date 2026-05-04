@@ -12,9 +12,9 @@ export const getAllBuildsAction = async () =>
         return builds.filter((build) => UserGroupUtils.sessionHasReadAccessForApp(session, build.appId));
     });
 
-export const deleteBuildAction = async (buildName: string) =>
+export const deleteBuildAction = async (build名称: string) =>
     simpleAction(async () => {
-        await isAuthorizedWriteForApp(await buildService.getAppIdByBuildName(buildName));
-        await buildService.deleteBuild(buildName);
+        await isAuthorizedWriteForApp(await buildService.getAppIdByBuild名称(build名称));
+        await buildService.deleteBuild(build名称);
         return new SuccessActionResult(undefined, 'Successfully stopped and deleted build.');
     });

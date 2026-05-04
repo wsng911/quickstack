@@ -1,12 +1,12 @@
 import { z, ZodObject, ZodRawShape } from "zod";
 
 export class ZodUtils {
-    static getFieldNamesAndTypes<TObjectType extends ZodRawShape>(schema: ZodObject<TObjectType>): Map<string, string> {
+    static getField名称sAndTypes<TObjectType extends ZodRawShape>(schema: ZodObject<TObjectType>): Map<string, string> {
         const shape = schema.shape;
         const fieldMap = new Map<string, string>();
 
         for (const [key, value] of Object.entries(shape)) {
-            fieldMap.set(key, value._def.typeName);
+            fieldMap.set(key, value._def.type名称);
         }
 
         return fieldMap;

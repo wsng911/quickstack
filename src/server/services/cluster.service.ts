@@ -29,11 +29,11 @@ class ClusterService {
                     isMasterNode: node.metadata?.labels?.['node-role.kubernetes.io/master'] === 'true',
 
                     memoryOk: node.status?.conditions?.filter((condition) => condition.type === 'MemoryPressure')[0].status === 'False',
-                    memoryStatusText: node.status?.conditions?.filter((condition) => condition.type === 'MemoryPressure')[0].message,
+                    memory状态Text: node.status?.conditions?.filter((condition) => condition.type === 'MemoryPressure')[0].message,
                     diskOk: node.status?.conditions?.filter((condition) => condition.type === 'DiskPressure')[0].status === 'False',
-                    diskStatusText: node.status?.conditions?.filter((condition) => condition.type === 'DiskPressure')[0].message,
+                    disk状态Text: node.status?.conditions?.filter((condition) => condition.type === 'DiskPressure')[0].message,
                     pidOk: node.status?.conditions?.filter((condition) => condition.type === 'PIDPressure')[0].status === 'False',
-                    pidStatusText: node.status?.conditions?.filter((condition) => condition.type === 'PIDPressure')[0].message,
+                    pid状态Text: node.status?.conditions?.filter((condition) => condition.type === 'PIDPressure')[0].message,
                     schedulable: !node.spec?.unschedulable
                 }
             });
@@ -50,18 +50,18 @@ class ClusterService {
         return nodes.find(node => node.isMasterNode)!; // even on HA Cluster, only one node is returned
     }
 
-    async setNodeStatus(nodeName: string, schedulable: boolean) {
+    async setNode状态(node名称: string, schedulable: boolean) {
         try {
-            await k3s.core.patchNode(nodeName, { "spec": { "unschedulable": schedulable ? null : true } }, undefined, undefined, undefined, undefined, undefined, {
+            await k3s.core.patchNode(node名称, { "spec": { "unschedulable": schedulable ? null : true } }, undefined, undefined, undefined, undefined, undefined, {
                 headers: { 'Content-Type': 'application/strategic-merge-patch+json' },
             });
 
             if (!schedulable) {
                 // delete all pods on node
-                const pods = await k3s.core.listPodForAllNamespaces();
+                const pods = await k3s.core.listPodForAll名称spaces();
                 for (const pod of pods.body.items) {
-                    if (pod.spec?.nodeName === nodeName) {
-                        await k3s.core.deleteNamespacedPod(pod.metadata?.name!, pod.metadata?.namespace!);
+                    if (pod.spec?.node名称 === node名称) {
+                        await k3s.core.delete名称spacedPod(pod.metadata?.name!, pod.metadata?.namespace!);
                     }
                 }
             }

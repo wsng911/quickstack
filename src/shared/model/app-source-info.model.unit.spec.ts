@@ -4,7 +4,7 @@ describe('appSourceInfoGitZodModel', () => {
     const baseInput = {
         gitUrl: 'https://github.com/example/repo.git',
         gitBranch: 'main',
-        gitUsername: undefined,
+        git用户名: undefined,
         gitToken: undefined,
     };
 

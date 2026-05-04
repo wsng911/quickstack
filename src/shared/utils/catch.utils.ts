@@ -1,6 +1,6 @@
 export class CatchUtils {
     static async resultOrUndefined<T>(promiseFunc: () => Promise<T>, context?: string): Promise<T | undefined> {
-        const promiseName = promiseFunc.name || 'anonymous-promise';
+        const promise名称 = promiseFunc.name || 'anonymous-promise';
         const contextInfo = context ? ` [${context}]` : '';
         try {
             return await promiseFunc();
@@ -8,7 +8,7 @@ export class CatchUtils {
             const errorInfo = error instanceof Error
                 ? `${error.name}: ${error.message}`
                 : String(error);
-            console.error(`Error in resultOrUndefined${contextInfo} (${promiseName}): ${errorInfo}`, error);
+            console.error(`Error in resultOrUndefined${contextInfo} (${promise名称}): ${errorInfo}`, error);
             return undefined;
         }
     }

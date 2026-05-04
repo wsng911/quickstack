@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  Dialog描述,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -19,10 +19,10 @@ import BuildLogsStreamed from "@/components/custom/build-logs-streamed";
 
 export function BuildLogsDialog({
   deploymentInfo,
-  onClose
+  on关闭
 }: {
   deploymentInfo?: DeploymentInfoModel;
-  onClose: () => void;
+  on关闭: () => void;
 }) {
 
   if (!deploymentInfo) {
@@ -31,14 +31,14 @@ export function BuildLogsDialog({
 
   return (
     <Dialog open={!!deploymentInfo} onOpenChange={(isO) => {
-      onClose();
+      on关闭();
     }}>
-      <DialogContent className="sm:max-w-[1300px]">
+      <DialogContent class名称="sm:max-w-[1300px]">
         <DialogHeader>
           <DialogTitle>Deployment Logs</DialogTitle>
-          <DialogDescription>
+          <Dialog描述>
             View the logs for the selected deployment {formatDateTime(deploymentInfo.createdAt)}.
-          </DialogDescription>
+          </Dialog描述>
         </DialogHeader>
         <div >
           {!deploymentInfo.deploymentId && 'For this build is no log available'}

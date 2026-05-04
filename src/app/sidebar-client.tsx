@@ -17,9 +17,9 @@ import {
   SidebarMenuAction,
   useSidebar
 } from "@/components/ui/sidebar"
-import { BookOpen, Boxes, ChartNoAxesCombined, ChevronDown, ChevronRight, ChevronUp, Dot, FolderClosed, Hammer, History, Info, Plus, Server, Settings, Settings2, User, User2 } from "lucide-react"
+import { BookOpen, Boxes, ChartNoAxesCombined, ChevronDown, ChevronRight, ChevronUp, Dot, Folder关闭d, Hammer, History, Info, Plus, Server, 设置, 设置2, User, User2 } from "lucide-react"
 import Link from "next/link"
-import { EditProjectDialog } from "./projects/edit-project-dialog"
+import { 编辑ProjectDialog } from "./projects/edit-project-dialog"
 import { SidebarLogoutButton } from "./sidebar-logout-button"
 import {
   Avatar,
@@ -64,11 +64,11 @@ export function SidebarCient({
     {
       title: "S3 Targets",
       url: "/settings/s3-targets",
-      icon: Settings,
+      icon: 设置,
       adminOnly: true,
     },
     {
-      title: <span className="flex items-center gap-2">QuickStack Settings {newVersionInfo && <div className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />}</span>,
+      title: <span class名称="flex items-center gap-2">QuickStack 设置 {newVersionInfo && <div class名称="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />}</span>,
       url: "/settings/server",
       adminOnly: true,
     },
@@ -111,18 +111,18 @@ export function SidebarCient({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-qs-500 text-sidebar-primary-foreground">
-                    <QuickStackLogo className="size-5" color="light-all" />
+                  class名称="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                  <div class名称="flex aspect-square size-8 items-center justify-center rounded-lg bg-qs-500 text-sidebar-primary-foreground">
+                    <QuickStackLogo class名称="size-5" color="light-all" />
                   </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight my-4">
-                    <span className="truncate font-semibold">QuickStack</span>
-                    <span className="truncate text-xs">Admin Panel</span>
+                  <div class名称="grid flex-1 text-left text-sm leading-tight my-4">
+                    <span class名称="truncate font-semibold">QuickStack</span>
+                    <span class名称="truncate text-xs">Admin Panel</span>
                   </div>
-                  <ChevronDown className="ml-auto" />
+                  <ChevronDown class名称="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+              <DropdownMenuContent class名称="w-[--radix-popper-anchor-width]">
                 <Link href="https://quickstack.dev" target="_blank">
                   <DropdownMenuItem>
                     <Info />
@@ -153,15 +153,15 @@ export function SidebarCient({
                 }}
                   isActive={path === '/'}>
                   <Link href="/">
-                    <FolderClosed />
+                    <Folder关闭d />
                     <span>Projects</span>
                   </Link>
                 </SidebarMenuButton>
-                {UserGroupUtils.isAdmin(session) && <EditProjectDialog>
+                {UserGroupUtils.isAdmin(session) && <编辑ProjectDialog>
                   <SidebarMenuAction>
                     <Plus />
                   </SidebarMenuAction>
-                </EditProjectDialog>}
+                </编辑ProjectDialog>}
                 <SidebarMenu>
                   {projects.map((item) => (
                     <DropdownMenu key={item.id}>
@@ -178,20 +178,20 @@ export function SidebarCient({
                         </SidebarMenuButton>
                         {item.apps.length ? (<>
                           <DropdownMenuTrigger asChild>
-                            <SidebarMenuAction className="">
+                            <SidebarMenuAction class名称="">
                               <ChevronRight />
-                              <span className="sr-only">Toggle</span>
+                              <span class名称="sr-only">Toggle</span>
                             </SidebarMenuAction>
                           </DropdownMenuTrigger>
 
                           <DropdownMenuContent
                             side={isMobile ? "bottom" : "right"}
                             align={isMobile ? "end" : "start"}
-                            className="min-w-56 rounded-lg"
+                            class名称="min-w-56 rounded-lg"
                           >
                             {item.apps.map((app) => (
                               <DropdownMenuItem asChild key={app.name}
-                                className={currentlySelectedAppId === app.id ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}>
+                                class名称={currentlySelectedAppId === app.id ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}>
                                 <a href={`/project/app/${app.id}`}>{app.name}</a>
                               </DropdownMenuItem>
                             ))}
@@ -230,13 +230,13 @@ export function SidebarCient({
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={{
-                  children: 'Monitoring',
+                  children: '监控ing',
                   hidden: open,
                 }}
                   isActive={path.startsWith('/monitoring')}>
                   <Link href="/monitoring">
                     <ChartNoAxesCombined />
-                    <span>Monitoring</span>
+                    <span>监控ing</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -244,18 +244,18 @@ export function SidebarCient({
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {UserGroupUtils.sessionHasAccessToBackups(session) && <SidebarGroup>
+        {UserGroupUtils.sessionHasAccessTo返回ups(session) && <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={{
-                  children: 'Backups',
+                  children: '返回ups',
                   hidden: open,
                 }}
                   isActive={path.startsWith('/backups')}>
                   <Link href="/backups">
                     <History />
-                    <span>Backups</span>
+                    <span>返回ups</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -269,12 +269,12 @@ export function SidebarCient({
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={{
-                  children: 'Settings',
+                  children: '设置',
                   hidden: open,
                 }}>
                   <Link href="/settings/profile">
-                    <Settings2 />
-                    <span>Settings</span>
+                    <设置2 />
+                    <span>设置</span>
                   </Link>
                 </SidebarMenuButton>
                 <SidebarMenuSub>
@@ -302,17 +302,17 @@ export function SidebarCient({
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarFallback className="rounded-lg">{session.email.substring(0, 1)?.toUpperCase() || 'Q'}</AvatarFallback>
+                  class名称="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                  <Avatar class名称="h-8 w-8 rounded-lg">
+                    <AvatarFallback class名称="rounded-lg">{session.email.substring(0, 1)?.toUpperCase() || 'Q'}</AvatarFallback>
                   </Avatar>
                   {session.email}
-                  <ChevronUp className="ml-auto" />
+                  <ChevronUp class名称="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="top"
-                className="w-[--radix-popper-anchor-width]"
+                class名称="w-[--radix-popper-anchor-width]"
               >
                 <Link href="/settings/profile">
                   <DropdownMenuItem>

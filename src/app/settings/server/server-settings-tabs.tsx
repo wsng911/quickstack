@@ -1,27 +1,27 @@
 "use client"
 
 import { Tabs } from "@/components/ui/tabs"
-import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import { useRouter, usePathname, use搜索Params } from "next/navigation"
 import { ReactNode } from "react"
 
-interface ServerSettingsTabsProps {
+interface Server设置TabsProps {
     children: ReactNode
     defaultTab: string
 }
 
-export function ServerSettingsTabs({ children, defaultTab }: ServerSettingsTabsProps) {
+export function Server设置Tabs({ children, defaultTab }: Server设置TabsProps) {
     const router = useRouter()
     const pathname = usePathname()
-    const searchParams = useSearchParams()
+    const searchParams = use搜索Params()
 
     const onTabChange = (value: string) => {
-        const params = new URLSearchParams(searchParams.toString())
+        const params = new URL搜索Params(searchParams.toString())
         params.set("tab", value)
         router.replace(`${pathname}?${params.toString()}`, { scroll: false })
     }
 
     return (
-        <Tabs defaultValue={defaultTab} onValueChange={onTabChange} className="space-y-4">
+        <Tabs defaultValue={defaultTab} onValueChange={onTabChange} class名称="space-y-4">
             {children}
         </Tabs>
     )

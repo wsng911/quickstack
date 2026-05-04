@@ -16,14 +16,14 @@ const sourceCodePro = Source_Code_Pro({
 
 export default function LogsStreamed({
     namespace,
-    podName,
-    buildJobName,
+    pod名称,
+    buildJob名称,
     fullHeight = false,
     linesCount = 100,
 }: {
     namespace?: string;
-    podName?: string;
-    buildJobName?: string;
+    pod名称?: string;
+    buildJob名称?: string;
     fullHeight?: boolean;
     linesCount?: number;
 }) {
@@ -36,7 +36,7 @@ export default function LogsStreamed({
     const initializeConnection = async (controller: AbortController) => {
         // Initiate the first call to connect to SSE API
 
-        setLogs('Loading...');
+        setLogs('加载中...');
 
         const signal = controller.signal;
         const apiResponse = await fetch('/api/pod-logs', {
@@ -44,7 +44,7 @@ export default function LogsStreamed({
             headers: {
                 "Content-Type": "text/event-stream",
             },
-            body: JSON.stringify({ namespace, podName, buildJobName, linesCount }),
+            body: JSON.stringify({ namespace, pod名称, buildJob名称, linesCount }),
             signal: signal,
         });
 
@@ -71,7 +71,7 @@ export default function LogsStreamed({
     }
 
     useEffect(() => {
-        if (!buildJobName && (!namespace || !podName)) {
+        if (!buildJob名称 && (!namespace || !pod名称)) {
             return;
         }
         const controller = new AbortController();
@@ -82,7 +82,7 @@ export default function LogsStreamed({
             setLogs('');
             controller.abort();
         };
-    }, [namespace, podName, buildJobName, linesCount]);
+    }, [namespace, pod名称, buildJob名称, linesCount]);
 
     useEffect(() => {
         if (textAreaRef.current) {
@@ -92,17 +92,17 @@ export default function LogsStreamed({
     }, [logs]);
 
     return <>
-        <div className="space-y-4">
-            <Textarea ref={textAreaRef} value={logs} readOnly className={cn(
+        <div class名称="space-y-4">
+            <Textarea ref={textAreaRef} value={logs} readOnly class名称={cn(
                 (fullHeight ? "h-[80vh]" : "h-[400px]"),
                 " bg-slate-900 text-white ",
-                sourceCodePro.className)} />
-            <div className="w-fit">
+                sourceCodePro.class名称)} />
+            <div class名称="w-fit">
                 <HoverCard>
                     <HoverCardTrigger>
-                        {isConnected ? <div className="w-3 h-3 rounded-full bg-green-500"></div> : <div className="w-3 h-3 rounded-full bg-slate-500"></div>}
+                        {isConnected ? <div class名称="w-3 h-3 rounded-full bg-green-500"></div> : <div class名称="w-3 h-3 rounded-full bg-slate-500"></div>}
                     </HoverCardTrigger>
-                    <HoverCardContent className="text-sm">
+                    <HoverCardContent class名称="text-sm">
                         {isConnected ? 'Connected to Logstream' : 'Disconnected from Logstream'}
                     </HoverCardContent>
                 </HoverCard>

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
+    Dialog描述,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -55,9 +55,9 @@ export default function UsersBulkRoleAssignment({
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Assign Group</DialogTitle>
-                    <DialogDescription>
+                    <Dialog描述>
                         Select a Group to assign to {selectedUsers.length} selected user(s).
-                    </DialogDescription>
+                    </Dialog描述>
                 </DialogHeader>
                 <Select onValueChange={setSelectedGroup} value={selectedGroup}>
                     <SelectTrigger>
@@ -73,7 +73,7 @@ export default function UsersBulkRoleAssignment({
                 </Select>
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        Cancel
+                        取消
                     </Button>
                     <Button onClick={handleAssignGroup}>Assign</Button>
                 </DialogFooter>

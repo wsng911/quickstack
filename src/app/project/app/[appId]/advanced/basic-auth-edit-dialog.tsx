@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -15,13 +15,13 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { AppBasicAuth, AppFileMount } from "@prisma/client"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { toast } from "sonner"
 import { AppExtendedModel } from "@/shared/model/app-extended.model"
 import { Textarea } from "@/components/ui/textarea"
-import { BasicAuthEditModel, basicAuthEditZodModel } from "@/shared/model/basic-auth-edit.model"
+import { BasicAuth编辑Model, basicAuth编辑ZodModel } from "@/shared/model/basic-auth-edit.model"
 import { saveBasicAuth } from "./actions"
 import { z } from "zod"
 
@@ -31,7 +31,7 @@ const accessModes = [
   { label: "ReadWriteMany", value: "ReadWriteMany" },
 ] as const
 
-export default function BasicAuthEditDialog({
+export default function BasicAuth编辑Dialog({
   children,
   basicAuth,
   app
@@ -43,8 +43,8 @@ export default function BasicAuthEditDialog({
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const form = useForm<BasicAuthEditModel>({
-    resolver: zodResolver(basicAuthEditZodModel.merge(z.object({
+  const form = useForm<BasicAuth编辑Model>({
+    resolver: zodResolver(basicAuth编辑ZodModel.merge(z.object({
       appId: z.string().nullish()
     }))),
     defaultValues: {
@@ -52,12 +52,12 @@ export default function BasicAuthEditDialog({
     }
   });
 
-  const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: BasicAuthEditModel) =>
+  const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: BasicAuth编辑Model) =>
     saveBasicAuth(state, {
       ...payload,
       appId: app.id,
       id: basicAuth?.id
-    }), FormUtils.getInitialFormState<typeof basicAuthEditZodModel>());
+    }), FormUtils.getInitialFormState<typeof basicAuth编辑ZodModel>());
 
   useEffect(() => {
     if (state.status === 'success') {
@@ -67,7 +67,7 @@ export default function BasicAuthEditDialog({
       });
       setIsOpen(false);
     }
-    FormUtils.mapValidationErrorsToForm<typeof basicAuthEditZodModel>(state, form);
+    FormUtils.mapValidationErrorsToForm<typeof basicAuth编辑ZodModel>(state, form);
   }, [state]);
 
   useEffect(() => {
@@ -80,24 +80,24 @@ export default function BasicAuthEditDialog({
         {children}
       </div>
       <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent class名称="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Basic Authentication</DialogTitle>
-            <DialogDescription>
+            <Dialog描述>
               Configure basic authentication to secure your app.
-            </DialogDescription>
+            </Dialog描述>
           </DialogHeader>
           <Form {...form}>
-            <form action={(e) => form.handleSubmit((data) => {
+            <form action={(e) => form.handle提交((data) => {
               return formAction(data);
             }, console.error)()}>
-              <div className="space-y-4">
+              <div class名称="space-y-4">
                 <FormField
                   control={form.control}
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>用户名</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -111,7 +111,7 @@ export default function BasicAuthEditDialog({
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>密码</FormLabel>
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
@@ -120,8 +120,8 @@ export default function BasicAuthEditDialog({
                   )}
                 />
 
-                <p className="text-red-500">{state.message}</p>
-                <SubmitButton>Save</SubmitButton>
+                <p class名称="text-red-500">{state.message}</p>
+                <提交Button>保存</提交Button>
               </div>
             </form>
           </Form >

@@ -1,13 +1,13 @@
 import * as z from "zod"
 
-import { CompleteApp, RelatedAppModel, CompleteVolumeBackup, RelatedVolumeBackupModel } from "./index"
+import { CompleteApp, RelatedAppModel, CompleteVolume返回up, RelatedVolume返回upModel } from "./index"
 
 export const AppVolumeModel = z.object({
   id: z.string(),
   containerMountPath: z.string(),
   size: z.number().int(),
   accessMode: z.string(),
-  storageClassName: z.string(),
+  storageClass名称: z.string(),
   shareWithOtherApps: z.boolean(),
   sharedVolumeId: z.string().nullish(),
   appId: z.string(),
@@ -17,7 +17,7 @@ export const AppVolumeModel = z.object({
 
 export interface CompleteAppVolume extends z.infer<typeof AppVolumeModel> {
   app: CompleteApp
-  volumeBackups: CompleteVolumeBackup[]
+  volume返回ups: CompleteVolume返回up[]
   sharedVolume?: CompleteAppVolume | null
   sharedVolumes: CompleteAppVolume[]
 }
@@ -29,7 +29,7 @@ export interface CompleteAppVolume extends z.infer<typeof AppVolumeModel> {
  */
 export const RelatedAppVolumeModel: z.ZodSchema<CompleteAppVolume> = z.lazy(() => AppVolumeModel.extend({
   app: RelatedAppModel,
-  volumeBackups: RelatedVolumeBackupModel.array(),
+  volume返回ups: RelatedVolume返回upModel.array(),
   sharedVolume: RelatedAppVolumeModel.nullish(),
   sharedVolumes: RelatedAppVolumeModel.array(),
 }))

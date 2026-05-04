@@ -2,11 +2,11 @@ import { TerminalSetupInfoModel } from "../model/terminal-setup-info.model";
 
 export class StreamUtils {
 
-    static getInputStreamName(terminalInfo: TerminalSetupInfoModel) {
+    static getInputStream名称(terminalInfo: TerminalSetupInfoModel) {
         return `${terminalInfo.terminalSessionKey}_input`;
     }
 
-    static getOutputStreamName(terminalInfo: TerminalSetupInfoModel) {
+    static getOutputStream名称(terminalInfo: TerminalSetupInfoModel) {
         return `${terminalInfo.terminalSessionKey}_output`;
     }
 }

@@ -17,7 +17,7 @@ export class K3sVersionUtils {
             throw new Error('Version string is required');
         }
 
-        // Remove leading 'v' if present for processing
+        // 移除 leading 'v' if present for processing
         const versionWithoutV = fullVersion.startsWith('v')
             ? fullVersion.substring(1)
             : fullVersion;

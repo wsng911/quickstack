@@ -1,14 +1,14 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ChevronDown, EditIcon, Plus, Trash2, TrashIcon, UserPlus } from "lucide-react";
+import { ArrowDown, ChevronDown, 编辑Icon, Plus, Trash2, TrashIcon, UserPlus } from "lucide-react";
 import { Toast } from "@/frontend/utils/toast.utils";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 import React from "react";
 import { SimpleDataTable } from "@/components/custom/simple-data-table";
 import { formatDateTime } from "@/frontend/utils/format.utils";
 import { UserExtended } from "@/shared/model/user-extended.model";
-import UserEditOverlay from "./user-edit-overlay";
+import User编辑Overlay from "./user-edit-overlay";
 import { deleteUser } from "./actions";
 import { UserGroupExtended, UserSession } from "@/shared/model/sim-session.model";
 import {
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import UsersBulkRoleAssignment from "./users-table-bulk-role-assignment";
-import { Actions } from "@/frontend/utils/nextjs-actions.utils";
+import { 操作 } from "@/frontend/utils/nextjs-actions.utils";
 
 export default function UsersTable({ users, userGroups, session }: {
     users: UserExtended[];
@@ -27,22 +27,22 @@ export default function UsersTable({ users, userGroups, session }: {
     session: UserSession;
 }) {
 
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
     const [selectedUsers, setSelectedUsers] = React.useState<UserExtended[]>([]);
     const [isRoleDialogOpen, setIsRoleDialogOpen] = React.useState(false);
 
-    const asyncDeleteItem = async (id: string) => {
+    const async删除Item = async (id: string) => {
         const confirm = await openDialog({
-            title: "Delete User",
+            title: "删除 User",
             description: "Do you really want to delete this user?",
-            okButton: "Delete",
+            okButton: "删除",
         });
         if (confirm) {
             await Toast.fromAction(() => deleteUser(id), 'Deleting User...', 'User deleted successfully');
         }
     };
 
-    const handleBulkDelete = async () => {
+    const handleBulk删除 = async () => {
         // Filter out admin users from selected users
         const deletableUsers = selectedUsers.filter(user => session.email !== user.email);
 
@@ -52,16 +52,16 @@ export default function UsersTable({ users, userGroups, session }: {
         }
 
         const confirm = await openDialog({
-            title: "Delete Selected Users",
+            title: "删除 Selected Users",
             description: `Do you really want to delete ${deletableUsers.length} user(s)?`,
-            okButton: "Delete",
+            okButton: "删除",
         });
 
         if (confirm) {
             try {
-                // Delete users one by one
+                // 删除 users one by one
                 for (const user of deletableUsers) {
-                    await Actions.run(() => deleteUser(user.id));
+                    await 操作.run(() => deleteUser(user.id));
                 }
                 toast.success(`Successfully deleted ${deletableUsers.length} user(s)`);
             } catch (error) {
@@ -76,7 +76,7 @@ export default function UsersTable({ users, userGroups, session }: {
             ['id', 'ID', false],
             ['email', 'Mail', true],
             ['userGroup.name', 'Group', true],
-            ["createdAt", "Created At", true, (item) => formatDateTime(item.createdAt)],
+            ["createdAt", "创建d At", true, (item) => formatDateTime(item.createdAt)],
             ["updatedAt", "Updated At", false, (item) => formatDateTime(item.updatedAt)],
         ]}
             data={users}
@@ -89,33 +89,33 @@ export default function UsersTable({ users, userGroups, session }: {
             }))}
             actionCol={(item) =>
                 <>
-                    <div className="flex">
-                        <div className="flex-1"></div>
-                        {session.email !== item.email && <><UserEditOverlay user={item} userGroups={userGroups}>
-                            <Button variant="ghost"><EditIcon /></Button>
-                        </UserEditOverlay>
-                            <Button variant="ghost" onClick={() => asyncDeleteItem(item.id)}>
+                    <div class名称="flex">
+                        <div class名称="flex-1"></div>
+                        {session.email !== item.email && <><User编辑Overlay user={item} userGroups={userGroups}>
+                            <Button variant="ghost"><编辑Icon /></Button>
+                        </User编辑Overlay>
+                            <Button variant="ghost" onClick={() => async删除Item(item.id)}>
                                 <TrashIcon />
                             </Button>
                         </>}
                     </div>
                 </>}
         />
-        <div className="flex gap-4">
-            <UserEditOverlay userGroups={userGroups}>
-                <Button variant="secondary"><Plus /> Create User</Button>
-            </UserEditOverlay>
+        <div class名称="flex gap-4">
+            <User编辑Overlay userGroups={userGroups}>
+                <Button variant="secondary"><Plus /> 创建 User</Button>
+            </User编辑Overlay>
             {selectedUsers.length > 0 && (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline"> Actions <ChevronDown /></Button>
+                        <Button variant="outline"> 操作 <ChevronDown /></Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuItem onClick={() => setIsRoleDialogOpen(true)}>
                             <UserPlus />   Assign Group
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleBulkDelete}>
-                            <Trash2 /> Delete Selected
+                        <DropdownMenuItem onClick={handleBulk删除}>
+                            <Trash2 /> 删除 Selected
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

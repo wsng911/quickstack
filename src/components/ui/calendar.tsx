@@ -10,16 +10,16 @@ import { buttonVariants } from "@/components/ui/button"
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
 function Calendar({
-  className,
-  classNames,
+  class名称,
+  class名称s,
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
-      classNames={{
+      class名称={cn("p-3", class名称)}
+      class名称s={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
         caption: "flex justify-center pt-1 relative items-center",
@@ -51,16 +51,16 @@ function Calendar({
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible",
-        ...classNames,
+        ...class名称s,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        IconLeft: ({ ...props }) => <ChevronLeft class名称="h-4 w-4" />,
+        IconRight: ({ ...props }) => <ChevronRight class名称="h-4 w-4" />,
       } as any}
       {...props}
     />
   )
 }
-Calendar.displayName = "Calendar"
+Calendar.display名称 = "Calendar"
 
 export { Calendar }

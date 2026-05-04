@@ -6,9 +6,9 @@ import { EnvVarUtils } from "@/server/utils/env-var.utils";
 
 export const n8nAppTemplate: AppTemplateModel = {
     name: "n8n",
-    iconName: 'https://avatars.githubusercontent.com/u/45487711',
+    icon名称: 'https://avatars.githubusercontent.com/u/45487711',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -44,7 +44,7 @@ export const n8nAppTemplate: AppTemplateModel = {
             size: 500,
             containerMountPath: '/home/node/.n8n',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -54,11 +54,11 @@ export const n8nAppTemplate: AppTemplateModel = {
     }],
 };
 
-export const postCreateN8NAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
+export const post创建N8NAppTemplate = async (createdApps: AppExtendedModel[]): Promise<AppExtendedModel[]> => {
 
     const createdN8nApp = createdApps[0];
     if (!createdN8nApp) {
-        throw new Error('Created n8n app not found.');
+        throw new Error('创建d n8n app not found.');
     }
 
     const envVars = EnvVarUtils.parseEnvVariables(createdN8nApp);

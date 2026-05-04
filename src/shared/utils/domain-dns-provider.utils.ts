@@ -8,13 +8,13 @@ export class HostnameDnsProviderUtils {
     public static readonly PROVIDER_HOSTNAME = 'quickstack.me';
     private static readonly PROVIDER_HOSTNAME_SUFFIX = `.${this.PROVIDER_HOSTNAME}`;
 
-    static getHostnameForIpAdress(ipv4Address: string): string {
-        const traefikFriendlyIpv4 = ipv4Address.split('.').join('-');
+    static getHostnameForIpAdress(ipv4添加ress: string): string {
+        const traefikFriendlyIpv4 = ipv4添加ress.split('.').join('-');
         return `${traefikFriendlyIpv4}.${this.PROVIDER_HOSTNAME}`;
     }
 
-    static getHexHostnameForIpAddress(ipv4Address: string): string {
-        const traefikFriendlyIpv4 = this.ipv4ToHex(ipv4Address)
+    static getHexHostnameForIp添加ress(ipv4添加ress: string): string {
+        const traefikFriendlyIpv4 = this.ipv4ToHex(ipv4添加ress)
         return `${traefikFriendlyIpv4}.${this.PROVIDER_HOSTNAME}`;
     }
 

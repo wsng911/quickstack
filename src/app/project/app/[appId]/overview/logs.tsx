@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { useEffect, useState } from "react";
 import LogsStreamed from "../../../../../components/custom/logs-streamed";
@@ -14,7 +14,7 @@ import { TerminalDialog } from "./terminal-overlay";
 import { LogsDownloadOverlay } from "./logs-download-overlay";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
-import { usePodsStatus } from "@/frontend/states/zustand.states";
+import { usePods状态 } from "@/frontend/states/zustand.states";
 
 export default function Logs({
     app,
@@ -25,7 +25,7 @@ export default function Logs({
 }) {
     const [selectedPod, setSelectedPod] = useState<PodsInfoModel | undefined>(undefined);
     const [appPods, setAppPods] = useState<PodsInfoModel[] | undefined>(undefined);
-    const { subscribeToStatusChanges, getPodsForApp } = usePodsStatus();
+    const { subscribeTo状态Changes, getPodsForApp } = usePods状态();
 
     const updateBuilds = async () => {
         try {
@@ -44,7 +44,7 @@ export default function Logs({
 
     useEffect(() => {
         updateBuilds();
-        const unsubscribe = subscribeToStatusChanges((changedAppIds) => {
+        const unsubscribe = subscribeTo状态Changes((changedAppIds) => {
             if (changedAppIds.includes(app.id)) {
                 setTimeout(() =>
                     updateBuilds(), 500); // slight delay to ensure data is updated
@@ -59,7 +59,7 @@ export default function Logs({
     }, [app.id]);
 
     useEffect(() => {
-        if (appPods && selectedPod && !appPods.find(p => p.podName === selectedPod.podName)) {
+        if (appPods && selectedPod && !appPods.find(p => p.pod名称 === selectedPod.pod名称)) {
             // current selected pod is not in the list anymore
             setSelectedPod(undefined);
             if (appPods.length > 0) {
@@ -75,26 +75,26 @@ export default function Logs({
         <Card>
             <CardHeader>
                 <CardTitle>Logs</CardTitle>
-                <CardDescription>Read logs from all running Containers.</CardDescription>
+                <Card描述>Read logs from all running 容器.</Card描述>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent class名称="space-y-4">
                 {!appPods && <FullLoadingSpinner />}
                 {appPods && appPods.length === 0 && <div>No running pods found for this app.</div>}
-                {selectedPod && appPods && <div className="flex gap-4">
-                    <div className="flex-1">
-                        <Select value={selectedPod.podName} onValueChange={(val) => setSelectedPod(appPods.find(p => p.podName === val))}>
-                            <SelectTrigger className="w-full" >
+                {selectedPod && appPods && <div class名称="flex gap-4">
+                    <div class名称="flex-1">
+                        <Select value={selectedPod.pod名称} onValueChange={(val) => setSelectedPod(appPods.find(p => p.pod名称 === val))}>
+                            <SelectTrigger class名称="w-full" >
                                 <SelectValue placeholder="Pod wählen" />
                             </SelectTrigger>
                             <SelectContent>
-                                {appPods.map(pod => <SelectItem key={pod.podName} value={pod.podName}>{pod.podName} ({pod.status})</SelectItem>)}
+                                {appPods.map(pod => <SelectItem key={pod.pod名称} value={pod.pod名称}>{pod.pod名称} ({pod.status})</SelectItem>)}
                             </SelectContent>
                         </Select>
                     </div>
                     {role === RolePermissionEnum.READWRITE && <div>
                         <TerminalDialog terminalInfo={{
-                            podName: selectedPod.podName,
-                            containerName: selectedPod.containerName,
+                            pod名称: selectedPod.pod名称,
+                            container名称: selectedPod.container名称,
                             namespace: app.projectId
                         }} >
                             <Button variant="secondary">
@@ -121,7 +121,7 @@ export default function Logs({
                     <div>
                         <Tooltip delayDuration={300}>
                             <TooltipTrigger>
-                                <LogsDialog namespace={app.projectId} podName={selectedPod.podName}>
+                                <LogsDialog namespace={app.projectId} pod名称={selectedPod.pod名称}>
                                     <Button variant="secondary">
                                         <Expand />
                                     </Button>
@@ -133,7 +133,7 @@ export default function Logs({
                         </Tooltip>
                     </div>
                 </div>}
-                {app.projectId && selectedPod && <LogsStreamed namespace={app.projectId} podName={selectedPod.podName} />}
+                {app.projectId && selectedPod && <LogsStreamed namespace={app.projectId} pod名称={selectedPod.pod名称} />}
             </CardContent>
         </Card >
     </>;

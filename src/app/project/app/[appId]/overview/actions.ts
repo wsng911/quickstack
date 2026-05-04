@@ -17,10 +17,10 @@ export const getDeploymentsAndBuildsForApp = async (appId: string) =>
         return await deploymentService.getDeploymentHistory(app.projectId, appId);
     });
 
-export const deleteBuild = async (buildName: string) =>
+export const deleteBuild = async (build名称: string) =>
     simpleAction(async () => {
-        await isAuthorizedWriteForApp(await buildService.getAppIdByBuildName(buildName));
-        await buildService.deleteBuild(buildName);
+        await isAuthorizedWriteForApp(await buildService.getAppIdByBuild名称(build名称));
+        await buildService.deleteBuild(build名称);
         return new SuccessActionResult(undefined, 'Successfully stopped and deleted build.');
     });
 
@@ -34,7 +34,7 @@ export const getPodsForApp = async (appId: string) =>
 export const getRessourceDataApp = async (projectId: string, appId: string) =>
     simpleAction(async () => {
         await isAuthorizedReadForApp(appId);
-        return await monitoringService.getMonitoringForApp(projectId, appId);
+        return await monitoringService.get监控ingForApp(projectId, appId);
     });
 
 export const createNewWebhookUrl = async (appId: string) =>

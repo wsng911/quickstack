@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, Dialog描述, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
@@ -15,26 +15,26 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
-import { AppVolumeEditModel, appVolumeEditZodModel } from "@/shared/model/volume-edit.model"
+import { 提交Button } from "@/components/custom/submit-button";
+import { AppVolume编辑Model, appVolume编辑ZodModel } from "@/shared/model/volume-edit.model"
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { saveVolume, getShareableVolumes } from "./actions"
 import { toast } from "sonner"
 import { AppExtendedModel } from "@/shared/model/app-extended.model"
 import SelectFormField from "@/components/custom/select-form-field"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Alert, Alert描述 } from "@/components/ui/alert"
 import { Info } from "lucide-react"
 
 type ShareableVolume = {
     id: string;
     containerMountPath: string;
     size: number;
-    storageClassName: string;
+    storageClass名称: string;
     accessMode: string;
     app: { name: string };
 };
 
-export default function SharedStorageEditDialog({ children, app }: {
+export default function SharedStorage编辑Dialog({ children, app }: {
     children: React.ReactNode;
     app: AppExtendedModel;
 }) {
@@ -43,23 +43,23 @@ export default function SharedStorageEditDialog({ children, app }: {
     const [shareableVolumes, setShareableVolumes] = useState<ShareableVolume[]>([]);
     const [isLoadingVolumes, setIsLoadingVolumes] = useState(false);
 
-    const form = useForm<AppVolumeEditModel>({
-        resolver: zodResolver(appVolumeEditZodModel),
+    const form = useForm<AppVolume编辑Model>({
+        resolver: zodResolver(appVolume编辑ZodModel),
         defaultValues: {
             containerMountPath: '',
             size: 0,
             accessMode: 'ReadWriteMany',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             sharedVolumeId: undefined,
         }
     });
 
-    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppVolumeEditModel) =>
+    const [state, formAction] = useFormState((state: ServerActionResult<any, any>, payload: AppVolume编辑Model) =>
         saveVolume(state, {
             ...payload,
             appId: app.id,
             id: undefined
-        }), FormUtils.getInitialFormState<typeof appVolumeEditZodModel>());
+        }), FormUtils.getInitialFormState<typeof appVolume编辑ZodModel>());
 
     // Fetch shareable volumes when dialog opens
     useEffect(() => {
@@ -67,10 +67,10 @@ export default function SharedStorageEditDialog({ children, app }: {
             setIsLoadingVolumes(true);
             getShareableVolumes(app.id).then(result => {
                 if (result.status === 'success' && result.data) {
-                    const alreadyAddedSharedVolumes = app.appVolumes
+                    const already添加edSharedVolumes = app.appVolumes
                         .filter(v => !!v.sharedVolumeId)
                         .map(v => v.sharedVolumeId);
-                    setShareableVolumes(result.data.filter(v => !alreadyAddedSharedVolumes.includes(v.id)));
+                    setShareableVolumes(result.data.filter(v => !already添加edSharedVolumes.includes(v.id)));
                 } else {
                     setShareableVolumes([]);
                     toast.error('An error occurred while fetching shareable volumes');
@@ -88,7 +88,7 @@ export default function SharedStorageEditDialog({ children, app }: {
             if (selectedVolume) {
                 form.setValue("size", selectedVolume.size);
                 form.setValue("accessMode", selectedVolume.accessMode);
-                form.setValue("storageClassName", selectedVolume.storageClassName as 'longhorn' | 'local-path');
+                form.setValue("storageClass名称", selectedVolume.storageClass名称 as 'longhorn' | 'local-path');
             }
         }
     }, [watchedSharedVolumeId, shareableVolumes]);
@@ -101,7 +101,7 @@ export default function SharedStorageEditDialog({ children, app }: {
             });
             setIsOpen(false);
         }
-        FormUtils.mapValidationErrorsToForm<typeof appVolumeEditZodModel>(state, form);
+        FormUtils.mapValidationErrorsToForm<typeof appVolume编辑ZodModel>(state, form);
     }, [state]);
 
     return (
@@ -110,26 +110,26 @@ export default function SharedStorageEditDialog({ children, app }: {
                 {children}
             </div>
             <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(false)}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent class名称="sm:max-w-[425px]">
                     <DialogHeader>
                         <DialogTitle>Mount Shared Volume</DialogTitle>
-                        <DialogDescription>
+                        <Dialog描述>
                             Mount an existing ReadWriteMany volume from another app in this project.
-                        </DialogDescription>
+                        </Dialog描述>
                     </DialogHeader>
                     <Form {...form}>
-                        <form action={(e) => form.handleSubmit((data) => {
+                        <form action={(e) => form.handle提交((data) => {
                             return formAction(data);
                         })()}>
-                            <div className="space-y-4">
+                            <div class名称="space-y-4">
                                 {isLoadingVolumes ? (
-                                    <div className="text-sm text-muted-foreground">Loading shareable volumes...</div>
+                                    <div class名称="text-sm text-muted-foreground">Loading shareable volumes...</div>
                                 ) : shareableVolumes.length === 0 ? (
                                     <Alert>
-                                        <Info className="h-4 w-4" />
-                                        <AlertDescription>
-                                            No shareable volumes available. Create a ReadWriteMany volume in another app and enable sharing first.
-                                        </AlertDescription>
+                                        <Info class名称="h-4 w-4" />
+                                        <Alert描述>
+                                            No shareable volumes available. 创建 a ReadWriteMany volume in another app and enable sharing first.
+                                        </Alert描述>
                                     </Alert>
                                 ) : (
                                     <>
@@ -158,15 +158,15 @@ export default function SharedStorageEditDialog({ children, app }: {
                                             )}
                                         />
 
-                                        <div className="text-sm text-muted-foreground space-y-1">
+                                        <div class名称="text-sm text-muted-foreground space-y-1">
                                             <p><strong>Size:</strong> {form.watch("size")} MB (inherited from shared volume)</p>
-                                            <p><strong>Storage Class:</strong> {form.watch("storageClassName")} (inherited from shared volume)</p>
+                                            <p><strong>Storage Class:</strong> {form.watch("storageClass名称")} (inherited from shared volume)</p>
                                         </div>
                                     </>
                                 )}
 
-                                <p className="text-red-500">{state.message}</p>
-                                {shareableVolumes.length > 0 && <SubmitButton>Mount Shared Volume</SubmitButton>}
+                                <p class名称="text-red-500">{state.message}</p>
+                                {shareableVolumes.length > 0 && <提交Button>Mount Shared Volume</提交Button>}
                             </div>
                         </form>
                     </Form >

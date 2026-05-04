@@ -1,15 +1,15 @@
 import { SimpleDataTable } from "@/components/custom/simple-data-table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDateTime } from "@/frontend/utils/format.utils";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { useEffect, useState } from "react";
 import { deleteBuild, getDeploymentsAndBuildsForApp } from "./actions";
 import FullLoadingSpinner from "@/components/ui/full-loading-spinnter";
 import { Button } from "@/components/ui/button";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 import { Toast } from "@/frontend/utils/toast.utils";
 import { DeploymentInfoModel } from "@/shared/model/deployment-info.model";
-import DeploymentStatusBadge from "./deployment-status-badge";
+import Deployment状态Badge from "./deployment-status-badge";
 import { BuildLogsDialog } from "./build-logs-overlay";
 import ShortCommitHash from "@/components/custom/short-commit-hash";
 import { RolePermissionEnum } from "@/shared/model/role-extended.model.ts";
@@ -22,7 +22,7 @@ export default function BuildsTab({
     role: RolePermissionEnum;
 }) {
 
-    const { openConfirmDialog: openDialog } = useConfirmDialog();
+    const { open确认Dialog: openDialog } = use确认Dialog();
     const [appBuilds, setAppBuilds] = useState<DeploymentInfoModel[] | undefined>(undefined);
     const [error, setError] = useState<string | undefined>(undefined);
     const [selectedDeploymentForLogs, setSelectedDeploymentForLogs] = useState<DeploymentInfoModel | undefined>(undefined);
@@ -43,14 +43,14 @@ export default function BuildsTab({
         }
     }
 
-    const deleteBuildClick = async (buildName: string) => {
+    const deleteBuildClick = async (build名称: string) => {
         const confirm = await openDialog({
-            title: "Delete Build",
+            title: "删除 Build",
             description: "The build will be stopped and removed. Are you sure you want to stop this build?",
-            okButton: "Stop & Remove Build"
+            okButton: "Stop & 移除 Build"
         });
         if (confirm) {
-            await Toast.fromAction(() => deleteBuild(buildName));
+            await Toast.fromAction(() => deleteBuild(build名称));
             await updateBuilds();
         }
     }
@@ -73,32 +73,32 @@ export default function BuildsTab({
         <Card>
             <CardHeader>
                 <CardTitle>Deployments</CardTitle>
-                <CardDescription>This is an overview of the last deplyoments for this App.</CardDescription>
+                <Card描述>This is an overview of the last deplyoments for this App.</Card描述>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent class名称="space-y-4">
                 {!appBuilds ? <FullLoadingSpinner /> :
                     <SimpleDataTable columns={[
-                        ['replicasetName', 'Deployment Name', false],
-                        ['buildJobName', 'Build Job Name', false],
+                        ['replicaset名称', 'Deployment 名称', false],
+                        ['buildJob名称', 'Build Job 名称', false],
                         ['deploymentId', 'Deployment Id', false],
-                        ['status', 'Status', true, (item) => <DeploymentStatusBadge>{item.status}</DeploymentStatusBadge>],
+                        ['status', '状态', true, (item) => <Deployment状态Badge>{item.status}</Deployment状态Badge>],
                         ['buildMethod', 'Build Method', true, (item) => (
-                            <span className="text-muted-foreground text-sm">
+                            <span class名称="text-muted-foreground text-sm">
                                 {item.buildMethod ? (item.buildMethod === 'DOCKERFILE' ? 'Dockerfile' : 'Railpack') : '—'}
                             </span>
                         )],
                         ["startTime", "Started At", true, (item) => formatDateTime(item.createdAt)],
                         ['gitCommit', 'Git Commit', true, (item) => <ShortCommitHash>{item.gitCommit}</ShortCommitHash>],
-                        ['gitCommitMessage', 'Commit Message', true, (item) => <span className="text-muted-foreground text-sm">{item.gitCommitMessage ?? ''}</span>],
+                        ['gitCommitMessage', 'Commit Message', true, (item) => <span class名称="text-muted-foreground text-sm">{item.gitCommitMessage ?? ''}</span>],
                     ]}
                         data={appBuilds}
-                        hideSearchBar={true}
+                        hide搜索Bar={true}
                         actionCol={(item) => {
                             return <>
-                                <div className="flex gap-4">
-                                    <div className="flex-1"></div>
+                                <div class名称="flex gap-4">
+                                    <div class名称="flex-1"></div>
                                     {item.deploymentId && <Button variant="secondary" onClick={() => setSelectedDeploymentForLogs(item)}>Show Logs</Button>}
-                                    {role === RolePermissionEnum.READWRITE && item.buildJobName && item.status === 'BUILDING' && <Button variant="destructive" onClick={() => deleteBuildClick(item.buildJobName!)}>Stop Build</Button>}
+                                    {role === RolePermissionEnum.READWRITE && item.buildJob名称 && item.status === 'BUILDING' && <Button variant="destructive" onClick={() => deleteBuildClick(item.buildJob名称!)}>Stop Build</Button>}
                                 </div>
                             </>
                         }}
@@ -106,6 +106,6 @@ export default function BuildsTab({
                 }
             </CardContent>
         </Card>
-        <BuildLogsDialog deploymentInfo={selectedDeploymentForLogs} onClose={() => setSelectedDeploymentForLogs(undefined)} />
+        <BuildLogsDialog deploymentInfo={selectedDeploymentForLogs} on关闭={() => setSelectedDeploymentForLogs(undefined)} />
     </>;
 }

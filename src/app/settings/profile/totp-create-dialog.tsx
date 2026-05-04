@@ -1,6 +1,6 @@
 'use client';
 
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FormUtils } from "@/frontend/utils/form.utilts";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,13 +11,13 @@ import { Input } from "@/components/ui/input";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { createNewTotpToken, verifyTotpToken } from "./actions";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, Dialog描述, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import React from "react";
 import { TotpModel, totpZodModel } from "@/shared/model/totp.model";
 import { Toast } from "@/frontend/utils/toast.utils";
 import FullLoadingSpinner from "@/components/ui/full-loading-spinnter";
 
-export default function TotpCreateDialog({
+export default function Totp创建Dialog({
     children
 }: {
     children: React.ReactNode;
@@ -56,21 +56,21 @@ export default function TotpCreateDialog({
             {children}
         </div>
         <Dialog open={isOpen} onOpenChange={(isO) => setIsOpen(isO)}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent class名称="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Enable 2FA</DialogTitle>
-                    <DialogDescription>
+                    <Dialog描述>
                         To enable the Two-Facor-Authentication (2FA) scan the QR code with your preferred authenticator app and enter the token below.
-                    </DialogDescription>
+                    </Dialog描述>
                 </DialogHeader>
-                <div className="space-y-4">
-                    {!totpQrCode && <div className="rounded-lg bg-slate-50 py-24"><FullLoadingSpinner /></div>}
-                    {totpQrCode && <><img className="mx-auto my-0" src={totpQrCode} /></>}
+                <div class名称="space-y-4">
+                    {!totpQrCode && <div class名称="rounded-lg bg-slate-50 py-24"><FullLoadingSpinner /></div>}
+                    {totpQrCode && <><img class名称="mx-auto my-0" src={totpQrCode} /></>}
                     <Form {...form}>
-                        <form action={(e) => form.handleSubmit((data) => {
+                        <form action={(e) => form.handle提交((data) => {
                             return formAction(data);
                         })()}>
-                            <div className="space-y-4">
+                            <div class名称="space-y-4">
                                 <FormField
                                     control={form.control}
                                     name="totp"
@@ -85,10 +85,10 @@ export default function TotpCreateDialog({
                                     )}
                                 />
 
-                                <p className="text-red-500">{state?.message}</p>
+                                <p class名称="text-red-500">{state?.message}</p>
                             </div>
                             <DialogFooter>
-                                <SubmitButton>Verify 2FA Token</SubmitButton>
+                                <提交Button>Verify 2FA Token</提交Button>
                             </DialogFooter>
                         </form>
                     </Form >

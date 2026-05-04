@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-export const profilePasswordChangeZodModel = z.object({
-  oldPassword: z.string().trim().min(1),
-  newPassword: z.string().trim().min(6),
-  confirmNewPassword: z.string().trim().min(6)
+export const profile密码ChangeZodModel = z.object({
+  old密码: z.string().trim().min(1),
+  new密码: z.string().trim().min(6),
+  confirmNew密码: z.string().trim().min(6)
 })
 
-export type ProfilePasswordChangeModel = z.infer<typeof profilePasswordChangeZodModel>;
+export type Profile密码ChangeModel = z.infer<typeof profile密码ChangeZodModel>;

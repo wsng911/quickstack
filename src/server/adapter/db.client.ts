@@ -31,18 +31,18 @@ export class DataAccessClient {
     client = prisma;
 
 
-    async updateManyItems<TEntityType, TKey>(tableName: keyof PrismaTransactionType, itemsToUpdate: TEntityType[],
+    async updateManyItems<TEntityType, TKey>(table名称: keyof PrismaTransactionType, itemsToUpdate: TEntityType[],
         primaryKeySelector: (item: TEntityType) => TKey) {
         this.client.$transaction(async (tx) => {
-            await this.updateManyItemsWithExistingTransaction(tableName, itemsToUpdate, primaryKeySelector, tx);
+            await this.updateManyItemsWithExistingTransaction(table名称, itemsToUpdate, primaryKeySelector, tx);
         });
     }
 
-    async updateManyItemsWithExistingTransaction<TEntityType, TKey>(tableName: keyof PrismaTransactionType, itemsToUpdate: TEntityType[],
+    async updateManyItemsWithExistingTransaction<TEntityType, TKey>(table名称: keyof PrismaTransactionType, itemsToUpdate: TEntityType[],
         primaryKeySelector: (item: TEntityType) => TKey, transaction: PrismaTransactionType, primaryKeyField: keyof TEntityType = 'id' as keyof TEntityType) {
         for (const chunk of ListUtils.chunk(itemsToUpdate, 50)) {
             await Promise.all(chunk.map(async dataItem => {
-                await (transaction[tableName] as any).update({
+                await (transaction[table名称] as any).update({
                     where: {
                         [primaryKeyField]: primaryKeySelector(dataItem)
                     },

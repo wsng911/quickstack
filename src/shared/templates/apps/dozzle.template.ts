@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const dozzleAppTemplate: AppTemplateModel = {
     name: "Dozzle",
-    iconName: 'https://raw.githubusercontent.com/amir20/dozzle/master/assets/logo.svg',
+    icon名称: 'https://raw.githubusercontent.com/amir20/dozzle/master/assets/logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",

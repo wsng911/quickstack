@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const ghostAppTemplate: AppTemplateModel = {
     name: "Ghost",
-    iconName: 'https://cdn.simpleicons.org/ghost',
+    icon名称: 'https://cdn.simpleicons.org/ghost',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -42,7 +42,7 @@ database__connection__filename=/var/lib/ghost/content/data/ghost.db
             size: 1000,
             containerMountPath: '/var/lib/ghost/content',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

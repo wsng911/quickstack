@@ -7,21 +7,21 @@ import scheduleService from "./schedule.service";
 import standalonePodService from "./standalone-pod.service";
 import { ListUtils } from "../../../shared/utils/list.utils";
 import { S3Target } from "@prisma/client";
-import { BackupEntry, BackupInfoModel } from "../../../shared/model/backup-info.model";
+import { 返回upEntry, 返回upInfoModel } from "../../../shared/model/backup-info.model";
 import { CronCheckUtils } from "../../utils/cron-check.utils";
-import databaseBackupService from "./database-backup.service";
-import sharedBackupService, { s3BucketPrefix } from "./database-backup-services/shared-backup.service";
-import systemBackupService from "./system-backup.service";
+import database返回upService from "./database-backup.service";
+import shared返回upService, { s3BucketPrefix } from "./database-backup-services/shared-backup.service";
+import system返回upService from "./system-backup.service";
 
 
-class BackupService {
+class 返回upService {
 
-    folderPathForVolumeBackup(appId: string, backupVolumeId: string) {
-        return sharedBackupService.folderPathForVolumeBackup(appId, backupVolumeId);
+    folderPathForVolume返回up(appId: string, backupVolumeId: string) {
+        return shared返回upService.folderPathForVolume返回up(appId, backupVolumeId);
     }
 
-    async registerAllBackups() {
-        const allVolumeBackups = await dataAccess.client.volumeBackup.findMany({
+    async registerAll返回ups() {
+        const allVolume返回ups = await dataAccess.client.volume返回up.findMany({
             include: {
                 volume: {
                     include: {
@@ -31,64 +31,64 @@ class BackupService {
             }
         });
         console.log(`Deregistering existing backup schedules...`);
-        this.unregisterAllBackups();
+        this.unregisterAll返回ups();
 
-        console.log(`Registering ${allVolumeBackups.length} backup schedules...`);
-        const groupedByCron = ListUtils.groupBy(allVolumeBackups, vb => vb.cron);
+        console.log(`Registering ${allVolume返回ups.length} backup schedules...`);
+        const groupedByCron = ListUtils.groupBy(allVolume返回ups, vb => vb.cron);
 
-        for (const [cron, volumeBackups] of Array.from(groupedByCron.entries())) {
+        for (const [cron, volume返回ups] of Array.from(groupedByCron.entries())) {
             scheduleService.scheduleJob(`backup-${cron}`, cron, async () => {
-                console.log(`Running backup for ${volumeBackups.length} volumes...`);
-                for (const volumeBackup of volumeBackups) {
+                console.log(`Running backup for ${volume返回ups.length} volumes...`);
+                for (const volume返回up of volume返回ups) {
                     try {
-                        // Use database-specific backup if it's a database app AND useDatabaseBackup is true
-                        if (volumeBackup.volume.app.appType !== 'APP' && volumeBackup.useDatabaseBackup) {
-                            await databaseBackupService.backupDatabase(volumeBackup.id);
+                        // Use database-specific backup if it's a database app AND useDatabase返回up is true
+                        if (volume返回up.volume.app.appType !== 'APP' && volume返回up.useDatabase返回up) {
+                            await database返回upService.backupDatabase(volume返回up.id);
                         } else {
-                            await this.runBackupForVolume(volumeBackup.id);
+                            await this.run返回upForVolume(volume返回up.id);
                         }
                     } catch (e) {
-                        console.error(`Error during backup for volume ${volumeBackup.volumeId} and backup ${volumeBackup.id}`);
+                        console.error(`Error during backup for volume ${volume返回up.volumeId} and backup ${volume返回up.id}`);
                         console.error(e);
                     }
                 }
-                console.log(`Backup for ${volumeBackups.length} volumes finished.`);
+                console.log(`返回up for ${volume返回ups.length} volumes finished.`);
             });
         }
 
         scheduleService.scheduleJob(`backup-quickstack-system-data`, '0 1 * * *', async () => {
             console.log(`Running backup for QuickStack system data...`);
             try {
-                await this.runSystemBackup();
+                await this.runSystem返回up();
             } catch (e) {
                 console.error(`Error during QuickStack system data backup`);
                 console.error(e);
             }
-            console.log(`Backup for QuickStack system data finished.`);
+            console.log(`返回up for QuickStack system data finished.`);
         });
     }
 
-    async unregisterAllBackups() {
+    async unregisterAll返回ups() {
         const allJobs = scheduleService.getAlJobs();
         const backupJobs = allJobs.filter(j => j.startsWith('backup-'));
-        for (const jobName of backupJobs) {
-            scheduleService.cancelJob(jobName);
+        for (const job名称 of backupJobs) {
+            scheduleService.cancelJob(job名称);
         }
     }
 
     /**
      * Downloads a backup from S3, stores it in temporary download folder and returns the filename
      */
-    async downloadBackupForS3TargetAndKey(s3TargetId: string, key: string) {
+    async download返回upForS3TargetAndKey(s3TargetId: string, key: string) {
         const s3Target = await dataAccess.client.s3Target.findFirstOrThrow({
             where: {
                 id: s3TargetId
             }
         });
 
-        const fileName = key.split('/').join('-');
+        const file名称 = key.split('/').join('-');
 
-        const downloadPath = PathUtils.volumeDownloadZipPath(fileName);
+        const downloadPath = PathUtils.volumeDownloadZipPath(file名称);
         await FsUtils.createDirIfNotExistsAsync(PathUtils.tempVolumeDownloadPath, true);
         await FsUtils.deleteDirIfExistsAsync(downloadPath, true);
 
@@ -98,11 +98,11 @@ class BackupService {
         return PathUtils.splitPath(downloadPath).filePath;
     }
 
-    async getBackupsForAllS3Targets() {
+    async get返回upsForAllS3Targets() {
         const s3Targets = await dataAccess.client.s3Target.findMany();
         const returnValFromAllS3Targets = await Promise.all(s3Targets.map(async (s3Target) => {
             try {
-                const data = await this.getBackupsFromS3Target(s3Target);
+                const data = await this.get返回upsFromS3Target(s3Target);
                 return {
                     s3Target,
                     data,
@@ -112,7 +112,7 @@ class BackupService {
                 const errorMessage = error instanceof Error
                     ? `${error.name}: ${error.message}`
                     : String(error);
-                console.error(`Failed to fetch backups for S3 target '${s3Target.name}' (${s3Target.endpoint}/${s3Target.bucketName})`, error);
+                console.error(`Failed to fetch backups for S3 target '${s3Target.name}' (${s3Target.endpoint}/${s3Target.bucket名称})`, error);
                 return {
                     s3Target,
                     data: undefined,
@@ -128,31 +128,31 @@ class BackupService {
                 id: result.s3Target.id,
                 name: result.s3Target.name,
                 endpoint: result.s3Target.endpoint,
-                bucketName: result.s3Target.bucketName,
+                bucket名称: result.s3Target.bucket名称,
                 error: result.error ?? 'Unknown error'
             }));
 
         const backupInfoModels = successfulResults.map(x => x.data!.backupInfoModels).flat();
         backupInfoModels.sort((a, b) => {
-            if (a.projectName === b.projectName) {
-                return a.appName.localeCompare(b.appName);
+            if (a.project名称 === b.project名称) {
+                return a.app名称.localeCompare(b.app名称);
             }
-            return a.projectName.localeCompare(b.projectName);
+            return a.project名称.localeCompare(b.project名称);
         });
 
-        const backupsVolumesWithoutActualBackups = successfulResults.map(x => x.data!.backupsVolumesWithoutActualBackups).flat();
+        const backupsVolumesWithoutActual返回ups = successfulResults.map(x => x.data!.backupsVolumesWithoutActual返回ups).flat();
         return {
             backupInfoModels,
-            backupsVolumesWithoutActualBackups,
+            backupsVolumesWithoutActual返回ups,
             failedS3Targets
         };
     }
 
-    async getBackupsFromS3Target(s3Target: S3Target) {
+    async get返回upsFromS3Target(s3Target: S3Target) {
 
-        const defaultInfoIfAppWasDeleted = 'orphaned';
+        const defaultInfoIfAppWas删除d = 'orphaned';
 
-        const volumeBackups = await dataAccess.client.volumeBackup.findMany({
+        const volume返回ups = await dataAccess.client.volume返回up.findMany({
             include: {
                 volume: {
                     include: {
@@ -167,16 +167,16 @@ class BackupService {
             }
         });
 
-        const backupData = await this.listAndParseBackupFiles(s3Target);
+        const backupData = await this.listAndParse返回upFiles(s3Target);
 
-        const groupedBackupInfo = ListUtils.groupBy(backupData, x => x.backupVolumeId);
+        const grouped返回upInfo = ListUtils.groupBy(backupData, x => x.backupVolumeId);
 
-        const backupInfoModels: BackupInfoModel[] = [];
+        const backupInfoModels: 返回upInfoModel[] = [];
 
-        for (let [backupVolumeId, backups] of Array.from(groupedBackupInfo.entries())) {
-            const volumeBackup = volumeBackups.find(vb => vb.id === backupVolumeId);
+        for (let [backupVolumeId, backups] of Array.from(grouped返回upInfo.entries())) {
+            const volume返回up = volume返回ups.find(vb => vb.id === backupVolumeId);
 
-            const backupEntries: BackupEntry[] = backups.map(b => ({
+            const backupEntries: 返回upEntry[] = backups.map(b => ({
                 backupDate: b.backupDate,
                 key: b.key ?? '',
                 sizeBytes: b.sizeBytes
@@ -185,38 +185,38 @@ class BackupService {
             backupEntries.sort((a, b) => b.backupDate.getTime() - a.backupDate.getTime());
 
             backupInfoModels.push({
-                projectId: volumeBackup?.volume.app.projectId ?? defaultInfoIfAppWasDeleted,
-                projectName: volumeBackup?.volume.app.project.name ?? defaultInfoIfAppWasDeleted,
-                appName: volumeBackup?.volume.app.name ?? defaultInfoIfAppWasDeleted,
+                projectId: volume返回up?.volume.app.projectId ?? defaultInfoIfAppWas删除d,
+                project名称: volume返回up?.volume.app.project.name ?? defaultInfoIfAppWas删除d,
+                app名称: volume返回up?.volume.app.name ?? defaultInfoIfAppWas删除d,
                 appId: backups[0].appId,
                 backupVolumeId: backups[0].backupVolumeId,
-                backupRetention: volumeBackup?.retention ?? 0,
-                volumeId: volumeBackup?.id ?? defaultInfoIfAppWasDeleted,
-                mountPath: volumeBackup?.volume.containerMountPath ?? defaultInfoIfAppWasDeleted,
+                backupRetention: volume返回up?.retention ?? 0,
+                volumeId: volume返回up?.id ?? defaultInfoIfAppWas删除d,
+                mountPath: volume返回up?.volume.containerMountPath ?? defaultInfoIfAppWas删除d,
                 backups: backupEntries,
                 s3TargetId: s3Target.id,
-                cron: volumeBackup?.cron,
-                missedBackup: volumeBackup?.cron
-                    ? CronCheckUtils.isBackupMissed(volumeBackup.cron, backupEntries[0]?.backupDate)
+                cron: volume返回up?.cron,
+                missed返回up: volume返回up?.cron
+                    ? CronCheckUtils.is返回upMissed(volume返回up.cron, backupEntries[0]?.backupDate)
                     : undefined,
             });
         }
 
-        const backupsVolumesWithoutActualBackups = volumeBackups
+        const backupsVolumesWithoutActual返回ups = volume返回ups
             .filter(vb => vb.targetId === s3Target.id)
             .filter(vb => !backupInfoModels.find(x => x.backupVolumeId === vb.id));
 
         backupInfoModels.sort((a, b) => {
-            if (a.projectName === b.projectName) {
-                return a.appName.localeCompare(b.appName);
+            if (a.project名称 === b.project名称) {
+                return a.app名称.localeCompare(b.app名称);
             }
-            return a.projectName.localeCompare(b.projectName);
+            return a.project名称.localeCompare(b.project名称);
         });
 
-        return { backupInfoModels, backupsVolumesWithoutActualBackups };
+        return { backupInfoModels, backupsVolumesWithoutActual返回ups };
     }
 
-    private async listAndParseBackupFiles(s3Target: { id: string; createdAt: Date; updatedAt: Date; name: string; bucketName: string; endpoint: string; region: string; accessKeyId: string; secretKey: string; }) {
+    private async listAndParse返回upFiles(s3Target: { id: string; createdAt: Date; updatedAt: Date; name: string; bucket名称: string; endpoint: string; region: string; accessKeyId: string; secretKey: string; }) {
         const fileKeys = await s3Service.listFiles(s3Target);
         const backupData = fileKeys.filter(x => {
             if (!x.Key) {
@@ -247,10 +247,10 @@ class BackupService {
         return backupData;
     }
 
-    async runBackupForVolume(backupVolumeId: string) {
+    async run返回upForVolume(backupVolumeId: string) {
         console.log(`Running backup for backupVolume ${backupVolumeId}`);
 
-        const backupVolume = await dataAccess.client.volumeBackup.findFirstOrThrow({
+        const backupVolume = await dataAccess.client.volume返回up.findFirstOrThrow({
             where: {
                 id: backupVolumeId
             },
@@ -276,27 +276,27 @@ class BackupService {
 
         // zipping and saving backup data in quickstack pod
         const downloadPath = PathUtils.backupVolumeDownloadZipPath(backupVolume.id);
-        await FsUtils.createDirIfNotExistsAsync(PathUtils.tempBackupDataFolder, true);
+        await FsUtils.createDirIfNotExistsAsync(PathUtils.temp返回upDataFolder, true);
 
         try {
-            console.log(`Downloading data from pod ${firstPod.podName} ${volume.containerMountPath} to ${downloadPath}`);
-            await standalonePodService.cpFromPod(projectId, firstPod.podName, firstPod.containerName, volume.containerMountPath, downloadPath);
+            console.log(`Downloading data from pod ${firstPod.pod名称} ${volume.containerMountPath} to ${downloadPath}`);
+            await standalonePodService.cpFromPod(projectId, firstPod.pod名称, firstPod.container名称, volume.containerMountPath, downloadPath);
 
             // upload backup
             console.log(`Uploading backup to S3`);
             const now = new Date();
             const nowString = now.toISOString();
             await s3Service.uploadFile(backupVolume.target, downloadPath,
-                `${this.folderPathForVolumeBackup(appId, backupVolumeId)}/${nowString}.tar.gz`, 'application/gzip', 'binary');
+                `${this.folderPathForVolume返回up(appId, backupVolumeId)}/${nowString}.tar.gz`, 'application/gzip', 'binary');
 
-            await sharedBackupService.deleteOldBackupsBasedOnRetention(backupVolume.target, appId, backupVolumeId, backupVolume.retention);
-            console.log(`Backup finished for volume ${volume.id} and backup ${backupVolume.id}`);
+            await shared返回upService.deleteOld返回upsBasedOnRetention(backupVolume.target, appId, backupVolumeId, backupVolume.retention);
+            console.log(`返回up finished for volume ${volume.id} and backup ${backupVolume.id}`);
         } finally {
             await FsUtils.deleteFileIfExists(downloadPath);
         }
     }
 
-    async deleteBackupFromS3(s3TargetId: string, key: string) {
+    async delete返回upFromS3(s3TargetId: string, key: string) {
         const target = await dataAccess.client.s3Target.findFirstOrThrow({
             where: {
                 id: s3TargetId
@@ -305,10 +305,10 @@ class BackupService {
         return s3Service.deleteFile(target, key);
     }
 
-    async runSystemBackup() {
-        return systemBackupService.runSystemBackup();
+    async runSystem返回up() {
+        return system返回upService.runSystem返回up();
     }
 }
 
-const backupService = new BackupService();
+const backupService = new 返回upService();
 export default backupService;

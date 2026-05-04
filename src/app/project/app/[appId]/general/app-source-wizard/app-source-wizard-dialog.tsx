@@ -1,14 +1,14 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog描述, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useDialogContext } from "@/frontend/states/dialog-context";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
-import { Actions } from "@/frontend/utils/nextjs-actions.utils";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
+import { 操作 } from "@/frontend/utils/nextjs-actions.utils";
 import { Toast } from "@/frontend/utils/toast.utils";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { AppBuildMethod, AppDockerfileDetectionModel, AppGitBranchesLookupModel, AppSourceInfoInputModel } from "@/shared/model/app-source-info.model";
-import { ChevronLeft, Loader2, Rocket, Save } from "lucide-react";
+import { ChevronLeft, Loader2, Rocket, 保存 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -31,7 +31,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
 }) {
     const router = useRouter();
     const { closeDialog } = useDialogContext();
-    const { openConfirmDialog } = useConfirmDialog();
+    const { open确认Dialog } = use确认Dialog();
     const [step, setStep] = useState<StepId>('source');
     const [history, setHistory] = useState<StepId[]>([]);
     const [formData, setFormData] = useState<AppSourceInfoInputModel>(() => toSourceInput(app));
@@ -42,7 +42,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
     const [isEnsuringKey, setIsEnsuringKey] = useState(false);
     const [isDetectingDockerfile, setIsDetectingDockerfile] = useState(false);
     const [showGitToken, setShowGitToken] = useState(false);
-    const [showRegistryPassword, setShowRegistryPassword] = useState(false);
+    const [showRegistry密码, setShowRegistry密码] = useState(false);
 
     const canUseGitSources = app.appType === 'APP';
     const isGitSource = formData.sourceType === 'GIT' || formData.sourceType === 'GIT_SSH';
@@ -55,7 +55,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
         setStep(nextStep);
     };
 
-    const goBack = () => {
+    const go返回 = () => {
         const previous = history[history.length - 1];
         if (!previous) {
             return;
@@ -84,7 +84,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
             ? {
                 sourceType: 'GIT',
                 gitUrl: formData.gitUrl,
-                gitUsername: formData.gitUsername,
+                git用户名: formData.git用户名,
                 gitToken: formData.gitToken,
             }
             : {
@@ -95,7 +95,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
         setIsLoadingBranches(true);
         setBranchError(null);
         try {
-            const result = await Actions.run(() => getGitBranches(app.id, inputData));
+            const result = await 操作.run(() => getGitBranches(app.id, inputData));
             setBranches(result ?? []);
             if (formData.gitBranch && !result?.includes(formData.gitBranch)) {
                 updateFormData({ gitBranch: '' });
@@ -116,7 +116,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
         }
         setIsEnsuringKey(true);
         try {
-            const key = await Actions.run(() => ensureGitSshPublicKey(app.id));
+            const key = await 操作.run(() => ensureGitSshPublicKey(app.id));
             setPublicKey(key);
         } finally {
             setIsEnsuringKey(false);
@@ -131,7 +131,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
     }, [step, formData.gitUrl, publicKey]);
 
     const regenerateKey = async () => {
-        const confirmed = await openConfirmDialog({
+        const confirmed = await open确认Dialog({
             title: "Regenerate Deploy Key",
             description: "This replaces the current app SSH key. Update the deploy key in your Git provider before deploying again.",
             okButton: "Regenerate",
@@ -139,7 +139,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
         if (!confirmed) {
             return;
         }
-        const key = await Actions.run(() => generateOrRegenerateGitSshKey(app.id));
+        const key = await 操作.run(() => generateOrRegenerateGitSshKey(app.id));
         setPublicKey(key);
         toast.success('Deploy key regenerated.');
     };
@@ -162,7 +162,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
                 sourceType: 'GIT',
                 gitUrl: formData.gitUrl,
                 gitBranch: formData.gitBranch,
-                gitUsername: formData.gitUsername,
+                git用户名: formData.git用户名,
                 gitToken: formData.gitToken,
             }
             : {
@@ -173,7 +173,7 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
 
         setIsDetectingDockerfile(true);
         try {
-            const dockerfilePath = await Actions.run(() => detectDockerfilePath(app.id, inputData));
+            const dockerfilePath = await 操作.run(() => detectDockerfilePath(app.id, inputData));
             updateFormData({ dockerfilePath: dockerfilePath || defaultDockerfilePath });
         } finally {
             setIsDetectingDockerfile(false);
@@ -217,13 +217,13 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
         }
     };
 
-    const save = async (deployAfterSave: boolean) => {
+    const save = async (deployAfter保存: boolean) => {
         await Toast.fromAction(() => saveGeneralAppSourceInfo(null, formData, app.id), 'Source saved', 'Saving source...');
-        if (deployAfterSave) {
+        if (deployAfter保存) {
             await Toast.fromAction(() => deploy(app.id, true), 'Deployment started', 'Staring deployment...');
             closeDialog(true);
             router.refresh();
-            router.push(`/project/app/${app.id}?tabName=overview`);
+            router.push(`/project/app/${app.id}?tab名称=overview`);
             return;
         }
 
@@ -237,12 +237,12 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
         <>
             <DialogHeader>
                 <DialogTitle>{currentTitle}</DialogTitle>
-                <DialogDescription>
+                <Dialog描述>
                     {step === 'summary' ? 'Review the app source before saving.' : 'Connect a source with the details QuickStack needs to deploy this app.'}
-                </DialogDescription>
+                </Dialog描述>
             </DialogHeader>
 
-            <div className="space-y-5">
+            <div class名称="space-y-5">
                 <WizardProgress step={step} formData={formData} />
                 {step === 'source' && (
                     <SourceTypeStep
@@ -300,8 +300,8 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
                     <ContainerImageStep
                         formData={formData}
                         showCredentials={showRegistryCredentials}
-                        showPassword={showRegistryPassword}
-                        setShowPassword={setShowRegistryPassword}
+                        show密码={showRegistry密码}
+                        setShow密码={setShowRegistry密码}
                         onChange={updateFormData}
                     />
                 )}
@@ -311,39 +311,39 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
                         publicKey={publicKey}
                         showGitToken={showGitToken}
                         setShowGitToken={setShowGitToken}
-                        showRegistryPassword={showRegistryPassword}
-                        setShowRegistryPassword={setShowRegistryPassword}
+                        showRegistry密码={showRegistry密码}
+                        setShowRegistry密码={setShowRegistry密码}
                     />
                 )}
             </div>
 
             <DialogFooter>
-                <div className="flex gap-2 w-full">
-                    <div className="flex-1">
+                <div class名称="flex gap-2 w-full">
+                    <div class名称="flex-1">
                         {history.length > 0 && (
-                            <Button type="button" variant="outline" onClick={goBack}>
-                                <ChevronLeft className="h-4 w-4" />
-                                Back
+                            <Button type="button" variant="outline" onClick={go返回}>
+                                <ChevronLeft class名称="h-4 w-4" />
+                                返回
                             </Button>
                         )}
                     </div>
-                    <div className="grid md:grid-cols-2 gap-2">
+                    <div class名称="grid md:grid-cols-2 gap-2">
                         {step === 'summary' ? (
                             <>
                                 <Button type="button" variant="secondary" onClick={() => save(false)}>
-                                    <Save className="h-4 w-4" />
-                                    Save
+                                    <保存 class名称="h-4 w-4" />
+                                    保存
                                 </Button>
                                 <Button type="button" onClick={() => save(true)}>
-                                    <Rocket className="h-4 w-4" />
-                                    Save & Deploy
+                                    <Rocket class名称="h-4 w-4" />
+                                    保存 & Deploy
                                 </Button>
                             </>
                         ) : step === 'branch' || step === 'build-method' ? (
                             null
                         ) : (
                             <Button type="button" onClick={next} disabled={nextDisabled}>
-                                {isLoadingBranches || isDetectingDockerfile ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                                {isLoadingBranches || isDetectingDockerfile ? <Loader2 class名称="h-4 w-4 animate-spin" /> : null}
                                 Continue
                             </Button>
                         )}
@@ -360,7 +360,7 @@ function getStepTitle(step: StepId, sourceType: AppSourceInfoInputModel['sourceT
     if (step === 'ssh-url') return 'Connect Git SSH';
     if (step === 'branch') return 'Choose Git Branch';
     if (step === 'build-method') return 'Choose Build Method';
-    if (step === 'dockerfile') return 'Confirm Dockerfile Path';
+    if (step === 'dockerfile') return '确认 Dockerfile Path';
     if (step === 'container-image') return 'Connect Docker Container Image';
     if (step === 'summary') return `${sourceTypeLabels[sourceType as SourceType]} Summary`;
     return 'Connect App Source';
@@ -386,7 +386,7 @@ function resetForSourceType(current: AppSourceInfoInputModel, sourceType: Source
             buildMethod: 'RAILPACK',
             gitUrl: '',
             gitBranch: '',
-            gitUsername: '',
+            git用户名: '',
             gitToken: '',
             dockerfilePath: defaultDockerfilePath,
         };
@@ -404,8 +404,8 @@ function resetForSourceType(current: AppSourceInfoInputModel, sourceType: Source
         sourceType,
         buildMethod: 'RAILPACK',
         containerImageSource: '',
-        containerRegistryUsername: '',
-        containerRegistryPassword: '',
+        containerRegistry用户名: '',
+        containerRegistry密码: '',
         dockerfilePath: defaultDockerfilePath,
     };
 }
@@ -418,11 +418,11 @@ function toSourceInput(app: AppExtendedModel): AppSourceInfoInputModel {
         sourceType,
         buildMethod: (app.buildMethod as AppBuildMethod | undefined) ?? 'RAILPACK',
         containerImageSource: app.containerImageSource ?? '',
-        containerRegistryUsername: app.containerRegistryUsername ?? '',
-        containerRegistryPassword: app.containerRegistryPassword ?? '',
+        containerRegistry用户名: app.containerRegistry用户名 ?? '',
+        containerRegistry密码: app.containerRegistry密码 ?? '',
         gitUrl: app.gitUrl ?? '',
         gitBranch: app.gitBranch ?? '',
-        gitUsername: app.gitUsername ?? '',
+        git用户名: app.git用户名 ?? '',
         gitToken: app.gitToken ?? '',
         dockerfilePath: app.dockerfilePath ?? defaultDockerfilePath,
     };

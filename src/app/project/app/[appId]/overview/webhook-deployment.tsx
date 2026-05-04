@@ -1,9 +1,9 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, Card描述, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 import { useEffect, useState } from "react";
 import { createNewWebhookUrl } from "./actions";
 import { Button } from "@/components/ui/button";
-import { useConfirmDialog } from "@/frontend/states/zustand.states";
+import { use确认Dialog } from "@/frontend/states/zustand.states";
 import { Toast } from "@/frontend/utils/toast.utils";
 import { ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
@@ -16,7 +16,7 @@ export default function WebhookDeploymentInfo({
     app: AppExtendedModel;
     role: RolePermissionEnum;
 }) {
-    const { openConfirmDialog } = useConfirmDialog();
+    const { open确认Dialog } = use确认Dialog();
     const [webhookUrl, setWebhookUrl] = useState<string | undefined>(undefined);
 
     useEffect(() => {
@@ -29,7 +29,7 @@ export default function WebhookDeploymentInfo({
     }, [app]);
 
     const createNewWebhookUrlAsync = async () => {
-        if (!await openConfirmDialog({
+        if (!await open确认Dialog({
             title: 'Generate new Webhook URL',
             description: 'Are you sure you want to generate a new Webhook URL? The old URL will be invalidated.',
             okButton: 'Generate new URL'
@@ -48,12 +48,12 @@ export default function WebhookDeploymentInfo({
         <Card>
             <CardHeader>
                 <CardTitle>Webhook Deployment</CardTitle>
-                <CardDescription>Use this webhook URL to trigger deployments from external services (for example GitHub Actions or GitLab Pipelines).</CardDescription>
+                <Card描述>Use this webhook URL to trigger deployments from external services (for example GitHub 操作 or GitLab Pipelines).</Card描述>
             </CardHeader>
             <CardContent>
-                <div className="flex gap-4">
-                    {webhookUrl && <Button className="flex-1 truncate" variant="secondary" onClick={copyWebhookUrl}>
-                        <span className="truncate">{webhookUrl}</span> <ClipboardCopy />
+                <div class名称="flex gap-4">
+                    {webhookUrl && <Button class名称="flex-1 truncate" variant="secondary" onClick={copyWebhookUrl}>
+                        <span class名称="truncate">{webhookUrl}</span> <ClipboardCopy />
                     </Button>}
                     {role === RolePermissionEnum.READWRITE && <Button onClick={createNewWebhookUrlAsync} variant={webhookUrl ? 'ghost' : 'secondary'}>{webhookUrl ? 'Generate new Webhook URL' : 'Enable Webhook deployments'}</Button>}
                 </div>

@@ -25,7 +25,7 @@ export default function CheckboxFormField<TFormType extends FieldValues>(
 ) {
 
     return (<>
-        <div className="hidden">
+        <div class名称="hidden">
             <FormField
                 control={form.control}
                 name={name as any}
@@ -44,7 +44,7 @@ export default function CheckboxFormField<TFormType extends FieldValues>(
             control={form.control}
             name={name as any}
             render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem class名称="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
                         <Checkbox
                             disabled={field.disabled}
@@ -54,7 +54,7 @@ export default function CheckboxFormField<TFormType extends FieldValues>(
                             }}
                         />
                     </FormControl>
-                    <div className="space-y-1 leading-none">
+                    <div class名称="space-y-1 leading-none">
                         <FormLabel>
                             {label}
                         </FormLabel>

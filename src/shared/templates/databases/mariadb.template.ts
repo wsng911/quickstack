@@ -2,14 +2,14 @@ import { Constants } from "@/shared/utils/constants";
 import { AppTemplateContentModel, AppTemplateModel } from "../../model/app-template.model";
 
 export function getMariadbAppTemplate(config?: {
-    appName?: string,
-    dbName?: string,
-    dbUsername?: string,
-    dbPassword?: string,
-    rootPassword?: string
+    app名称?: string,
+    db名称?: string,
+    db用户名?: string,
+    db密码?: string,
+    root密码?: string
 }): AppTemplateContentModel {
     return {
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -19,35 +19,35 @@ export function getMariadbAppTemplate(config?: {
             },
             {
                 key: "MYSQL_DATABASE",
-                label: "Database Name",
-                value: config?.dbName || "mariadb",
+                label: "Database 名称",
+                value: config?.db名称 || "mariadb",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "MYSQL_USER",
                 label: "Database User",
-                value: config?.dbUsername || "mariadbuser",
+                value: config?.db用户名 || "mariadbuser",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: false,
             },
             {
                 key: "MYSQL_PASSWORD",
                 label: "Database Passwort",
-                value: config?.dbPassword || "",
+                value: config?.db密码 || "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
             },
             {
                 key: "MYSQL_ROOT_PASSWORD",
-                label: "Root Password",
-                value: config?.rootPassword || "",
+                label: "Root 密码",
+                value: config?.root密码 || "",
                 isEnvVar: true,
                 randomGeneratedIfEmpty: true,
             },
         ],
         appModel: {
-            name: config?.appName || "MariaDB",
+            name: config?.app名称 || "MariaDB",
             appType: 'MARIADB',
             sourceType: 'CONTAINER',
             containerImageSource: "",
@@ -65,7 +65,7 @@ export function getMariadbAppTemplate(config?: {
             size: 400,
             containerMountPath: '/var/lib/mysql',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],
@@ -77,7 +77,7 @@ export function getMariadbAppTemplate(config?: {
 
 export const mariadbAppTemplate: AppTemplateModel = {
     name: "MariaDB",
-    iconName: 'mariadb.svg',
+    icon名称: 'mariadb.svg',
     templates: [
         getMariadbAppTemplate()
     ]

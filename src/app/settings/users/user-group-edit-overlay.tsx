@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import {
   Form,
   FormControl,
-  FormDescription,
+  Form描述,
   FormField,
   FormItem,
   FormLabel,
@@ -16,13 +16,13 @@ import { useForm } from "react-hook-form"
 import { useFormState } from 'react-dom'
 import { useEffect, useState } from "react";
 import { FormUtils } from "@/frontend/utils/form.utilts";
-import { SubmitButton } from "@/components/custom/submit-button";
+import { 提交Button } from "@/components/custom/submit-button";
 import { ServerActionResult } from "@/shared/model/server-action-error-return.model"
 import { toast } from "sonner"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { saveRole } from "./actions"
 import { RolePermissionEnum } from "@/shared/model/role-extended.model.ts"
-import { RoleEditModel, roleEditZodModel } from "@/shared/model/role-edit.model"
+import { Role编辑Model, role编辑ZodModel } from "@/shared/model/role-edit.model"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ProjectExtendedModel } from "@/shared/model/project-extended.model"
@@ -38,12 +38,12 @@ type UiProjectPermission = {
   setPermissionsPerApp: boolean;
   roleAppPermissions: {
     appId: string;
-    appName: string;
+    app名称: string;
     permission?: RolePermissionEnum;
   }[];
 };
 
-export default function RoleEditOverlay({ children, userGroup, projects }: {
+export default function Role编辑Overlay({ children, userGroup, projects }: {
   children: React.ReactNode;
   userGroup?: UserGroupExtended;
   projects: ProjectExtendedModel[]
@@ -53,13 +53,13 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
 
   const [projectPermissions, setProjectPermissions] = useState<UiProjectPermission[]>([]);
 
-  const form = useForm<RoleEditModel>({
-    resolver: zodResolver(roleEditZodModel),
+  const form = useForm<Role编辑Model>({
+    resolver: zodResolver(role编辑ZodModel),
     defaultValues: userGroup
   });
 
   const [state, formAction] = useFormState((state: ServerActionResult<any, any>,
-    payload: RoleEditModel) =>
+    payload: Role编辑Model) =>
     saveRole(state, {
       ...payload,
       id: userGroup?.id,
@@ -82,7 +82,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
           }),
         }
       }).filter((perm) => perm !== undefined),
-    }), FormUtils.getInitialFormState<typeof roleEditZodModel>());
+    }), FormUtils.getInitialFormState<typeof role编辑ZodModel>());
 
   useEffect(() => {
     if (state.status === 'success') {
@@ -90,7 +90,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
       toast.success('Group saved successfully');
       setIsOpen(false);
     }
-    FormUtils.mapValidationErrorsToForm<typeof roleEditZodModel>(state, form);
+    FormUtils.mapValidationErrorsToForm<typeof role编辑ZodModel>(state, form);
   }, [state]);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
         const existingPermission = userGroup.roleProjectPermissions?.find(p => p.projectId === project.id);
         const roleAppPermissions = project.apps.map(app => ({
           appId: app.id,
-          appName: app.name,
+          app名称: app.name,
           permission: existingPermission?.roleAppPermissions.find(appPerm => appPerm.appId === app.id)?.permission
         }));
         const hasNoAppRolePermissionsSet = roleAppPermissions.every(appPerm => !appPerm.permission);
@@ -150,7 +150,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
     }));
   };
 
-  const handleCreateChange = (projectId: string, checked: boolean) => {
+  const handle创建Change = (projectId: string, checked: boolean) => {
     setProjectPermissions(prev => prev.map(perm => {
       if (perm.projectId === projectId) {
         return { ...perm, createApps: checked, readApps: checked ? true : perm.createApps };
@@ -159,7 +159,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
     }));
   };
 
-  const handleDeleteChange = (projectId: string, checked: boolean) => {
+  const handle删除Change = (projectId: string, checked: boolean) => {
     setProjectPermissions(prev => prev.map(perm => {
       if (perm.projectId === projectId) {
         return { ...perm, deleteApps: checked, readApps: checked ? true : perm.deleteApps };
@@ -173,7 +173,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
       if (perm.projectId === projectId) {
         const appPermissions = checked ? projects.find(p => p.id === projectId)?.apps.map(app => ({
           appId: app.id,
-          appName: app.name,
+          app名称: app.name,
           permission: undefined
         })) || [] : [];
         return {
@@ -228,23 +228,23 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
         {children}
       </div>
       <Dialog open={!!isOpen} onOpenChange={(isOpened) => setIsOpen(isOpened)}>
-        <DialogContent className="sm:max-w-[900px]">
+        <DialogContent class名称="sm:max-w-[900px]">
           <DialogHeader>
-            <DialogTitle>{userGroup?.id ? 'Edit' : 'Create'} Group</DialogTitle>
+            <DialogTitle>{userGroup?.id ? '编辑' : '创建'} Group</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="max-h-[70vh]">
-            <div className="px-3">
+          <ScrollArea class名称="max-h-[70vh]">
+            <div class名称="px-3">
               <Form {...form}>
-                <form action={(e) => form.handleSubmit((data) => {
+                <form action={(e) => form.handle提交((data) => {
                   return formAction(data);
                 }, console.error)()}>
-                  <div className="space-y-4">
+                  <div class名称="space-y-4">
                     <FormField
                       control={form.control}
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>名称</FormLabel>
                           <FormControl>
                             <Input placeholder="" {...field} />
                           </FormControl>
@@ -255,38 +255,38 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
 
                     <FormField
                       control={form.control}
-                      name="canAccessBackups"
+                      name="canAccess返回ups"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormItem class名称="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">
+                          <div class名称="space-y-1 leading-none">
                             <FormLabel>
                               Can access backups
                             </FormLabel>
-                            <FormDescription>
+                            <Form描述>
                               If enabled, users can access the backups page and download backups from all apps.
-                            </FormDescription>
+                            </Form描述>
                           </div>
                         </FormItem>
                       )}
                     />
 
-                    <div className="pt-3">
-                      <h3 className="text-sm font-medium mb-2">App Permissions</h3>
+                    <div class名称="pt-3">
+                      <h3 class名称="text-sm font-medium mb-2">App Permissions</h3>
                       <Table>
                         <TableHeader>
                           <TableRow>
                             <TableHead>Project</TableHead>
                             <TableHead>Individual Permissions</TableHead>
                             <TableHead>Read Apps</TableHead>
-                            <TableHead>Edit/Deploy Apps</TableHead>
-                            <TableHead>Create Apps</TableHead>
-                            <TableHead>Delete Apps</TableHead>
+                            <TableHead>编辑/Deploy Apps</TableHead>
+                            <TableHead>创建 Apps</TableHead>
+                            <TableHead>删除 Apps</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -294,8 +294,8 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
                             const permission = projectPermissions.find(p => p.projectId === project.id);
                             return (
                               <>
-                                <TableRow key={project.id} className={(permission?.roleAppPermissions.length ?? 0) === 0 ? 'border-b-gray-400' : ''} >
-                                  <TableCell className="font-semibold">{project.name}</TableCell>
+                                <TableRow key={project.id} class名称={(permission?.roleAppPermissions.length ?? 0) === 0 ? 'border-b-gray-400' : ''} >
+                                  <TableCell class名称="font-semibold">{project.name}</TableCell>
                                   <TableCell>
                                     <Checkbox
                                       id={`delete-${project.id}`}
@@ -327,7 +327,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
                                       <Checkbox
                                         id={`create-${project.id}`}
                                         checked={permission?.createApps || false}
-                                        onCheckedChange={(checked) => handleCreateChange(project.id, !!checked)}
+                                        onCheckedChange={(checked) => handle创建Change(project.id, !!checked)}
                                       />
                                     </TableCell>}
                                   {permission?.setPermissionsPerApp ?
@@ -336,7 +336,7 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
                                       <Checkbox
                                         id={`delete-${project.id}`}
                                         checked={permission?.deleteApps || false}
-                                        onCheckedChange={(checked) => handleDeleteChange(project.id, !!checked)}
+                                        onCheckedChange={(checked) => handle删除Change(project.id, !!checked)}
                                       />
                                     </TableCell>}
                                 </TableRow>
@@ -346,10 +346,10 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
                                   <>
                                     {permission?.roleAppPermissions.map((roleAppPermission, index) =>
 
-                                      <TableRow key={roleAppPermission.appId} className={permission.roleAppPermissions.length - 1 === index ? 'border-b-gray-400' : ''}>
+                                      <TableRow key={roleAppPermission.appId} class名称={permission.roleAppPermissions.length - 1 === index ? 'border-b-gray-400' : ''}>
                                         <TableCell></TableCell>
                                         <TableCell></TableCell>
-                                        <TableCell colSpan={2}>{roleAppPermission.appName}</TableCell>
+                                        <TableCell colSpan={2}>{roleAppPermission.app名称}</TableCell>
                                         <TableCell>
                                           <Checkbox
                                             id={`app-read-${roleAppPermission.appId}`}
@@ -375,8 +375,8 @@ export default function RoleEditOverlay({ children, userGroup, projects }: {
                       </Table>
                     </div>
 
-                    <p className="text-red-500">{state.message}</p>
-                    <SubmitButton>Save</SubmitButton>
+                    <p class名称="text-red-500">{state.message}</p>
+                    <提交Button>保存</提交Button>
                   </div>
                 </form>
               </Form >

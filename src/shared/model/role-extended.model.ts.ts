@@ -14,4 +14,4 @@ export enum RolePermissionEnum {
 }
 
 
-export const adminRoleName = "admin";
+export const adminRole名称 = "admin";

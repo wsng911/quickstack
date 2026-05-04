@@ -1,17 +1,17 @@
 const k3sMocks = vi.hoisted(() => ({
-    listNamespacedNetworkPolicy: vi.fn(),
-    createNamespacedNetworkPolicy: vi.fn(),
-    replaceNamespacedNetworkPolicy: vi.fn(),
-    deleteNamespacedNetworkPolicy: vi.fn(),
+    list名称spacedNetworkPolicy: vi.fn(),
+    create名称spacedNetworkPolicy: vi.fn(),
+    replace名称spacedNetworkPolicy: vi.fn(),
+    delete名称spacedNetworkPolicy: vi.fn(),
 }));
 
 vi.mock('@/server/adapter/kubernetes-api.adapter', () => ({
     default: {
         network: {
-            listNamespacedNetworkPolicy: k3sMocks.listNamespacedNetworkPolicy,
-            createNamespacedNetworkPolicy: k3sMocks.createNamespacedNetworkPolicy,
-            replaceNamespacedNetworkPolicy: k3sMocks.replaceNamespacedNetworkPolicy,
-            deleteNamespacedNetworkPolicy: k3sMocks.deleteNamespacedNetworkPolicy,
+            list名称spacedNetworkPolicy: k3sMocks.list名称spacedNetworkPolicy,
+            create名称spacedNetworkPolicy: k3sMocks.create名称spacedNetworkPolicy,
+            replace名称spacedNetworkPolicy: k3sMocks.replace名称spacedNetworkPolicy,
+            delete名称spacedNetworkPolicy: k3sMocks.delete名称spacedNetworkPolicy,
         },
     },
 }));
@@ -22,7 +22,7 @@ import { AppExtendedModel } from '@/shared/model/app-extended.model';
 describe('network-policy.service', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        k3sMocks.listNamespacedNetworkPolicy.mockResolvedValue({ body: { items: [] } });
+        k3sMocks.list名称spacedNetworkPolicy.mockResolvedValue({ body: { items: [] } });
     });
 
     it('allows external ingress to configured App Node Ports', async () => {
@@ -47,8 +47,8 @@ describe('network-policy.service', () => {
 
         await networkPolicyService.reconcileNetworkPolicy(app);
 
-        expect(k3sMocks.createNamespacedNetworkPolicy).toHaveBeenCalledTimes(1);
-        const [, policy] = k3sMocks.createNamespacedNetworkPolicy.mock.calls[0];
+        expect(k3sMocks.create名称spacedNetworkPolicy).toHaveBeenCalledTimes(1);
+        const [, policy] = k3sMocks.create名称spacedNetworkPolicy.mock.calls[0];
         expect(policy.spec.ingress).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({

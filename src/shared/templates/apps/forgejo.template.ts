@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const forgejopAppTemplate: AppTemplateModel = {
     name: "Forgejo",
-    iconName: 'https://codeberg.org/forgejo/forgejo/raw/branch/forgejo/assets/logo.svg',
+    icon名称: 'https://codeberg.org/forgejo/forgejo/raw/branch/forgejo/assets/logo.svg',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",
@@ -36,7 +36,7 @@ FORGEJO__database__DB_TYPE=sqlite3
             size: 2000,
             containerMountPath: '/data',
             accessMode: 'ReadWriteOnce',
-            storageClassName: 'longhorn',
+            storageClass名称: 'longhorn',
             shareWithOtherApps: false,
         }],
         appFileMounts: [],

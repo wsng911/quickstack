@@ -3,9 +3,9 @@ import { AppTemplateModel } from "../../model/app-template.model";
 
 export const tikaAppTemplate: AppTemplateModel = {
     name: "Apache Tika",
-    iconName: 'https://tika.apache.org/tika.png',
+    icon名称: 'https://tika.apache.org/tika.png',
     templates: [{
-        inputSettings: [
+        input设置: [
             {
                 key: "containerImageSource",
                 label: "Container Image",

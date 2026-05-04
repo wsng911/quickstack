@@ -9,7 +9,7 @@ export const healthCheckZodModel = z.object({
     httpPort: z.coerce.number().int().min(1).max(65535).optional(),
     scheme: z.enum(["HTTP", "HTTPS"]).optional(),
     headers: z.array(z.object({
-        name: z.string().min(1, "Name is required"),
+        name: z.string().min(1, "名称 is required"),
         value: z.string().min(1, "Value is required")
     })).optional(),
     // TCP probe fields

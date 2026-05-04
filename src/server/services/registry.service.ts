@@ -41,7 +41,7 @@ class RegistryService {
             throw new Error('Cannot run garbage collection, because registry is not running.');
         }
         console.log("Running garbage collection...");
-        await podService.runCommandInPod(BUILD_NAMESPACE, pods[0].podName, pods[0].containerName, ['bin/registry', 'garbage-collect', '/etc/docker/registry/config.yml']);
+        await podService.runCommandInPod(BUILD_NAMESPACE, pods[0].pod名称, pods[0].container名称, ['bin/registry', 'garbage-collect', '/etc/docker/registry/config.yml']);
         console.log("Garbage collection completed.");
     }
 
@@ -77,12 +77,12 @@ class RegistryService {
         const s3Target = useLocalStorage ? undefined : await s3TargetService.getById(registryLocation!);
 
         console.log("Ensuring namespace is created...");
-        await namespaceService.createNamespaceIfNotExists(BUILD_NAMESPACE);
+        await namespaceService.create名称spaceIfNotExists(BUILD_NAMESPACE);
 
         // Always update the ConfigMap so storage settings are never stale
         await this.createOrUpdateRegistryConfigMap(s3Target);
 
-        const deployments = await k3s.apps.listNamespacedDeployment(BUILD_NAMESPACE);
+        const deployments = await k3s.apps.list名称spacedDeployment(BUILD_NAMESPACE);
         if (deployments.body.items.length > 0 && !forceDeploy) {
             return;
         }
@@ -101,7 +101,7 @@ class RegistryService {
         console.log("Waiting for registry to be deployed...");
         const pods = await podService.getPodsForApp(BUILD_NAMESPACE, 'registry');
         if (pods.length === 1) {
-            await podService.waitUntilPodIsRunningFailedOrSucceded(BUILD_NAMESPACE, pods[0].podName)
+            await podService.waitUntilPodIsRunningFailedOrSucceded(BUILD_NAMESPACE, pods[0].pod名称)
         }
 
         console.log("Registry deployed successfully.");
@@ -119,7 +119,7 @@ class RegistryService {
             },
             spec: {
                 accessModes: ['ReadWriteOnce'],
-                storageClassName: 'local-path',
+                storageClass名称: 'local-path',
                 resources: {
                     requests: {
                         storage: '10Gi',
@@ -128,12 +128,12 @@ class RegistryService {
             },
         };
 
-        const listRes = await k3s.core.listNamespacedPersistentVolumeClaim(BUILD_NAMESPACE);
+        const listRes = await k3s.core.list名称spacedPersistentVolumeClaim(BUILD_NAMESPACE);
         if (listRes.body.items.find(pvc => pvc.metadata?.name === REGISTRY_PVC_NAME)) {
             console.log("PVC already exists, skipping creation...");
             return;
         }
-        await k3s.core.createNamespacedPersistentVolumeClaim(BUILD_NAMESPACE, pvcManifest);
+        await k3s.core.create名称spacedPersistentVolumeClaim(BUILD_NAMESPACE, pvcManifest);
     }
 
     private async createOrUpdateRegistryService() {
@@ -161,19 +161,19 @@ class RegistryService {
             },
         };
 
-        const existingServices = await k3s.core.listNamespacedService(BUILD_NAMESPACE);
-        if (existingServices.body.items.find(svc => svc.metadata?.name === REGISTRY_SVC_NAME)) {
+        const existing服务 = await k3s.core.list名称spacedService(BUILD_NAMESPACE);
+        if (existing服务.body.items.find(svc => svc.metadata?.name === REGISTRY_SVC_NAME)) {
             console.log("Service already exists, deleting and recreating...");
-            await k3s.core.deleteNamespacedService(REGISTRY_SVC_NAME, BUILD_NAMESPACE);
+            await k3s.core.delete名称spacedService(REGISTRY_SVC_NAME, BUILD_NAMESPACE);
         }
 
-        await k3s.core.createNamespacedService(BUILD_NAMESPACE, serviceManifest);
+        await k3s.core.create名称spacedService(BUILD_NAMESPACE, serviceManifest);
     }
 
     private async createOrUpdateRegistryDeployment(useLocalStorage = true) {
         console.log("Creating Registry Deployment...");
 
-        const deploymentName = 'registry';
+        const deployment名称 = 'registry';
 
         const masterNode = await clusterService.getFirstMasterNode();
         if (useLocalStorage && !masterNode) {
@@ -193,7 +193,7 @@ class RegistryService {
         const localStorageVolume = useLocalStorage ? [{
             name: 'registry-data-pv',
             persistentVolumeClaim: {
-                claimName: REGISTRY_PVC_NAME,
+                claim名称: REGISTRY_PVC_NAME,
             },
         }] : [];
 
@@ -201,7 +201,7 @@ class RegistryService {
             apiVersion: 'apps/v1',
             kind: 'Deployment',
             metadata: {
-                name: deploymentName,
+                name: deployment名称,
                 namespace: BUILD_NAMESPACE,
             },
             spec: {
@@ -211,20 +211,20 @@ class RegistryService {
                 },
                 selector: {
                     matchLabels: {
-                        app: deploymentName,
+                        app: deployment名称,
                     },
                 },
                 template: {
                     metadata: {
                         labels: {
-                            app: deploymentName,
+                            app: deployment名称,
                         },
                     },
                     spec: {
                         ...registryPlacement,
                         containers: [
                             {
-                                name: deploymentName,
+                                name: deployment名称,
                                 image: 'registry:2.8',
                                 volumeMounts: [
                                     ...localStorageVolumeMount,
@@ -250,13 +250,13 @@ class RegistryService {
             },
         };
 
-        const existingDeployments = await k3s.apps.listNamespacedDeployment(BUILD_NAMESPACE);
-        if (existingDeployments.body.items.find(dep => dep.metadata?.name === deploymentName)) {
+        const existingDeployments = await k3s.apps.list名称spacedDeployment(BUILD_NAMESPACE);
+        if (existingDeployments.body.items.find(dep => dep.metadata?.name === deployment名称)) {
             console.log("Deployment already exists, deleting and recreating...");
-            await k3s.apps.deleteNamespacedDeployment(deploymentName, BUILD_NAMESPACE);
+            await k3s.apps.delete名称spacedDeployment(deployment名称, BUILD_NAMESPACE);
         }
 
-        await k3s.apps.createNamespacedDeployment(BUILD_NAMESPACE, deploymentManifest);
+        await k3s.apps.create名称spacedDeployment(BUILD_NAMESPACE, deploymentManifest);
     }
 
     private async createOrUpdateRegistryConfigMap(s3Target?: S3Target) {
@@ -268,7 +268,7 @@ class RegistryService {
     accesskey: ${s3Target.accessKeyId}
     secretkey: ${s3Target.secretKey}
     region: ${s3Target.region}
-    bucket: ${s3Target.bucketName}
+    bucket: ${s3Target.bucket名称}
     loglevel: debug`;
             if (s3Target.endpoint) {
                 storageS3provider += `\n    regionendpoint: ${s3Target.endpoint}`;
@@ -315,13 +315,13 @@ http:
 `
             },
         };
-        const existingConfigMaps = await k3s.core.listNamespacedConfigMap(BUILD_NAMESPACE);
+        const existingConfigMaps = await k3s.core.list名称spacedConfigMap(BUILD_NAMESPACE);
         if (existingConfigMaps.body.items.find(cm => cm.metadata?.name === REGISTRY_CONFIG_MAP_NAME)) {
             console.log("ConfigMap already exists, deleting and recreating...");
-            await k3s.core.deleteNamespacedConfigMap(REGISTRY_CONFIG_MAP_NAME, BUILD_NAMESPACE);
+            await k3s.core.delete名称spacedConfigMap(REGISTRY_CONFIG_MAP_NAME, BUILD_NAMESPACE);
         }
 
-        await k3s.core.createNamespacedConfigMap(BUILD_NAMESPACE, configMapManifest);
+        await k3s.core.create名称spacedConfigMap(BUILD_NAMESPACE, configMapManifest);
     }
 }
 

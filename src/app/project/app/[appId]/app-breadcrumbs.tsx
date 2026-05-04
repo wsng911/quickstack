@@ -1,12 +1,12 @@
 'use client';
 
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, Card描述, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useBreadcrumbs } from "@/frontend/states/zustand.states";
 import { useEffect } from "react";
 import { AppExtendedModel } from "@/shared/model/app-extended.model";
 
-export default function AppBreadcrumbs({ app, apps, tabName }: { app: AppExtendedModel; apps: { id: string; name: string }[]; tabName?: string }) {
+export default function AppBreadcrumbs({ app, apps, tab名称 }: { app: AppExtendedModel; apps: { id: string; name: string }[]; tab名称?: string }) {
     const { setBreadcrumbs } = useBreadcrumbs();
     useEffect(() => setBreadcrumbs([
         { name: "Projects", url: "/" },
@@ -15,7 +15,7 @@ export default function AppBreadcrumbs({ app, apps, tabName }: { app: AppExtende
             name: app.name,
             dropdownItems: apps.map(a => ({
                 name: a.name,
-                url: `/project/app/${a.id}${tabName ? `?tabName=${tabName}` : ''}`,
+                url: `/project/app/${a.id}${tab名称 ? `?tab名称=${tab名称}` : ''}`,
                 active: a.id === app.id,
             })),
         },
