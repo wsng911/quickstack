@@ -3,10 +3,10 @@ const defaultLight = (className?: string) => <svg className={className} xmlns="h
     stroke="#f9fafb" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="m17 16.5-5-3" />
     <path d="m7 16.5-4.74-2.85" />
-    <path stroke="#25c2a0" d="M12 8 7.26 5.15" />
-    <path stroke="#25c2a0" d="m12 8 4.74-2.85" />
-    <path stroke="#25c2a0" d="M12 13.5V8" />
-    <path stroke="#25c2a0"
+    <path stroke="#00cd9e" d="M12 8 7.26 5.15" />
+    <path stroke="#00cd9e" d="m12 8 4.74-2.85" />
+    <path stroke="#00cd9e" d="M12 13.5V8" />
+    <path stroke="#00cd9e"
         d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z" />
     <path d="m17 16.5 4.74-2.85" />
     <path d="M17 16.5v5.17" />
@@ -24,10 +24,10 @@ const defaultDark = (className?: string) => <svg className={className} xmlns="ht
     stroke="#444950" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="m17 16.5-5-3" />
     <path d="m7 16.5-4.74-2.85" />
-    <path stroke="#25c2a0" d="M12 8 7.26 5.15" />
-    <path stroke="#25c2a0" d="m12 8 4.74-2.85" />
-    <path stroke="#25c2a0" d="M12 13.5V8" />
-    <path stroke="#25c2a0"
+    <path stroke="#00cd9e" d="M12 8 7.26 5.15" />
+    <path stroke="#00cd9e" d="m12 8 4.74-2.85" />
+    <path stroke="#00cd9e" d="M12 13.5V8" />
+    <path stroke="#00cd9e"
         d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z" />
     <path d="m17 16.5 4.74-2.85" />
     <path d="M17 16.5v5.17" />

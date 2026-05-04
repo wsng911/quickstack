@@ -21,6 +21,8 @@ import appGitSshKeyService from './app-git-ssh-key.service';
 import { PathUtils } from '../utils/path.utils';
 import { mockPathUtilsForTests } from '@/__tests__/path-test.utils';
 import { ServiceException } from '@/shared/model/service.exception.model';
+import fs from 'fs';
+import path from 'path';
 
 const { originalInternalDataRoot, originalTempDataRoot } = mockPathUtilsForTests();
 
@@ -162,5 +164,52 @@ describe('GitService', () => {
             sourceType: 'GIT',
             gitUrl: 'https://github.com/biersoeckli/missing.git',
         })).rejects.toThrow('Git repository not found. Please check the repository URL.');
+    });
+
+    it('detects a root Dockerfile for a Git source', async () => {
+        gitMock.clone.mockImplementation(async (_url: string, repoPath: string) => {
+            await fs.promises.mkdir(repoPath, { recursive: true });
+            await fs.promises.writeFile(path.join(repoPath, 'Dockerfile'), 'FROM node:22-alpine');
+            return 'cloned';
+        });
+
+        await expect(gitService.detectDockerfilePath({
+            id: 'app-1',
+            sourceType: 'GIT',
+            gitUrl: 'https://github.com/biersoeckli/dummy-node-app.git',
+            gitBranch: 'main',
+        })).resolves.toBe('./Dockerfile');
+    });
+
+    it('detects the shortest nested Dockerfile when the repo root has none', async () => {
+        gitMock.clone.mockImplementation(async (_url: string, repoPath: string) => {
+            await fs.promises.mkdir(path.join(repoPath, 'zeta'), { recursive: true });
+            await fs.promises.mkdir(path.join(repoPath, 'api'), { recursive: true });
+            await fs.promises.writeFile(path.join(repoPath, 'zeta', 'Dockerfile'), 'FROM node:22-alpine');
+            await fs.promises.writeFile(path.join(repoPath, 'api', 'Dockerfile'), 'FROM node:22-alpine');
+            return 'cloned';
+        });
+
+        await expect(gitService.detectDockerfilePath({
+            id: 'app-1',
+            sourceType: 'GIT',
+            gitUrl: 'https://github.com/biersoeckli/dummy-node-app.git',
+            gitBranch: 'main',
+        })).resolves.toBe('./api/Dockerfile');
+    });
+
+    it('falls back to the default Dockerfile path when none exists', async () => {
+        gitMock.clone.mockImplementation(async (_url: string, repoPath: string) => {
+            await fs.promises.mkdir(path.join(repoPath, 'src'), { recursive: true });
+            await fs.promises.writeFile(path.join(repoPath, 'src', 'index.ts'), 'export {};');
+            return 'cloned';
+        });
+
+        await expect(gitService.detectDockerfilePath({
+            id: 'app-1',
+            sourceType: 'GIT',
+            gitUrl: 'https://github.com/biersoeckli/dummy-node-app.git',
+            gitBranch: 'main',
+        })).resolves.toBe('./Dockerfile');
     });
 });
