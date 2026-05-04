@@ -317,35 +317,37 @@ export function AppSourceWizardDialog({ app, gitSshPublicKey }: {
                 )}
             </div>
 
-            <DialogFooter className="gap-2 sm:justify-between">
-                <div>
-                    {history.length > 0 && (
-                        <Button type="button" variant="outline" onClick={goBack}>
-                            <ChevronLeft className="h-4 w-4" />
-                            Back
-                        </Button>
-                    )}
-                </div>
-                <div className="flex gap-2">
-                    {step === 'summary' ? (
-                        <>
-                            <Button type="button" variant="secondary" onClick={() => save(false)}>
-                                <Save className="h-4 w-4" />
-                                Save
+            <DialogFooter>
+                <div className="flex gap-2 w-full">
+                    <div className="flex-1">
+                        {history.length > 0 && (
+                            <Button type="button" variant="outline" onClick={goBack}>
+                                <ChevronLeft className="h-4 w-4" />
+                                Back
                             </Button>
-                            <Button type="button" onClick={() => save(true)}>
-                                <Rocket className="h-4 w-4" />
-                                Save & Deploy
+                        )}
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-2">
+                        {step === 'summary' ? (
+                            <>
+                                <Button type="button" variant="secondary" onClick={() => save(false)}>
+                                    <Save className="h-4 w-4" />
+                                    Save
+                                </Button>
+                                <Button type="button" onClick={() => save(true)}>
+                                    <Rocket className="h-4 w-4" />
+                                    Save & Deploy
+                                </Button>
+                            </>
+                        ) : step === 'branch' || step === 'build-method' ? (
+                            null
+                        ) : (
+                            <Button type="button" onClick={next} disabled={nextDisabled}>
+                                {isLoadingBranches || isDetectingDockerfile ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                                Continue
                             </Button>
-                        </>
-                    ) : step === 'branch' || step === 'build-method' ? (
-                        null
-                    ) : (
-                        <Button type="button" onClick={next} disabled={nextDisabled}>
-                            {isLoadingBranches || isDetectingDockerfile ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                            Continue
-                        </Button>
-                    )}
+                        )}
+                    </div>
                 </div>
             </DialogFooter>
         </>

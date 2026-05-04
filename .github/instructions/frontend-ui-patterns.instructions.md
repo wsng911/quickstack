@@ -230,13 +230,20 @@ const [selectedItems, setSelectedItems] = useState<Item[]>([]);
 
 Use Zustand-backed global dialogs — don't create one-off dialog state.
 
-Use `useDialog` for custom dialog content. Open it from the triggering component and pass a React component as content plus an optional width/height. Inside that content, call `useDialogContext()` to close the dialog and optionally resolve the `openDialog()` promise:
+Use `useDialog` for custom dialog content. Open it from the triggering component and pass a React component as content plus optional sizing. Prefer the options object form so dialogs stay responsive on mobile: use viewport-based `width`/`height` together with fixed `maxWidth`/`maxHeight`. Inside that content, call `useDialogContext()` to close the dialog and optionally resolve the `openDialog()` promise:
 
 ```tsx
 const { openDialog } = useDialog();
 
 return (
-    <Button type="button" onClick={() => openDialog(<ImportDialog />, '760px')}>
+    <Button
+        type="button"
+        onClick={() => openDialog(<ImportDialog />, {
+            width: 'calc(100vw - 2rem)',
+            maxWidth: '760px',
+            maxHeight: '90vh',
+        })}
+    >
         <Upload className="h-4 w-4" />
         Import
     </Button>
@@ -264,6 +271,18 @@ function ImportDialog() {
 }
 ```
 The dialog content and the triggering component usually are in different components/files.
+
+For simple fixed-width dialogs, the positional form is still supported:
+
+```tsx
+openDialog(<PublicDeployKeyDialog publicKey={publicKey} />, '680px');
+```
+
+When adding new dialogs, prefer responsive constraints:
+
+- `width: 'calc(100vw - 2rem)'` or `width: '90vw'` for mobile-safe horizontal sizing
+- `maxWidth: '760px'` to cap the dialog on desktop
+- `maxHeight: '90vh'` for tall dialogs, ideally with scroll handling inside the dialog content
 
 Use `useConfirmDialog` and `useInputDialog` only for simple confirm/input prompts:
 

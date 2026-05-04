@@ -11,6 +11,8 @@ describe('useDialog hook', () => {
       resolvePromise: null,
       width: undefined,
       height: undefined,
+      maxWidth: undefined,
+      maxHeight: undefined,
     });
   });
 
@@ -71,5 +73,38 @@ describe('useDialog hook', () => {
 
     // Verify the promise resolves with undefined
     await expect(dialogPromise!).resolves.toBeUndefined();
+  });
+
+  it('opens dialog with positional size constraints', () => {
+    const { result } = renderHook(() => useDialog());
+    const testContent = React.createElement('div', null, 'Test Content');
+
+    act(() => {
+      result.current.openDialog(testContent, '90vw', '80vh', '760px', '640px');
+    });
+
+    expect(result.current.width).toBe('90vw');
+    expect(result.current.height).toBe('80vh');
+    expect(result.current.maxWidth).toBe('760px');
+    expect(result.current.maxHeight).toBe('640px');
+  });
+
+  it('opens dialog with object size constraints', () => {
+    const { result } = renderHook(() => useDialog());
+    const testContent = React.createElement('div', null, 'Test Content');
+
+    act(() => {
+      result.current.openDialog(testContent, {
+        width: '90vw',
+        height: '80vh',
+        maxWidth: '760px',
+        maxHeight: '640px',
+      });
+    });
+
+    expect(result.current.width).toBe('90vw');
+    expect(result.current.height).toBe('80vh');
+    expect(result.current.maxWidth).toBe('760px');
+    expect(result.current.maxHeight).toBe('640px');
   });
 });

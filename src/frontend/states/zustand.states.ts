@@ -166,27 +166,64 @@ export const usePodsStatus = create<ZustandPodsStatusProps>((set, get) => ({
 
 
 /* Generic Dialog */
+export interface DialogSizeProps {
+    width?: string;
+    height?: string;
+    maxWidth?: string;
+    maxHeight?: string;
+}
+
 interface ZustandGenericDialogProps {
     isDialogOpen: boolean;
     content: ReactNode | null;
     width?: string;
     height?: string;
+    maxWidth?: string;
+    maxHeight?: string;
     resolvePromise: ((result?: any) => void) | null;
-    openDialog: (content: ReactNode, width?: string, height?: string) => Promise<any>;
+    openDialog: (
+        content: ReactNode,
+        widthOrSize?: string | DialogSizeProps,
+        height?: string,
+        maxWidth?: string,
+        maxHeight?: string
+    ) => Promise<any>;
     closeDialog: (result?: any) => void;
 }
+
+const getDialogSizeProps = (
+    widthOrSize?: string | DialogSizeProps,
+    height?: string,
+    maxWidth?: string,
+    maxHeight?: string
+): DialogSizeProps => {
+    if (widthOrSize && typeof widthOrSize === 'object') {
+        return widthOrSize;
+    }
+
+    return {
+        width: widthOrSize,
+        height,
+        maxWidth,
+        maxHeight,
+    };
+};
 
 export const useDialog = create<ZustandGenericDialogProps>((set) => ({
     isDialogOpen: false,
     content: null,
     resolvePromise: null,
-    openDialog: (content, width, height) => {
+    openDialog: (content, widthOrSize, height, maxWidth, maxHeight) => {
+        const size = getDialogSizeProps(widthOrSize, height, maxWidth, maxHeight);
+
         return new Promise<any>((resolve) => {
             set({
                 isDialogOpen: true,
                 content: content,
-                width: width ?? undefined,
-                height: height ?? undefined,
+                width: size.width ?? undefined,
+                height: size.height ?? undefined,
+                maxWidth: size.maxWidth ?? undefined,
+                maxHeight: size.maxHeight ?? undefined,
                 resolvePromise: resolve,
             });
         });
@@ -195,6 +232,14 @@ export const useDialog = create<ZustandGenericDialogProps>((set) => ({
         if (state.resolvePromise) {
             state.resolvePromise(result);
         }
-        return { isDialogOpen: false, content: null, resolvePromise: null };
+        return {
+            isDialogOpen: false,
+            content: null,
+            width: undefined,
+            height: undefined,
+            maxWidth: undefined,
+            maxHeight: undefined,
+            resolvePromise: null,
+        };
     }),
 }));

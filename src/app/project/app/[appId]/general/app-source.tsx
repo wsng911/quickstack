@@ -23,7 +23,11 @@ export default function GeneralAppSource({ app, readonly, gitSshPublicKey }: {
     const openSourceWizard = () => {
         openDialog(
             <AppSourceWizardDialog app={app} gitSshPublicKey={gitSshPublicKey} />,
-            '760px'
+            {
+                width: 'calc(100vw - 2rem)',
+                maxWidth: '760px',
+                maxHeight: '90vh',
+            }
         );
     };
 

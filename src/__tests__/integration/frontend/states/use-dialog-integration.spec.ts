@@ -15,6 +15,8 @@ describe('useDialog integration tests', () => {
       resolvePromise: null,
       width: undefined,
       height: undefined,
+      maxWidth: undefined,
+      maxHeight: undefined,
     });
   });
 
